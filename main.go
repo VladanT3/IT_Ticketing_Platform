@@ -4,24 +4,25 @@ import (
 	"fmt"
 	"log"
 	"net/http"
+	"os"
+
+	handlers "github.com/VladanT3/IT_Ticketing_Platform/handlers"
+	"github.com/go-chi/chi/v5"
+	"github.com/joho/godotenv"
 )
 
 func main() {
-	router := http.NewServeMux()
-
-	testUser := User{
-		id:       "1",
-		name:     "analyst",
-		username: "analyst1",
-		password: "123",
-	}
-	router.HandleFunc("GET /", Login(testUser))
-
-	server := http.Server{
-		Addr:    ":8000",
-		Handler: router,
+	err := godotenv.Load()
+	if err != nil {
+		log.Fatal("Error loading env variables")
 	}
 
-	fmt.Println("Server started on: http://localhost:8000")
-	log.Fatal(server.ListenAndServe())
+	router := chi.NewMux()
+
+	router.Handle("/*", http.StripPrefix("/public/", http.FileServer(http.Dir("./public"))))
+	router.Get("/", handlers.Make(handlers.LoginHandler))
+
+	port := os.Getenv("PORT")
+	fmt.Println("Server started on: http://localhost" + port)
+	log.Fatal(http.ListenAndServe(port, router))
 }
