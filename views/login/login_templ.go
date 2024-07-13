@@ -40,7 +40,7 @@ func Login() templ.Component {
 				}()
 			}
 			ctx = templ.InitializeContext(ctx)
-			templ_7745c5c3_Err = templ.WriteWatchModeString(templ_7745c5c3_Buffer, 1)
+			_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString("<form class=\"center\"><label>Email</label> <input type=\"email\" name=\"email\"><br><br><label>Password</label> <input type=\"password\" name=\"pass\"><br><br><button>Log In</button></form>")
 			if templ_7745c5c3_Err != nil {
 				return templ_7745c5c3_Err
 			}
