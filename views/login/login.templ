@@ -4,5 +4,16 @@ import "github.com/VladanT3/IT_Ticketing_Platform/views/layouts"
 
 templ Login() {
 	@layouts.Base() {
+		<form class="center">
+			<label>Email</label>
+			<input type="email" name="email"/>
+			<br/>
+			<br/>
+			<label>Password</label>
+			<input type="password" name="pass"/>
+			<br/>
+			<br/>
+			<button>Log In</button>
+		</form>
 	}
 }
