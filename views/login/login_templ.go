@@ -40,7 +40,7 @@ func Login() templ.Component {
 				}()
 			}
 			ctx = templ.InitializeContext(ctx)
-			_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString("<form class=\"center\"><label>Email</label> <input type=\"email\" name=\"email\"><br><br><label>Password</label> <input type=\"password\" name=\"pass\"><br><br><button>Log In</button></form>")
+			_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString("<div class=\"container mx-auto\"><div class=\"grid grid-rows-3\"><div></div><div class=\"grid grid-cols-5\"><div></div><div></div><div><form class=\"dark:bg-white-800 flex flex-col border rounded-lg border-zinc-600 border-dashed p-5\"><legend class=\"uk-legend text-zinc-50 text-2xl self-center\">Login</legend> <label class=\"text-zinc-50\">Email</label> <input class=\"uk-input dark:bg-zinc-600 text-base\" type=\"email\" name=\"email\"> <label class=\"text-zinc-50 mt-3\">Password</label> <input class=\"uk-input dark:bg-zinc-600 text-base\" type=\"password\" name=\"pass\"> <button class=\"uk-button uk-button-ghost bg-cyan-500 hover:bg-cyan-400 text-zinc-800 self-center mt-5\">Log In</button></form></div><div></div><div></div></div><div></div></div></div>")
 			if templ_7745c5c3_Err != nil {
 				return templ_7745c5c3_Err
 			}

@@ -1,0 +1,9 @@
+{
+  "devDependencies": {
+    "tailwindcss": "^3.4.4"
+  },
+  "dependencies": {
+    "franken-ui": "^0.1.0",
+    "postcss": "^8.4.39"
+  }
+}
