@@ -14,7 +14,7 @@ import (
 func LoginHandler(w http.ResponseWriter, r *http.Request) error {
 	analyst := models.Analyst{}
 	email := r.FormValue("email")
-	password := r.FormValue("pass")
+	password := r.FormValue("password")
 	var dbConn *sql.DB = database.DB_Connecntion
 
 	query := `select * from analyst where email = $1;`
@@ -32,7 +32,7 @@ func LoginHandler(w http.ResponseWriter, r *http.Request) error {
 	)
 	if err != nil {
 		if err == sql.ErrNoRows {
-			return Render(w, r, login.Login("Incorrect email!", ""))
+			return Render(w, r, login.Login("Incorrect email!", "", email, password))
 		}
 		log.Fatal("email error: ", err)
 	}
@@ -44,7 +44,7 @@ func LoginHandler(w http.ResponseWriter, r *http.Request) error {
 		log.Fatal("password error: ", err)
 	}
 	if !correctPassword {
-		return Render(w, r, login.Login("", "Incorrect password!"))
+		return Render(w, r, login.Login("", "Incorrect password!", email, password))
 	}
 
 	return Render(w, r, overview.Overview(analyst))

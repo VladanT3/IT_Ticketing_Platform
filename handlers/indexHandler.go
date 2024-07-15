@@ -7,5 +7,5 @@ import (
 )
 
 func IndexHandler(w http.ResponseWriter, r *http.Request) error {
-	return Render(w, r, login.Login("", ""))
+	return Render(w, r, login.Login("", "", "", ""))
 }

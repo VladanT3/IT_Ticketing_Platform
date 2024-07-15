@@ -2,7 +2,7 @@ package login
 
 import "github.com/VladanT3/IT_Ticketing_Platform/views/layouts"
 
-templ Login(emailErr string, passErr string) {
+templ Login(emailErr string, passErr string, email string, pass string) {
 	@layouts.Base() {
 		<div class="container mx-auto">
 			<div class="grid grid-rows-3">
@@ -12,18 +12,23 @@ templ Login(emailErr string, passErr string) {
 					<div></div>
 					<div>
 						<form method="POST" action="/overview" class="dark:bg-white-800 flex flex-col border rounded-lg border-zinc-600 border-dashed p-5">
-							<legend class="uk-legend text-zinc-50 text-2xl self-center">Login</legend>
-							<label class="text-zinc-50">Email</label>
-							<input class="uk-input dark:bg-zinc-600 text-base" type="email" name="email"/>
-							if emailErr != "" {
-								<p>{ emailErr }</p>
+							<legend class="uk-legend text-zinc-300 text-2xl self-center font-mono">Login</legend>
+							<label class="text-zinc-300 font-mono">Email</label>
+							if emailErr == "" {
+								<input class="uk-input dark:bg-zinc-600 text-base font-mono" type="email" name="email" value={ email }/>
+							} else if emailErr != "" {
+								<input class="uk-input dark:bg-zinc-600 text-base border border-red-600 font-mono" type="email" name="email" value={ email }/>
+								<label class="text-red-600 font-mono">{ emailErr }</label>
 							}
-							<label class="text-zinc-50 mt-3">Password</label>
-							<input class="uk-input dark:bg-zinc-600 text-base" type="password" name="pass"/>
-							if passErr != "" {
-								<p>{ passErr }</p>
+							<label class="text-zinc-300 mt-3 font-mono">Password</label>
+							if passErr == "" {
+								<input class="uk-input dark:bg-zinc-600 text-base font-mono" id="passInput" type="password" name="password" value={ pass }/>
+							} else if passErr != "" {
+								<input class="uk-input dark:bg-zinc-600 text-base border border-red-600 font-mono" id="passInput" type="password" name="password" value={ pass }/>
+								<label class="text-red-600 font-mono">{ passErr }</label>
 							}
-							<button class="uk-button uk-button-ghost bg-cyan-500 hover:bg-cyan-400 text-zinc-800 self-center mt-5">Log In</button>
+							<label class="text-zinc-300 font-mono"><input class="uk-checkbox" type="checkbox" id="showPassword"/> Show password</label>
+							<button class="uk-button uk-button-ghost bg-cyan-500 hover:bg-cyan-400 text-zinc-800 self-center mt-5 font-mono">Log In</button>
 						</form>
 					</div>
 					<div></div>
@@ -32,5 +37,16 @@ templ Login(emailErr string, passErr string) {
 				<div></div>
 			</div>
 		</div>
+		<script>
+			const showPassword = document.getElementById('showPassword');
+			const passInput = document.getElementById('passInput');
+
+			showPassword.addEventListener("change", function () {
+				if (showPassword.checked)
+					passInput.type = 'text';
+				else
+					passInput.type = 'password';
+			});
+		</script>
 	}
 }
