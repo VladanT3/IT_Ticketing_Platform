@@ -10,7 +10,7 @@ import templruntime "github.com/a-h/templ/runtime"
 
 import "github.com/VladanT3/IT_Ticketing_Platform/views/layouts"
 
-func Login() templ.Component {
+func Login(emailErr string, passErr string) templ.Component {
 	return templruntime.GeneratedTemplate(func(templ_7745c5c3_Input templruntime.GeneratedComponentInput) (templ_7745c5c3_Err error) {
 		templ_7745c5c3_W, ctx := templ_7745c5c3_Input.Writer, templ_7745c5c3_Input.Context
 		templ_7745c5c3_Buffer, templ_7745c5c3_IsBuffer := templruntime.GetBuffer(templ_7745c5c3_W)
@@ -40,7 +40,53 @@ func Login() templ.Component {
 				}()
 			}
 			ctx = templ.InitializeContext(ctx)
-			_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString("<div class=\"container mx-auto\"><div class=\"grid grid-rows-3\"><div></div><div class=\"grid grid-cols-5\"><div></div><div></div><div><form class=\"dark:bg-white-800 flex flex-col border rounded-lg border-zinc-600 border-dashed p-5\"><legend class=\"uk-legend text-zinc-50 text-2xl self-center\">Login</legend> <label class=\"text-zinc-50\">Email</label> <input class=\"uk-input dark:bg-zinc-600 text-base\" type=\"email\" name=\"email\"> <label class=\"text-zinc-50 mt-3\">Password</label> <input class=\"uk-input dark:bg-zinc-600 text-base\" type=\"password\" name=\"pass\"> <button class=\"uk-button uk-button-ghost bg-cyan-500 hover:bg-cyan-400 text-zinc-800 self-center mt-5\">Log In</button></form></div><div></div><div></div></div><div></div></div></div>")
+			_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString("<div class=\"container mx-auto\"><div class=\"grid grid-rows-3\"><div></div><div class=\"grid grid-cols-5\"><div></div><div></div><div><form method=\"POST\" action=\"/overview\" class=\"dark:bg-white-800 flex flex-col border rounded-lg border-zinc-600 border-dashed p-5\"><legend class=\"uk-legend text-zinc-50 text-2xl self-center\">Login</legend> <label class=\"text-zinc-50\">Email</label> <input class=\"uk-input dark:bg-zinc-600 text-base\" type=\"email\" name=\"email\"> ")
+			if templ_7745c5c3_Err != nil {
+				return templ_7745c5c3_Err
+			}
+			if emailErr != "" {
+				_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString("<p>")
+				if templ_7745c5c3_Err != nil {
+					return templ_7745c5c3_Err
+				}
+				var templ_7745c5c3_Var3 string
+				templ_7745c5c3_Var3, templ_7745c5c3_Err = templ.JoinStringErrs(emailErr)
+				if templ_7745c5c3_Err != nil {
+					return templ.Error{Err: templ_7745c5c3_Err, FileName: `views/login/login.templ`, Line: 19, Col: 21}
+				}
+				_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString(templ.EscapeString(templ_7745c5c3_Var3))
+				if templ_7745c5c3_Err != nil {
+					return templ_7745c5c3_Err
+				}
+				_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString("</p>")
+				if templ_7745c5c3_Err != nil {
+					return templ_7745c5c3_Err
+				}
+			}
+			_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString("<label class=\"text-zinc-50 mt-3\">Password</label> <input class=\"uk-input dark:bg-zinc-600 text-base\" type=\"password\" name=\"pass\"> ")
+			if templ_7745c5c3_Err != nil {
+				return templ_7745c5c3_Err
+			}
+			if passErr != "" {
+				_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString("<p>")
+				if templ_7745c5c3_Err != nil {
+					return templ_7745c5c3_Err
+				}
+				var templ_7745c5c3_Var4 string
+				templ_7745c5c3_Var4, templ_7745c5c3_Err = templ.JoinStringErrs(passErr)
+				if templ_7745c5c3_Err != nil {
+					return templ.Error{Err: templ_7745c5c3_Err, FileName: `views/login/login.templ`, Line: 24, Col: 20}
+				}
+				_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString(templ.EscapeString(templ_7745c5c3_Var4))
+				if templ_7745c5c3_Err != nil {
+					return templ_7745c5c3_Err
+				}
+				_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString("</p>")
+				if templ_7745c5c3_Err != nil {
+					return templ_7745c5c3_Err
+				}
+			}
+			_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString("<button class=\"uk-button uk-button-ghost bg-cyan-500 hover:bg-cyan-400 text-zinc-800 self-center mt-5\">Log In</button></form></div><div></div><div></div></div><div></div></div></div>")
 			if templ_7745c5c3_Err != nil {
 				return templ_7745c5c3_Err
 			}
