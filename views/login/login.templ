@@ -11,7 +11,7 @@ templ Login(emailErr string, passErr string, email string, pass string) {
 					<div></div>
 					<div></div>
 					<div>
-						<form method="POST" action="/overview" class="dark:bg-white-800 flex flex-col border rounded-lg border-zinc-600 border-dashed p-5">
+						<form method="POST" action="/login" class="dark:bg-white-800 flex flex-col border rounded-lg border-zinc-600 border-dashed p-5">
 							<legend class="uk-legend text-zinc-300 text-2xl self-center font-mono">Login</legend>
 							<label class="text-zinc-300 font-mono">Email</label>
 							if emailErr == "" {

@@ -6,7 +6,7 @@ import (
 )
 
 templ Profile(analyst models.Analyst, userType string) {
-	@layouts.Base() {
-		<h1 class="text-zinc-50">Hello, { analyst.First_name }</h1>
+	@layouts.Navbar(userType) {
+		<h1 class="text-zinc-300 font-mono">Hello { userType }, { analyst.First_name }</h1>
 	}
 }

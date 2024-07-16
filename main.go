@@ -20,7 +20,7 @@ func main() {
 
 	router.Handle("/*", http.StripPrefix("/public/", http.FileServer(http.Dir("./public"))))
 	router.Get("/", handlers.Make(handlers.IndexHandler))
-	router.Post("/overview", handlers.Make(handlers.LoginHandler))
+	router.Post("/login", handlers.Make(handlers.LoginHandler))
 
 	port := os.Getenv("PORT")
 	fmt.Println("Server started on: http://localhost" + port)

@@ -47,5 +47,25 @@ func LoginHandler(w http.ResponseWriter, r *http.Request) error {
 		return Render(w, r, login.Login("", "Incorrect password!", email, password))
 	}
 
-	return Render(w, r, profile.Profile(analyst))
+	var isManager int
+	query = `select count(*) as isManager from manager where manager_id = $1;`
+	err = dbConn.QueryRow(query, analyst.Analyst_id).Scan(&isManager)
+	if err != nil {
+		log.Fatal("manager check error: ", err)
+	}
+	if isManager == 1 {
+		return Render(w, r, profile.Profile(analyst, "manager"))
+	}
+
+	var isAdmin int
+	query = `select count(*) as isAdmin from administrator where administrator_id = $1;`
+	err = dbConn.QueryRow(query, analyst.Analyst_id).Scan(&isAdmin)
+	if err != nil {
+		log.Fatal("admin check error: ", err)
+	}
+	if isAdmin == 1 {
+		return Render(w, r, profile.Profile(analyst, "admin"))
+	}
+
+	return Render(w, r, profile.Profile(analyst, "analyst"))
 }

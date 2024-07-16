@@ -1,0 +1,17 @@
+package layouts
+
+templ Navbar(userType string) {
+	if userType == "analyst" {
+		@Analyst_Nav() {
+			{ children... }
+		}
+	} else if userType == "manager" {
+		@Manager_Nav() {
+			{ children... }
+		}
+	} else {
+		@Admin_Nav() {
+			{ children... }
+		}
+	}
+}

@@ -40,7 +40,7 @@ func Login(emailErr string, passErr string, email string, pass string) templ.Com
 				}()
 			}
 			ctx = templ.InitializeContext(ctx)
-			_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString("<div class=\"container mx-auto\"><div class=\"grid grid-rows-3\"><div></div><div class=\"grid grid-cols-5\"><div></div><div></div><div><form method=\"POST\" action=\"/overview\" class=\"dark:bg-white-800 flex flex-col border rounded-lg border-zinc-600 border-dashed p-5\"><legend class=\"uk-legend text-zinc-300 text-2xl self-center font-mono\">Login</legend> <label class=\"text-zinc-300 font-mono\">Email</label> ")
+			_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString("<div class=\"container mx-auto\"><div class=\"grid grid-rows-3\"><div></div><div class=\"grid grid-cols-5\"><div></div><div></div><div><form method=\"POST\" action=\"/login\" class=\"dark:bg-white-800 flex flex-col border rounded-lg border-zinc-600 border-dashed p-5\"><legend class=\"uk-legend text-zinc-300 text-2xl self-center font-mono\">Login</legend> <label class=\"text-zinc-300 font-mono\">Email</label> ")
 			if templ_7745c5c3_Err != nil {
 				return templ_7745c5c3_Err
 			}

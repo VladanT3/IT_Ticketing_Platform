@@ -38,11 +38,15 @@ func Analyst_Nav() templ.Component {
 				}()
 			}
 			ctx = templ.InitializeContext(ctx)
-			_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString("<nav class=\"uk-navbar-container uk-navbar\"><div class=\"uk-navbar-left\">Ticket Search</div><div class=\"uk-navbar-left\">Unassigned Tickets</div><div class=\"uk-navbar-right\">Profile</div><div class=\"uk-navbar-right\"><button class=\"uk-button uk-button-ghost bg-cyan-500 hover:bg-cyan-400 text-zinc-800 font-mono\">Log Out</button></div></nav>")
+			_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString("<div class=\"uk-navbar-container\"><div class=\"uk-container\"><nav uk-navbar><div class=\"uk-navbar-left\">Ticket Search</div><div class=\"uk-navbar-left\">Unassigned Tickets</div><div class=\"uk-navbar-right\">Profile</div><div class=\"uk-navbar-right\"><button class=\"uk-button uk-button-ghost bg-cyan-500 hover:bg-cyan-400 text-zinc-800 font-mono\">Log Out</button></div></nav>")
 			if templ_7745c5c3_Err != nil {
 				return templ_7745c5c3_Err
 			}
 			templ_7745c5c3_Err = templ_7745c5c3_Var1.Render(ctx, templ_7745c5c3_Buffer)
+			if templ_7745c5c3_Err != nil {
+				return templ_7745c5c3_Err
+			}
+			_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString("</div></div>")
 			if templ_7745c5c3_Err != nil {
 				return templ_7745c5c3_Err
 			}
