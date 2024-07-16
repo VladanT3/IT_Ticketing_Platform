@@ -1,0 +1,12 @@
+package profile
+
+import (
+	"github.com/VladanT3/IT_Ticketing_Platform/models"
+	"github.com/VladanT3/IT_Ticketing_Platform/views/layouts"
+)
+
+templ Profile(analyst models.Analyst, userType string) {
+	@layouts.Base() {
+		<h1 class="text-zinc-50">Hello, { analyst.First_name }</h1>
+	}
+}
