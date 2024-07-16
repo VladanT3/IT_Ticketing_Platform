@@ -8,7 +8,7 @@ import (
 	"github.com/VladanT3/IT_Ticketing_Platform/internal/database"
 	"github.com/VladanT3/IT_Ticketing_Platform/models"
 	"github.com/VladanT3/IT_Ticketing_Platform/views/login"
-	"github.com/VladanT3/IT_Ticketing_Platform/views/overview"
+	"github.com/VladanT3/IT_Ticketing_Platform/views/profile"
 )
 
 func LoginHandler(w http.ResponseWriter, r *http.Request) error {
@@ -47,5 +47,5 @@ func LoginHandler(w http.ResponseWriter, r *http.Request) error {
 		return Render(w, r, login.Login("", "Incorrect password!", email, password))
 	}
 
-	return Render(w, r, overview.Overview(analyst))
+	return Render(w, r, profile.Profile(analyst))
 }
