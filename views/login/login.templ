@@ -1,43 +1,51 @@
 package login
 
-import "github.com/VladanT3/IT_Ticketing_Platform/views/layouts"
-
 templ Login(emailErr string, passErr string, email string, pass string) {
-	@layouts.Base() {
-		<div class="container mx-auto">
-			<div class="grid grid-rows-3">
-				<div></div>
-				<div class="grid grid-cols-5">
+	<!DOCTYPE html>
+	<html lang="en" class="dark">
+		<head>
+			<title>IT Tickets</title>
+			<link rel="icon" type="image/x-icon" href="/public/favicon.ico"/>
+			<meta charset="UTF-8"/>
+			<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+			<link rel="stylesheet" href="/public/styles.css"/>
+			<script src="https://unpkg.com/htmx.org@2.0.1" integrity="sha384-QWGpdj554B4ETpJJC9z+ZHJcA/i59TyjxEPXiiUgN2WmTyV5OEZWCD6gQhgkdpB/" crossorigin="anonymous"></script>
+		</head>
+		<body class="dark:bg-zinc-800">
+			<div class="container mx-auto">
+				<div class="grid grid-rows-3">
 					<div></div>
-					<div></div>
-					<div>
-						<form method="POST" action="/overview" class="dark:bg-white-800 flex flex-col border rounded-lg border-zinc-600 border-dashed p-5">
-							<legend class="uk-legend text-zinc-300 text-2xl self-center font-mono">Login</legend>
-							<label class="text-zinc-300 font-mono">Email</label>
-							if emailErr == "" {
-								<input class="uk-input dark:bg-zinc-600 text-base font-mono" type="email" name="email" value={ email }/>
-							} else if emailErr != "" {
-								<input class="uk-input dark:bg-zinc-600 text-base border border-red-600 font-mono" type="email" name="email" value={ email }/>
-								<label class="text-red-600 font-mono">{ emailErr }</label>
-							}
-							<label class="text-zinc-300 mt-3 font-mono">Password</label>
-							if passErr == "" {
-								<input class="uk-input dark:bg-zinc-600 text-base font-mono" id="passInput" type="password" name="password" value={ pass }/>
-							} else if passErr != "" {
-								<input class="uk-input dark:bg-zinc-600 text-base border border-red-600 font-mono" id="passInput" type="password" name="password" value={ pass }/>
-								<label class="text-red-600 font-mono">{ passErr }</label>
-							}
-							<label class="text-zinc-300 font-mono"><input class="uk-checkbox" type="checkbox" id="showPassword"/> Show password</label>
-							<button class="uk-button uk-button-ghost bg-cyan-500 hover:bg-cyan-400 text-zinc-800 self-center mt-5 font-mono">Log In</button>
-						</form>
+					<div class="grid grid-cols-5">
+						<div></div>
+						<div></div>
+						<div>
+							<form method="POST" action="/overview" class="dark:bg-white-800 flex flex-col border rounded-lg border-zinc-600 border-dashed p-5">
+								<legend class="uk-legend text-zinc-300 text-2xl self-center font-mono">Login</legend>
+								<label class="text-zinc-300 font-mono">Email</label>
+								if emailErr == "" {
+									<input class="uk-input dark:bg-zinc-600 text-base font-mono" type="email" name="email" value={ email }/>
+								} else if emailErr != "" {
+									<input class="uk-input dark:bg-zinc-600 text-base border border-red-600 font-mono" type="email" name="email" value={ email }/>
+									<label class="text-red-600 font-mono">{ emailErr }</label>
+								}
+								<label class="text-zinc-300 mt-3 font-mono">Password</label>
+								if passErr == "" {
+									<input class="uk-input dark:bg-zinc-600 text-base font-mono" id="passInput" type="password" name="password" value={ pass }/>
+								} else if passErr != "" {
+									<input class="uk-input dark:bg-zinc-600 text-base border border-red-600 font-mono" id="passInput" type="password" name="password" value={ pass }/>
+									<label class="text-red-600 font-mono">{ passErr }</label>
+								}
+								<label class="text-zinc-300 font-mono"><input class="uk-checkbox" type="checkbox" id="showPassword"/> Show password</label>
+								<button class="uk-button uk-button-ghost bg-cyan-500 hover:bg-cyan-400 text-zinc-800 self-center mt-5 font-mono">Log In</button>
+							</form>
+						</div>
+						<div></div>
+						<div></div>
 					</div>
 					<div></div>
-					<div></div>
 				</div>
-				<div></div>
 			</div>
-		</div>
-		<script>
+			<script>
 			const showPassword = document.getElementById('showPassword');
 			const passInput = document.getElementById('passInput');
 
@@ -48,5 +56,6 @@ templ Login(emailErr string, passErr string, email string, pass string) {
 					passInput.type = 'password';
 			});
 		</script>
-	}
+		</body>
+	</html>
 }
