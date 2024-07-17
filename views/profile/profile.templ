@@ -3,10 +3,24 @@ package profile
 import (
 	"github.com/VladanT3/IT_Ticketing_Platform/models"
 	"github.com/VladanT3/IT_Ticketing_Platform/views/layouts"
+	"strconv"
 )
 
 templ Profile(analyst models.Analyst, userType string) {
 	@layouts.Navbar(userType) {
-		<h1 class="text-zinc-300 font-mono">Hello { userType }, { analyst.First_name }</h1>
+		<div class="container mx-auto">
+			<div class="grid grid-cols-5">
+				<div class="cols-span-1">
+					{ analyst.First_name }
+					{ analyst.Last_name }
+					{ analyst.Email }
+					{ analyst.Team_id.UUID.String() }
+					{ strconv.Itoa(analyst.Number_of_open_tickets) }
+					{ strconv.Itoa(analyst.Number_of_opened_tickets) }
+					{ strconv.Itoa(analyst.Number_of_closed_tickets) }
+				</div>
+				<div class="cols-span-4">tickets...</div>
+			</div>
+		</div>
 	}
 }
