@@ -2,16 +2,20 @@ package layouts
 
 templ Analyst_Nav() {
 	@Base() {
-		<div class="uk-navbar-container">
+		<nav class="uk-navbar-container" style="padding: 1rem">
 			<div class="uk-container">
-				<nav uk-navbar>
-					<div class="uk-navbar-left">Ticket Search</div>
-					<div class="uk-navbar-left">Unassigned Tickets</div>
-					<div class="uk-navbar-right">Profile</div>
-					<div class="uk-navbar-right"><button class="uk-button uk-button-ghost bg-cyan-500 hover:bg-cyan-400 text-zinc-800 font-mono">Log Out</button></div>
-				</nav>
-				{ children... }
+				<div uk-navbar class="flex flex-cols">
+					<div class="uk-navbar-left self-left">
+						<button class="uk-button uk-button-ghost text-zinc-300 font-mono">Ticket Search</button>
+						<button class="uk-button uk-button-ghost text-zinc-300 font-mono">Unassigned Tickets</button>
+					</div>
+					<div class="uk-navbar-right self-right">
+						<button class="uk-button uk-button-ghost text-zinc-300 font-mono">Profile</button>
+						<button class="uk-button uk-button-primary text-zinc-800 font-mono">Log Out</button>
+					</div>
+				</div>
 			</div>
-		</div>
+		</nav>
+		{ children... }
 	}
 }

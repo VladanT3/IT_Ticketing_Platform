@@ -38,7 +38,7 @@ func Manager_Nav() templ.Component {
 				}()
 			}
 			ctx = templ.InitializeContext(ctx)
-			_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString("<nav class=\"uk-navbar-container\" uk-navbar><div class=\"uk-navbar-left\">Ticket Search</div><div class=\"uk-navbar-left\">Unassigned Tickets</div><div class=\"uk-navbar-left\">Team Tickets</div><div class=\"uk-navbar-left\">Team View</div><div class=\"uk-navbar-right\">Profile</div><div class=\"uk-navbar-right\"><button class=\"uk-button uk-button-ghost bg-cyan-500 hover:bg-cyan-400 text-zinc-800 font-mono\">Log Out</button></div></nav>")
+			templ_7745c5c3_Err = templ.WriteWatchModeString(templ_7745c5c3_Buffer, 1)
 			if templ_7745c5c3_Err != nil {
 				return templ_7745c5c3_Err
 			}
