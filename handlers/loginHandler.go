@@ -8,14 +8,16 @@ import (
 	"github.com/VladanT3/IT_Ticketing_Platform/internal/database"
 	"github.com/VladanT3/IT_Ticketing_Platform/models"
 	"github.com/VladanT3/IT_Ticketing_Platform/views/login"
-	"github.com/VladanT3/IT_Ticketing_Platform/views/profile"
 )
+
+var LoggedInUser models.Analyst = models.Analyst{}
+var LoggedInUserType string
 
 func LoginHandler(w http.ResponseWriter, r *http.Request) error {
 	analyst := models.Analyst{}
 	email := r.FormValue("email")
 	password := r.FormValue("password")
-	var dbConn *sql.DB = database.DB_Connecntion
+	var dbConn *sql.DB = database.DB_Connection
 
 	query := `select * from analyst where email = $1;`
 	err := dbConn.QueryRow(query, email).Scan(
@@ -47,6 +49,8 @@ func LoginHandler(w http.ResponseWriter, r *http.Request) error {
 		return Render(w, r, login.Login("", "Incorrect password!", email, password))
 	}
 
+	LoggedInUser = analyst
+
 	var isManager int
 	query = `select count(*) as isManager from manager where manager_id = $1;`
 	err = dbConn.QueryRow(query, analyst.Analyst_id).Scan(&isManager)
@@ -54,7 +58,9 @@ func LoginHandler(w http.ResponseWriter, r *http.Request) error {
 		log.Fatal("manager check error: ", err)
 	}
 	if isManager == 1 {
-		return Render(w, r, profile.Profile(analyst, "manager"))
+		LoggedInUserType = "manager"
+		http.Redirect(w, r, "/profile", http.StatusSeeOther)
+		return nil
 	}
 
 	var isAdmin int
@@ -64,8 +70,13 @@ func LoginHandler(w http.ResponseWriter, r *http.Request) error {
 		log.Fatal("admin check error: ", err)
 	}
 	if isAdmin == 1 {
-		return Render(w, r, profile.Profile(analyst, "admin"))
+		LoggedInUserType = "admin"
+		http.Redirect(w, r, "/profile", http.StatusSeeOther)
+		return nil
 	}
 
-	return Render(w, r, profile.Profile(analyst, "analyst"))
+	LoggedInUserType = "analyst"
+	http.Redirect(w, r, "/profile", http.StatusSeeOther)
+
+	return nil
 }

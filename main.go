@@ -14,13 +14,14 @@ import (
 
 func main() {
 	database.Connect()
-	defer database.DB_Connecntion.Close()
+	defer database.DB_Connection.Close()
 
 	router := chi.NewMux()
 
 	router.Handle("/*", http.StripPrefix("/public/", http.FileServer(http.Dir("./public"))))
 	router.Get("/", handlers.Make(handlers.IndexHandler))
 	router.Post("/login", handlers.Make(handlers.LoginHandler))
+	router.Get("/profile", handlers.Make(handlers.ProfileHandler))
 
 	port := os.Getenv("PORT")
 	fmt.Println("Server started on: http://localhost" + port)

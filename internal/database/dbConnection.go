@@ -8,7 +8,7 @@ import (
 	"github.com/joho/godotenv"
 )
 
-var DB_Connecntion *sql.DB
+var DB_Connection *sql.DB
 
 func Connect() {
 	err := godotenv.Load()
@@ -27,5 +27,5 @@ func Connect() {
 		log.Fatal("Unable to ping database: ", err)
 	}
 
-	DB_Connecntion = db
+	DB_Connection = db
 }
