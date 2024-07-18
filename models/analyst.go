@@ -21,15 +21,15 @@ type Analyst struct {
 	Number_of_closed_tickets int
 }
 
-var dbConn *sql.DB = database.DB_Connection
-
 func GetAnalystsTeam(analyst Analyst) string {
+	var dbConn *sql.DB = database.DB_Connection
 	var teamName string
 	query := `select t.team_name from team t join analyst a on t.team_id = a.team_id where a.analyst_id = $1;`
 	err := dbConn.QueryRow(query, analyst.Analyst_id).Scan(&teamName)
 	if err != nil {
 		if err == sql.ErrNoRows {
 			teamName = ""
+			return teamName
 		}
 		log.Fatal("error getting team name: ", err)
 	}

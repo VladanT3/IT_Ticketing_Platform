@@ -88,9 +88,9 @@ func Profile(analyst models.Analyst, userType string) templ.Component {
 				return templ_7745c5c3_Err
 			}
 			var templ_7745c5c3_Var6 string
-			templ_7745c5c3_Var6, templ_7745c5c3_Err = templ.JoinStringErrs( /*models.GetAnalystsTeam(analyst) */ analyst.First_name)
+			templ_7745c5c3_Var6, templ_7745c5c3_Err = templ.JoinStringErrs(models.GetAnalystsTeam(analyst))
 			if templ_7745c5c3_Err != nil {
-				return templ.Error{Err: templ_7745c5c3_Err, FileName: `views/profile/profile.templ`, Line: 17, Col: 99}
+				return templ.Error{Err: templ_7745c5c3_Err, FileName: `views/profile/profile.templ`, Line: 17, Col: 75}
 			}
 			_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString(templ.EscapeString(templ_7745c5c3_Var6))
 			if templ_7745c5c3_Err != nil {
