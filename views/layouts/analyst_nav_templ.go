@@ -38,7 +38,7 @@ func Analyst_Nav() templ.Component {
 				}()
 			}
 			ctx = templ.InitializeContext(ctx)
-			_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString("<nav class=\"uk-navbar-container\" style=\"padding: 1rem\"><div class=\"uk-container\"><div uk-navbar class=\"flex flex-cols\"><div class=\"uk-navbar-left self-left\"><button class=\"uk-button uk-button-ghost text-zinc-300 font-mono\">Ticket Search</button> <button class=\"uk-button uk-button-ghost text-zinc-300 font-mono\">Unassigned Tickets</button></div><div class=\"uk-navbar-right self-right\"><button class=\"uk-button uk-button-ghost text-zinc-300 font-mono\">Profile</button> <button class=\"uk-button uk-button-primary text-zinc-800 font-mono\">Log Out</button></div></div></div></nav>")
+			templ_7745c5c3_Err = templ.WriteWatchModeString(templ_7745c5c3_Buffer, 1)
 			if templ_7745c5c3_Err != nil {
 				return templ_7745c5c3_Err
 			}

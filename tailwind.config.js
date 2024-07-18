@@ -2,12 +2,7 @@ import franken from "franken-ui/shadcn-ui/preset-quick";
 
 /** @type {import('tailwindcss').Config} */
 export default {
-  presets: [
-    franken({
-      theme: "zinc",
-      except: [],
-    }),
-  ],
+  presets: [franken()],
   content: ["./**/*.html", "./**/*.templ", "./**/*.go"],
   safelist: [
     {
@@ -18,5 +13,4 @@ export default {
     extend: {},
   },
   plugins: [],
-  darkMode: "selector",
 };
