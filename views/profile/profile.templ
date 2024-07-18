@@ -10,14 +10,14 @@ templ Profile(analyst models.Analyst, userType string) {
 	@layouts.Navbar(userType) {
 		<div class="container mx-auto">
 			<div class="grid grid-cols-5">
-				<div class="cols-span-1">
-					{ analyst.First_name }
-					{ analyst.Last_name }
-					{ analyst.Email }
-					{ analyst.Team_id.UUID.String() }
-					{ strconv.Itoa(analyst.Number_of_open_tickets) }
-					{ strconv.Itoa(analyst.Number_of_opened_tickets) }
-					{ strconv.Itoa(analyst.Number_of_closed_tickets) }
+				<div class="cols-span-1 flex flex-col">
+					<span class="text-zinc-300 font-mono">{ analyst.First_name }</span>
+					<span class="text-zinc-300 font-mono">{ analyst.Last_name }</span>
+					<span class="text-zinc-300 font-mono">{ analyst.Email }</span>
+					<span class="text-zinc-300 font-mono">{ models.GetAnalystsTeam(analyst) }</span>
+					<span class="text-zinc-300 font-mono">{ strconv.Itoa(analyst.Number_of_open_tickets) }</span>
+					<span class="text-zinc-300 font-mono">{ strconv.Itoa(analyst.Number_of_opened_tickets) }</span>
+					<span class="text-zinc-300 font-mono">{ strconv.Itoa(analyst.Number_of_closed_tickets) }</span>
 				</div>
 				<div class="cols-span-4">tickets...</div>
 			</div>

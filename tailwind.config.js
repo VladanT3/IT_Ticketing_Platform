@@ -5,7 +5,7 @@ export default {
   presets: [
     franken({
       theme: "zinc",
-      only: [],
+      except: [],
     }),
   ],
   content: ["./**/*.html", "./**/*.templ", "./**/*.go"],
