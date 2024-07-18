@@ -8796,10 +8796,6 @@ th.uk-text-break, td.uk-text-break {
   margin-top: 1.25rem;
 }
 
-.mt-4 {
-  margin-top: 1rem;
-}
-
 .block {
   display: block;
 }
@@ -8842,6 +8838,10 @@ th.uk-text-break, td.uk-text-break {
 
 .rounded-lg {
   border-radius: 0.5rem;
+}
+
+.rounded-full {
+  border-radius: 9999px;
 }
 
 .border {
@@ -8922,11 +8922,6 @@ th.uk-text-break, td.uk-text-break {
 
 .text-secondary {
   color: hsl(var(--secondary));
-}
-
-.text-zinc-300 {
-  --tw-text-opacity: 1;
-  color: rgb(212 212 216 / var(--tw-text-opacity));
 }
 
 .text-zinc-50 {

@@ -27,7 +27,7 @@ templ Login(emailErr string, passErr string, email string, pass string) {
 								<input class="uk-input bg-zinc-900 text-zinc-50 text-base border border-red-600 font-mono" id="passInput" type="password" name="password" value={ pass }/>
 								<label class="text-red-600 font-mono">{ passErr }</label>
 							}
-							<label class="text-zinc-50 font-mono"><input class="uk-checkbox" type="checkbox" id="showPassword"/> Show password</label>
+							<label class="text-zinc-50 font-mono"><input class="uk-checkbox border rounded-full border-zinc-50" type="checkbox" id="showPassword"/> Show password</label>
 							<button class="uk-button bg-zinc-50 text-zinc-900 self-center mt-5 font-mono">Log In</button>
 						</form>
 					</div>
