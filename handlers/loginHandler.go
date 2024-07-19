@@ -17,10 +17,10 @@ func LoginHandler(w http.ResponseWriter, r *http.Request) error {
 	analyst := models.Analyst{}
 	email := r.FormValue("email")
 	password := r.FormValue("password")
-	var dbConn *sql.DB = database.DB_Connection
+	var db *sql.DB = database.DB_Connection
 
 	query := `select * from analyst where email = $1;`
-	err := dbConn.QueryRow(query, email).Scan(
+	err := db.QueryRow(query, email).Scan(
 		&analyst.Analyst_id,
 		&analyst.First_name,
 		&analyst.Last_name,
@@ -41,7 +41,7 @@ func LoginHandler(w http.ResponseWriter, r *http.Request) error {
 
 	var correctPassword bool
 	query = `select (password = crypt($1, password)) as password from analyst where email = $2;`
-	err = dbConn.QueryRow(query, password, analyst.Email).Scan(&correctPassword)
+	err = db.QueryRow(query, password, analyst.Email).Scan(&correctPassword)
 	if err != nil {
 		log.Fatal("password error: ", err)
 	}
@@ -53,7 +53,7 @@ func LoginHandler(w http.ResponseWriter, r *http.Request) error {
 
 	var isManager int
 	query = `select count(*) as isManager from manager where manager_id = $1;`
-	err = dbConn.QueryRow(query, analyst.Analyst_id).Scan(&isManager)
+	err = db.QueryRow(query, analyst.Analyst_id).Scan(&isManager)
 	if err != nil {
 		log.Fatal("manager check error: ", err)
 	}
@@ -65,7 +65,7 @@ func LoginHandler(w http.ResponseWriter, r *http.Request) error {
 
 	var isAdmin int
 	query = `select count(*) as isAdmin from administrator where administrator_id = $1;`
-	err = dbConn.QueryRow(query, analyst.Analyst_id).Scan(&isAdmin)
+	err = db.QueryRow(query, analyst.Analyst_id).Scan(&isAdmin)
 	if err != nil {
 		log.Fatal("admin check error: ", err)
 	}

@@ -10,16 +10,56 @@ templ Profile(analyst models.Analyst, userType string) {
 	@layouts.Navbar(userType) {
 		<div class="container mx-auto mt-5">
 			<div class="grid grid-cols-5">
-				<div class="cols-span-1 flex flex-col">
-					<span class="text-zinc-50 font-mono">{ analyst.First_name }</span>
-					<span class="text-zinc-50 font-mono">{ analyst.Last_name }</span>
-					<span class="text-zinc-50 font-mono">{ analyst.Email }</span>
-					<span class="text-zinc-50 font-mono">{ models.GetAnalystsTeam(analyst) }</span>
-					<span class="text-zinc-50 font-mono">{ strconv.Itoa(analyst.Number_of_open_tickets) }</span>
-					<span class="text-zinc-50 font-mono">{ strconv.Itoa(analyst.Number_of_opened_tickets) }</span>
-					<span class="text-zinc-50 font-mono">{ strconv.Itoa(analyst.Number_of_closed_tickets) }</span>
+				<div class="col-span-1 flex flex-col">
+					<div class="grid grid-rows-6">
+						<div class="grid grid-cols-2">
+							<span>Name:</span>
+							<span>{ analyst.First_name } { analyst.Last_name }</span>
+						</div>
+						<div class="grid grid-cols-2">
+							<span>Email:</span>
+							<span>{ analyst.Email }</span>
+						</div>
+						<div class="grid grid-cols-2">
+							<span>Team:</span>
+							<span>{ models.GetAnalystsTeam(analyst) }</span>
+						</div>
+						<div class="grid grid-cols-2">
+							<span>Open tickets:</span>
+							<span>{ strconv.Itoa(analyst.Number_of_open_tickets) }</span>
+						</div>
+						<div class="grid grid-cols-2">
+							<span>Opened tickets:</span>
+							<span>{ strconv.Itoa(analyst.Number_of_opened_tickets) }</span>
+						</div>
+						<div class="grid grid-cols-2">
+							<span>Closed tickets:</span>
+							<span>{ strconv.Itoa(analyst.Number_of_closed_tickets) }</span>
+						</div>
+					</div>
 				</div>
-				<div class="cols-span-4 text-zinc-50">tickets...</div>
+				<div class="col-span-4 flex flex-col">
+					for _, ticket := range models.GetAnalystsTickets(analyst) {
+						<div style="margin-bottom: 0.5rem" class="border border-zinc-50 rounded-lg p-3 grid grid-rows-2 hover:border-zinc-900 hover:bg-zinc-50 hover:text-zinc-900 hover:cursor-pointer">
+							<div class="grid grid-cols-5">
+								<div class="col-span-4">
+									<span class="text-xl">{ ticket.Title }</span>
+								</div>
+								<div class="col-span-1">
+									<span>Opened: { ticket.Opened_Date.Format("Mon 02/01 15:04") }</span>
+								</div>
+							</div>
+							<div class="grid grid-cols-5">
+								<div class="col-span-4">
+									<span>{ models.GetCategoryName(ticket.Category.UUID) } / { models.GetSubcategoryName(ticket.Subcategory.UUID) }</span>
+								</div>
+								<div class="col-span-1">
+									<span>Updated: { ticket.Updated_at.Format("Mon 02/01 15:04") }</span>
+								</div>
+							</div>
+						</div>
+					}
+				</div>
 			</div>
 		</div>
 	}

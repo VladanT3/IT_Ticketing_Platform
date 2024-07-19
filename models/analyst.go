@@ -22,10 +22,10 @@ type Analyst struct {
 }
 
 func GetAnalystsTeam(analyst Analyst) string {
-	var dbConn *sql.DB = database.DB_Connection
+	var db *sql.DB = database.DB_Connection
 	var teamName string
 	query := `select t.team_name from team t join analyst a on t.team_id = a.team_id where a.analyst_id = $1;`
-	err := dbConn.QueryRow(query, analyst.Analyst_id).Scan(&teamName)
+	err := db.QueryRow(query, analyst.Analyst_id).Scan(&teamName)
 	if err != nil {
 		if err == sql.ErrNoRows {
 			teamName = ""

@@ -40,19 +40,19 @@ func Login(emailErr string, passErr string, email string, pass string) templ.Com
 				}()
 			}
 			ctx = templ.InitializeContext(ctx)
-			_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString("<div class=\"container mx-auto\"><div class=\"grid grid-rows-3\"><div></div><div class=\"grid grid-cols-5\"><div></div><div></div><div><form method=\"POST\" action=\"/login\" class=\"flex flex-col border rounded-lg border-zinc-50 border-dashed p-5\"><legend class=\"uk-legend text-zinc-50 text-2xl self-center font-mono\">Login</legend> <label class=\"text-zinc-50 font-mono\">Email</label> ")
+			_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString("<div class=\"container mx-auto\"><div class=\"grid grid-rows-3\"><div></div><div class=\"grid grid-cols-5\"><div></div><div></div><div><form method=\"POST\" action=\"/login\" class=\"flex flex-col border rounded-lg border-zinc-50 border-dashed p-5\"><legend class=\"uk-legend text-2xl self-center\">Login</legend> <label>Email</label> ")
 			if templ_7745c5c3_Err != nil {
 				return templ_7745c5c3_Err
 			}
 			if emailErr == "" {
-				_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString("<input class=\"uk-input bg-zinc-900 text-zinc-50 text-base font-mono\" type=\"email\" name=\"email\" value=\"")
+				_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString("<input class=\"uk-input text-zinc-50 text-base\" type=\"email\" name=\"email\" value=\"")
 				if templ_7745c5c3_Err != nil {
 					return templ_7745c5c3_Err
 				}
 				var templ_7745c5c3_Var3 string
 				templ_7745c5c3_Var3, templ_7745c5c3_Err = templ.JoinStringErrs(email)
 				if templ_7745c5c3_Err != nil {
-					return templ.Error{Err: templ_7745c5c3_Err, FileName: `views/login/login.templ`, Line: 18, Col: 116}
+					return templ.Error{Err: templ_7745c5c3_Err, FileName: `views/login/login.templ`, Line: 18, Col: 94}
 				}
 				_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString(templ.EscapeString(templ_7745c5c3_Var3))
 				if templ_7745c5c3_Err != nil {
@@ -63,27 +63,27 @@ func Login(emailErr string, passErr string, email string, pass string) templ.Com
 					return templ_7745c5c3_Err
 				}
 			} else if emailErr != "" {
-				_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString("<input class=\"uk-input bg-zinc-900 text-zinc-50 text-base border border-red-600 font-mono\" type=\"email\" name=\"email\" value=\"")
+				_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString("<input class=\"uk-input text-zinc-50 text-base border border-red-600\" type=\"email\" name=\"email\" value=\"")
 				if templ_7745c5c3_Err != nil {
 					return templ_7745c5c3_Err
 				}
 				var templ_7745c5c3_Var4 string
 				templ_7745c5c3_Var4, templ_7745c5c3_Err = templ.JoinStringErrs(email)
 				if templ_7745c5c3_Err != nil {
-					return templ.Error{Err: templ_7745c5c3_Err, FileName: `views/login/login.templ`, Line: 20, Col: 138}
+					return templ.Error{Err: templ_7745c5c3_Err, FileName: `views/login/login.templ`, Line: 20, Col: 116}
 				}
 				_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString(templ.EscapeString(templ_7745c5c3_Var4))
 				if templ_7745c5c3_Err != nil {
 					return templ_7745c5c3_Err
 				}
-				_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString("\"> <label class=\"text-red-600 font-mono\">")
+				_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString("\"> <label class=\"text-red-600\">")
 				if templ_7745c5c3_Err != nil {
 					return templ_7745c5c3_Err
 				}
 				var templ_7745c5c3_Var5 string
 				templ_7745c5c3_Var5, templ_7745c5c3_Err = templ.JoinStringErrs(emailErr)
 				if templ_7745c5c3_Err != nil {
-					return templ.Error{Err: templ_7745c5c3_Err, FileName: `views/login/login.templ`, Line: 21, Col: 56}
+					return templ.Error{Err: templ_7745c5c3_Err, FileName: `views/login/login.templ`, Line: 21, Col: 46}
 				}
 				_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString(templ.EscapeString(templ_7745c5c3_Var5))
 				if templ_7745c5c3_Err != nil {
@@ -94,19 +94,19 @@ func Login(emailErr string, passErr string, email string, pass string) templ.Com
 					return templ_7745c5c3_Err
 				}
 			}
-			_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString("<label class=\"text-zinc-50 mt-3 font-mono\">Password</label> ")
+			_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString("<label class=\"mt-3\">Password</label> ")
 			if templ_7745c5c3_Err != nil {
 				return templ_7745c5c3_Err
 			}
 			if passErr == "" {
-				_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString("<input class=\"uk-input bg-zinc-900 text-zinc-50 text-base font-mono\" id=\"passInput\" type=\"password\" name=\"password\" value=\"")
+				_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString("<input class=\"uk-input text-zinc-50 text-base\" id=\"passInput\" type=\"password\" name=\"password\" value=\"")
 				if templ_7745c5c3_Err != nil {
 					return templ_7745c5c3_Err
 				}
 				var templ_7745c5c3_Var6 string
 				templ_7745c5c3_Var6, templ_7745c5c3_Err = templ.JoinStringErrs(pass)
 				if templ_7745c5c3_Err != nil {
-					return templ.Error{Err: templ_7745c5c3_Err, FileName: `views/login/login.templ`, Line: 25, Col: 136}
+					return templ.Error{Err: templ_7745c5c3_Err, FileName: `views/login/login.templ`, Line: 25, Col: 114}
 				}
 				_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString(templ.EscapeString(templ_7745c5c3_Var6))
 				if templ_7745c5c3_Err != nil {
@@ -117,27 +117,27 @@ func Login(emailErr string, passErr string, email string, pass string) templ.Com
 					return templ_7745c5c3_Err
 				}
 			} else if passErr != "" {
-				_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString("<input class=\"uk-input bg-zinc-900 text-zinc-50 text-base border border-red-600 font-mono\" id=\"passInput\" type=\"password\" name=\"password\" value=\"")
+				_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString("<input class=\"uk-input text-zinc-50 text-base border border-red-600\" id=\"passInput\" type=\"password\" name=\"password\" value=\"")
 				if templ_7745c5c3_Err != nil {
 					return templ_7745c5c3_Err
 				}
 				var templ_7745c5c3_Var7 string
 				templ_7745c5c3_Var7, templ_7745c5c3_Err = templ.JoinStringErrs(pass)
 				if templ_7745c5c3_Err != nil {
-					return templ.Error{Err: templ_7745c5c3_Err, FileName: `views/login/login.templ`, Line: 27, Col: 158}
+					return templ.Error{Err: templ_7745c5c3_Err, FileName: `views/login/login.templ`, Line: 27, Col: 136}
 				}
 				_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString(templ.EscapeString(templ_7745c5c3_Var7))
 				if templ_7745c5c3_Err != nil {
 					return templ_7745c5c3_Err
 				}
-				_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString("\"> <label class=\"text-red-600 font-mono\">")
+				_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString("\"> <label class=\"text-red-600\">")
 				if templ_7745c5c3_Err != nil {
 					return templ_7745c5c3_Err
 				}
 				var templ_7745c5c3_Var8 string
 				templ_7745c5c3_Var8, templ_7745c5c3_Err = templ.JoinStringErrs(passErr)
 				if templ_7745c5c3_Err != nil {
-					return templ.Error{Err: templ_7745c5c3_Err, FileName: `views/login/login.templ`, Line: 28, Col: 55}
+					return templ.Error{Err: templ_7745c5c3_Err, FileName: `views/login/login.templ`, Line: 28, Col: 45}
 				}
 				_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString(templ.EscapeString(templ_7745c5c3_Var8))
 				if templ_7745c5c3_Err != nil {
@@ -148,7 +148,7 @@ func Login(emailErr string, passErr string, email string, pass string) templ.Com
 					return templ_7745c5c3_Err
 				}
 			}
-			_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString("<label class=\"text-zinc-50 font-mono\"><input class=\"uk-checkbox border rounded-full border-zinc-50\" type=\"checkbox\" id=\"showPassword\"> Show password</label> <button class=\"uk-button bg-zinc-50 text-zinc-900 self-center mt-5 font-mono\">Log In</button></form></div><div></div><div></div></div><div></div></div></div><script>\n\t\t\tconst showPassword = document.getElementById('showPassword');\n\t\t\tconst passInput = document.getElementById('passInput');\n\n\t\t\tshowPassword.addEventListener(\"change\", function () {\n\t\t\t\tif (showPassword.checked)\n\t\t\t\t\tpassInput.type = 'text';\n\t\t\t\telse\n\t\t\t\t\tpassInput.type = 'password';\n\t\t\t});\n\t\t</script>")
+			_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString("<label><input class=\"uk-checkbox border rounded-full border-zinc-50\" type=\"checkbox\" id=\"showPassword\"> Show password</label> <button class=\"uk-button bg-zinc-50 text-zinc-900 self-center mt-5\">Log In</button></form></div><div></div><div></div></div><div></div></div></div><script>\n\t\t\tconst showPassword = document.getElementById('showPassword');\n\t\t\tconst passInput = document.getElementById('passInput');\n\n\t\t\tshowPassword.addEventListener(\"change\", function () {\n\t\t\t\tif (showPassword.checked)\n\t\t\t\t\tpassInput.type = 'text';\n\t\t\t\telse\n\t\t\t\t\tpassInput.type = 'password';\n\t\t\t});\n\t\t</script>")
 			if templ_7745c5c3_Err != nil {
 				return templ_7745c5c3_Err
 			}
