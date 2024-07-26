@@ -38,7 +38,7 @@ func Admin_Nav() templ.Component {
 				}()
 			}
 			ctx = templ.InitializeContext(ctx)
-			templ_7745c5c3_Err = templ.WriteWatchModeString(templ_7745c5c3_Buffer, 1)
+			_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString("<nav style=\"padding: 1rem\"><div class=\"uk-container\"><div uk-navbar class=\"flex flex-cols\"><div class=\"uk-navbar-left self-left\"><button class=\"uk-button hover:bg-zinc-50 hover:text-zinc-900\">Ticket Search</button> <button class=\"uk-button hover:bg-zinc-50 hover:text-zinc-900\">Unassigned Tickets</button> <button class=\"uk-button hover:bg-zinc-50 hover:text-zinc-900\">User View</button> <button class=\"uk-button hover:bg-zinc-50 hover:text-zinc-900\">Categories</button></div><div class=\"uk-navbar-right self-right\"><button class=\"uk-button hover:bg-zinc-50 hover:text-zinc-900\">Profile</button><form action=\"/logout\" method=\"POST\"><button class=\"uk-button hover:bg-zinc-50 hover:text-zinc-900 border border-zinc-50\">Log Out</button></form></div></div></div></nav><hr>")
 			if templ_7745c5c3_Err != nil {
 				return templ_7745c5c3_Err
 			}
