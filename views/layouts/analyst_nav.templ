@@ -11,7 +11,9 @@ templ Analyst_Nav() {
 					</div>
 					<div class="uk-navbar-right self-right">
 						<button class="uk-button hover:bg-zinc-50 hover:text-zinc-900">Profile</button>
-						<button class="uk-button hover:bg-zinc-50 hover:text-zinc-900 border border-zinc-50">Log Out</button>
+						<form action="/logout" method="POST">
+							<button class="uk-button hover:bg-zinc-50 hover:text-zinc-900 border border-zinc-50">Log Out</button>
+						</form>
 					</div>
 				</div>
 			</div>

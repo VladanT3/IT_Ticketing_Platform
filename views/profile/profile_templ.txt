@@ -1,0 +1,15 @@
+<div class=\"container mx-auto mt-5\"><div class=\"grid grid-cols-5\"><div class=\"col-span-1 flex flex-col\"><div class=\"grid grid-rows-8\"><div class=\"grid grid-cols-2\"><span>Name:</span> <span>
+ 
+</span></div><div class=\"grid grid-cols-2\"><span>Email:</span> <span>
+</span></div><div class=\"grid grid-cols-2\"><span>Team:</span> <span>
+</span></div><div class=\"grid grid-cols-2\"><span>Open tickets:</span> <span>
+</span></div><div class=\"grid grid-cols-2\"><span>Opened tickets:</span> <span>
+</span></div><div class=\"grid grid-cols-2\"><span>Closed tickets:</span> <span>
+</span></div><div></div><div><button class=\"uk-button uk-width-1-1 bg-zinc-50 text-zinc-900 border border-zinc-50 hover:bg-zinc-900 hover:text-zinc-50\">Create new Ticket</button></div></div></div><div class=\"col-span-4 flex flex-col\">
+<div style=\"margin-bottom: 0.5rem\" class=\"border border-zinc-50 rounded-lg p-3 grid grid-rows-2 hover:border-zinc-900 hover:bg-zinc-50 hover:text-zinc-900 hover:cursor-pointer\"><div class=\"grid grid-cols-5\"><div class=\"col-span-4\"><span class=\"text-xl\">
+</span></div><div class=\"col-span-1\"><span>Opened: 
+</span></div></div><div class=\"grid grid-cols-5\"><div class=\"col-span-4\"><span>
+ / 
+</span></div><div class=\"col-span-1\"><span>Updated: 
+</span></div></div></div>
+</div></div></div>

@@ -21,6 +21,7 @@ func main() {
 	router.Handle("/*", http.StripPrefix("/public/", http.FileServer(http.Dir("./public"))))
 	router.Get("/", handlers.Make(handlers.IndexHandler))
 	router.Post("/login", handlers.Make(handlers.LoginHandler))
+	router.Post("/logout", handlers.Make(handlers.LogoutHandler))
 	router.Get("/profile", handlers.Make(handlers.ProfileHandler))
 
 	port := os.Getenv("PORT")
