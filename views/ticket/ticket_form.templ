@@ -1,0 +1,124 @@
+package ticket
+
+import (
+	"github.com/VladanT3/IT_Ticketing_Platform/models"
+	"github.com/VladanT3/IT_Ticketing_Platform/views/layouts"
+	"strconv"
+)
+
+templ Ticket(ticket models.Ticket, userType string, mode string) {
+	@layouts.Navbar(userType) {
+		<div class="container mx-auto mt-5">
+			<div class="grid grid-cols-5">
+				<div class="col-span-1 flex flex-row">
+					<div class="flex flex-col">
+						<button class="uk-button uk-width-1-1 bg-zinc-50 text-zinc-900 border border-zinc-50 hover:bg-zinc-900 hover:text-zinc-50">Save</button>
+						<button class="uk-button uk-width-1-1 bg-zinc-50 text-zinc-900 border border-zinc-50 hover:bg-zinc-900 hover:text-zinc-50">Save and Exit</button>
+						if mode == "create" {
+						} else {
+							<button class="uk-button uk-width-1-1 bg-zinc-50 text-zinc-900 border border-zinc-50 hover:bg-zinc-900 hover:text-zinc-50">Close Ticket</button>
+							<button class="uk-button uk-width-1-1 bg-zinc-50 text-zinc-900 border border-zinc-50 hover:bg-zinc-900 hover:text-zinc-50">Reopen</button>
+							<button class="uk-button uk-width-1-1 bg-zinc-50 text-zinc-900 border border-zinc-50 hover:bg-zinc-900 hover:text-zinc-50">Assign to Me</button>
+							<button class="uk-button uk-width-1-1 bg-zinc-50 text-zinc-900 border border-zinc-50 hover:bg-zinc-900 hover:text-zinc-50">Assign Ticket</button>
+							<button class="uk-button uk-width-1-1 bg-zinc-900 text-red-600 border border-red-600 hover:bg-red-600 hover:text-zinc-900">Delete Ticket</button>
+						}
+					</div>
+					<div class="uk-divider-vertical"></div>
+				</div>
+				<div class="col-span-4">
+					<form class="grid grid-rows-10">
+						if mode != "create" {
+							<div class="grid grid-cols-4">
+								<div class="col-span-3">
+									if ticket.Type == "Request" {
+										<span class="text-xl">REQ/{ strconv.Itoa(ticket.Ticket_Number) }</span>
+									} else {
+										<span class="text-xl">INC/{ strconv.Itoa(ticket.Ticket_Number) }</span>
+									}
+								</div>
+								<div>
+									<span class="border border-zinc-50 rounded-lg bg-zinc-50 text-zinc-900">{ ticket.Status }</span>
+								</div>
+							</div>
+							<hr/>
+						}
+						<div class="grid grid-cols-2">
+							<div>
+								<label>Ticket type:</label>
+								<select class="uk-select">
+									<option>Request</option>
+									<option>Incident</option>
+								</select>
+							</div>
+							<div>
+								<label>Customer contact:</label>
+								<input class="uk-input text-zinc-50 text-base" type="text"/>
+							</div>
+						</div>
+						<div class="grid grid-cols-2">
+							<div>
+								<label>Category:</label>
+								<select class="uk-select">
+									for _, category := range models.GetAllCategories() {
+										<option value={ category.Category_ID.String() }>{ category.Category_Name }</option>
+									}
+								</select>
+							</div>
+							<div>
+								<label>Subcategory:</label>
+								<select class="uk-select">
+									for _, subcategory := range models.GetAllSubcategories() {
+										<option value={ subcategory.Subcategory_ID.String() }>{ subcategory.Subcategory_Name }</option>
+									}
+								</select>
+							</div>
+						</div>
+						<div>
+							<label>Title:</label>
+							<input class="uk-input text-zinc-50 text-base" type="text"/>
+						</div>
+						<div>
+							<label>Description:</label>
+							<textarea class="uk-textarea" rows="10"></textarea>
+						</div>
+						<hr/>
+						<div class="grid grid-cols-2">
+							<div>
+								<label>Assigned Team:</label>
+								<input class="uk-input text-zinc-50 text-base" type="text" disabled value="Assigned Team"/>
+							</div>
+							<div>
+								<label>Assigned Analyst:</label>
+								<input class="uk-input text-zinc-50 text-base" type="text" disabled value="Assigned Analyst"/>
+							</div>
+						</div>
+						<div class="grid grid-cols-3">
+							<div>
+								<label>Last Updated:</label>
+								<input class="uk-input text-zinc-50 text-base" type="text" disabled value={ ticket.Updated_at.Format("Mon 02/01 15:04 2006") }/>
+							</div>
+							<div>
+								<label>Opened:</label>
+								<input class="uk-input text-zinc-50 text-base" type="text" disabled value={ ticket.Opened_Date.Format("Mon 02/01 15:04 2006") }/>
+							</div>
+							<div>
+								<label>Closed:</label>
+								<input class="uk-input text-zinc-50 text-base" type="text" disabled value={ ticket.Closed_Date.Time.Format("Mon 02/01 15:04 2006") }/>
+							</div>
+						</div>
+						<div class="grid grid-cols-2">
+							<div>
+								<label>Opened by:</label>
+								<input class="uk-input text-zinc-50 text-base" type="text" disabled value="Opened by"/>
+							</div>
+							<div>
+								<label>Closed by:</label>
+								<input class="uk-input text-zinc-50 text-base" type="text" disabled value="Closed by"/>
+							</div>
+						</div>
+					</form>
+				</div>
+			</div>
+		</div>
+	}
+}

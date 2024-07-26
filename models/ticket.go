@@ -11,6 +11,8 @@ import (
 
 type Ticket struct {
 	Ticket_ID        uuid.UUID
+	Ticket_Number    int
+	Type             string
 	Status           string
 	Category         uuid.NullUUID
 	Subcategory      uuid.NullUUID
@@ -41,6 +43,8 @@ func GetAnalystsTickets(analyst Analyst) []Ticket {
 	for rows.Next() {
 		err = rows.Scan(
 			&ticket.Ticket_ID,
+			&ticket.Ticket_Number,
+			&ticket.Type,
 			&ticket.Status,
 			&ticket.Category,
 			&ticket.Subcategory,

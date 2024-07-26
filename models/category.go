@@ -28,3 +28,27 @@ func GetCategoryName(category_id uuid.UUID) string {
 
 	return category_name
 }
+
+func GetAllCategories() []Category {
+	var db *sql.DB = database.DB_Connection
+	var categories []Category
+
+	query := `select * from category;`
+	rows, err := db.Query(query)
+	if err != nil {
+		log.Fatal("error getting categories: ", err)
+	}
+	defer rows.Close()
+
+	category := Category{}
+	for rows.Next() {
+		err = rows.Scan(&category.Category_ID, &category.Category_Name)
+		if err != nil {
+			log.Fatal("error scanning category: ", err)
+		}
+
+		categories = append(categories, category)
+	}
+
+	return categories
+}
