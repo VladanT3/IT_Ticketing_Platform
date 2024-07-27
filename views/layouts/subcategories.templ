@@ -1,0 +1,17 @@
+package layouts
+
+import "github.com/VladanT3/IT_Ticketing_Platform/models"
+
+templ Subcategories(subcategories []models.Subcategory) {
+	if len(subcategories) == 0 {
+		<select class="uk-select text-zinc-50" id="subcategories" disabled>
+			<option value="none">Please select category</option>
+		</select>
+	} else {
+		<select class="uk-select text-zinc-50" id="subcategories">
+			for _, subcategory := range subcategories {
+				<option value={ subcategory.Subcategory_ID.String() }>{ subcategory.Subcategory_Name }</option>
+			}
+		</select>
+	}
+}

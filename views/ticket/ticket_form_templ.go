@@ -44,18 +44,18 @@ func Ticket(ticket models.Ticket, userType string, mode string) templ.Component 
 				}()
 			}
 			ctx = templ.InitializeContext(ctx)
-			_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString("<div class=\"container mx-auto mt-5\"><div class=\"grid grid-cols-5\"><div class=\"col-span-1 flex flex-row\"><div class=\"flex flex-col\"><button class=\"uk-button uk-width-1-1 bg-zinc-50 text-zinc-900 border border-zinc-50 hover:bg-zinc-900 hover:text-zinc-50\">Save</button> <button class=\"uk-button uk-width-1-1 bg-zinc-50 text-zinc-900 border border-zinc-50 hover:bg-zinc-900 hover:text-zinc-50\">Save and Exit</button> ")
+			_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString("<div class=\"container mx-auto mt-5\"><div class=\"grid grid-cols-5\"><div class=\"col-span-1 grid grid-cols-5\"><div class=\"flex flex-col col-span-4\"><button class=\"uk-button uk-width-1-1 bg-zinc-50 text-zinc-900 border border-zinc-50 hover:bg-zinc-900 hover:text-zinc-50\">Save</button> <button class=\"uk-button uk-width-1-1 bg-zinc-50 text-zinc-900 border border-zinc-50 hover:bg-zinc-900 hover:text-zinc-50 mt-3\">Save and Exit</button> ")
 			if templ_7745c5c3_Err != nil {
 				return templ_7745c5c3_Err
 			}
 			if mode == "create" {
 			} else {
-				_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString("<button class=\"uk-button uk-width-1-1 bg-zinc-50 text-zinc-900 border border-zinc-50 hover:bg-zinc-900 hover:text-zinc-50\">Close Ticket</button> <button class=\"uk-button uk-width-1-1 bg-zinc-50 text-zinc-900 border border-zinc-50 hover:bg-zinc-900 hover:text-zinc-50\">Reopen</button> <button class=\"uk-button uk-width-1-1 bg-zinc-50 text-zinc-900 border border-zinc-50 hover:bg-zinc-900 hover:text-zinc-50\">Assign to Me</button> <button class=\"uk-button uk-width-1-1 bg-zinc-50 text-zinc-900 border border-zinc-50 hover:bg-zinc-900 hover:text-zinc-50\">Assign Ticket</button> <button class=\"uk-button uk-width-1-1 bg-zinc-900 text-red-600 border border-red-600 hover:bg-red-600 hover:text-zinc-900\">Delete Ticket</button>")
+				_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString("<button class=\"uk-button uk-width-1-1 bg-zinc-50 text-zinc-900 border border-zinc-50 hover:bg-zinc-900 hover:text-zinc-50 mt-3\">Close Ticket</button> <button class=\"uk-button uk-width-1-1 bg-zinc-50 text-zinc-900 border border-zinc-50 hover:bg-zinc-900 hover:text-zinc-50 mt-3\">Reopen</button> <button class=\"uk-button uk-width-1-1 bg-zinc-50 text-zinc-900 border border-zinc-50 hover:bg-zinc-900 hover:text-zinc-50 mt-3\">Assign to Me</button> <button class=\"uk-button uk-width-1-1 bg-zinc-50 text-zinc-900 border border-zinc-50 hover:bg-zinc-900 hover:text-zinc-50 mt-3\">Assign Ticket</button> <button class=\"uk-button uk-width-1-1 bg-zinc-900 text-red-600 border border-red-600 hover:bg-red-600 hover:text-zinc-900 mt-3\">Delete Ticket</button>")
 				if templ_7745c5c3_Err != nil {
 					return templ_7745c5c3_Err
 				}
 			}
-			_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString("</div><div class=\"uk-divider-vertical\"></div></div><div class=\"col-span-4\"><form class=\"grid grid-rows-10\">")
+			_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString("</div><div class=\"uk-divider-vertical min-h-full\"></div></div><div class=\"col-span-4\"><form class=\"flex flex-col\">")
 			if templ_7745c5c3_Err != nil {
 				return templ_7745c5c3_Err
 			}
@@ -114,12 +114,12 @@ func Ticket(ticket models.Ticket, userType string, mode string) templ.Component 
 				if templ_7745c5c3_Err != nil {
 					return templ_7745c5c3_Err
 				}
-				_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString("</span></div></div><hr>")
+				_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString("</span></div></div><hr class=\"mt-5 mb-3\">")
 				if templ_7745c5c3_Err != nil {
 					return templ_7745c5c3_Err
 				}
 			}
-			_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString("<div class=\"grid grid-cols-2\"><div><label>Ticket type:</label> <select class=\"uk-select\"><option>Request</option> <option>Incident</option></select></div><div><label>Customer contact:</label> <input class=\"uk-input text-zinc-50 text-base\" type=\"text\"></div></div><div class=\"grid grid-cols-2\"><div><label>Category:</label> <select class=\"uk-select\">")
+			_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString("<div class=\"grid grid-cols-4\"><div><label>Ticket type:</label> <select class=\"uk-select text-zinc-50\"><option value=\"none\">Select...</option> <option>Request</option> <option>Incident</option></select></div><div></div><div><label>Customer contact:</label> <input class=\"uk-input text-zinc-50 text-base\" type=\"text\"></div></div><div class=\"grid grid-cols-4 mt-3\"><div><label>Category:</label> <select name=\"category\" class=\"uk-select text-zinc-50\" hx-get=\"/getSubcategories\" hx-target=\"#subcategories\" hx-swap=\"outerHTML\" hx-trigger=\"change\"><option value=\"none\">Select...</option> ")
 			if templ_7745c5c3_Err != nil {
 				return templ_7745c5c3_Err
 			}
@@ -131,7 +131,7 @@ func Ticket(ticket models.Ticket, userType string, mode string) templ.Component 
 				var templ_7745c5c3_Var6 string
 				templ_7745c5c3_Var6, templ_7745c5c3_Err = templ.JoinStringErrs(category.Category_ID.String())
 				if templ_7745c5c3_Err != nil {
-					return templ.Error{Err: templ_7745c5c3_Err, FileName: `views/ticket/ticket_form.templ`, Line: 63, Col: 55}
+					return templ.Error{Err: templ_7745c5c3_Err, FileName: `views/ticket/ticket_form.templ`, Line: 66, Col: 55}
 				}
 				_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString(templ.EscapeString(templ_7745c5c3_Var6))
 				if templ_7745c5c3_Err != nil {
@@ -144,7 +144,7 @@ func Ticket(ticket models.Ticket, userType string, mode string) templ.Component 
 				var templ_7745c5c3_Var7 string
 				templ_7745c5c3_Var7, templ_7745c5c3_Err = templ.JoinStringErrs(category.Category_Name)
 				if templ_7745c5c3_Err != nil {
-					return templ.Error{Err: templ_7745c5c3_Err, FileName: `views/ticket/ticket_form.templ`, Line: 63, Col: 82}
+					return templ.Error{Err: templ_7745c5c3_Err, FileName: `views/ticket/ticket_form.templ`, Line: 66, Col: 82}
 				}
 				_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString(templ.EscapeString(templ_7745c5c3_Var7))
 				if templ_7745c5c3_Err != nil {
@@ -155,82 +155,56 @@ func Ticket(ticket models.Ticket, userType string, mode string) templ.Component 
 					return templ_7745c5c3_Err
 				}
 			}
-			_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString("</select></div><div><label>Subcategory:</label> <select class=\"uk-select\">")
+			_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString("</select></div><div></div><div><label>Subcategory:</label> <select class=\"uk-select text-zinc-50\" id=\"subcategories\" disabled><option value=\"none\">Please select category</option></select></div></div><div class=\"mt-3\"><label>Title:</label> <input class=\"uk-input text-zinc-50 text-base\" type=\"text\"></div><div class=\"mt-3\"><label>Description:</label> <textarea class=\"uk-textarea font-mono text-zinc-50 text-base\" rows=\"10\"></textarea></div>")
 			if templ_7745c5c3_Err != nil {
 				return templ_7745c5c3_Err
 			}
-			for _, subcategory := range models.GetAllSubcategories() {
-				_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString("<option value=\"")
+			if mode != "create" {
+				_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString("<hr class=\"mt-5\"><div class=\"grid grid-cols-4 mt-3\"><div class=\"col-span-1\"><label>Last Updated:</label> <input class=\"uk-input text-zinc-50 text-base\" type=\"text\" disabled value=\"")
 				if templ_7745c5c3_Err != nil {
 					return templ_7745c5c3_Err
 				}
 				var templ_7745c5c3_Var8 string
-				templ_7745c5c3_Var8, templ_7745c5c3_Err = templ.JoinStringErrs(subcategory.Subcategory_ID.String())
+				templ_7745c5c3_Var8, templ_7745c5c3_Err = templ.JoinStringErrs(ticket.Updated_at.Format("Mon 02/01 15:04 2006"))
 				if templ_7745c5c3_Err != nil {
-					return templ.Error{Err: templ_7745c5c3_Err, FileName: `views/ticket/ticket_form.templ`, Line: 71, Col: 61}
+					return templ.Error{Err: templ_7745c5c3_Err, FileName: `views/ticket/ticket_form.templ`, Line: 91, Col: 133}
 				}
 				_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString(templ.EscapeString(templ_7745c5c3_Var8))
 				if templ_7745c5c3_Err != nil {
 					return templ_7745c5c3_Err
 				}
-				_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString("\">")
+				_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString("\"></div></div><div class=\"grid grid-cols-4 mt-3\"><div><label>Assigned Team:</label> <input class=\"uk-input text-zinc-50 text-base\" type=\"text\" disabled value=\"Assigned Team\"></div><div></div><div><label>Assigned Analyst:</label> <input class=\"uk-input text-zinc-50 text-base\" type=\"text\" disabled value=\"Assigned Analyst\"></div></div><div class=\"grid grid-cols-4\"><div><label>Opened by:</label> <input class=\"uk-input text-zinc-50 text-base\" type=\"text\" disabled value=\"Opened by\"></div><div></div><div><label>Opened:</label> <input class=\"uk-input text-zinc-50 text-base\" type=\"text\" disabled value=\"")
 				if templ_7745c5c3_Err != nil {
 					return templ_7745c5c3_Err
 				}
 				var templ_7745c5c3_Var9 string
-				templ_7745c5c3_Var9, templ_7745c5c3_Err = templ.JoinStringErrs(subcategory.Subcategory_Name)
+				templ_7745c5c3_Var9, templ_7745c5c3_Err = templ.JoinStringErrs(ticket.Opened_Date.Format("Mon 02/01 15:04 2006"))
 				if templ_7745c5c3_Err != nil {
-					return templ.Error{Err: templ_7745c5c3_Err, FileName: `views/ticket/ticket_form.templ`, Line: 71, Col: 94}
+					return templ.Error{Err: templ_7745c5c3_Err, FileName: `views/ticket/ticket_form.templ`, Line: 113, Col: 134}
 				}
 				_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString(templ.EscapeString(templ_7745c5c3_Var9))
 				if templ_7745c5c3_Err != nil {
 					return templ_7745c5c3_Err
 				}
-				_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString("</option>")
+				_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString("\"></div></div><div class=\"grid grid-cols-4\"><div><label>Closed by:</label> <input class=\"uk-input text-zinc-50 text-base\" type=\"text\" disabled value=\"Closed by\"></div><div></div><div><label>Closed:</label> <input class=\"uk-input text-zinc-50 text-base\" type=\"text\" disabled value=\"")
+				if templ_7745c5c3_Err != nil {
+					return templ_7745c5c3_Err
+				}
+				var templ_7745c5c3_Var10 string
+				templ_7745c5c3_Var10, templ_7745c5c3_Err = templ.JoinStringErrs(ticket.Closed_Date.Time.Format("Mon 02/01 15:04 2006"))
+				if templ_7745c5c3_Err != nil {
+					return templ.Error{Err: templ_7745c5c3_Err, FileName: `views/ticket/ticket_form.templ`, Line: 124, Col: 139}
+				}
+				_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString(templ.EscapeString(templ_7745c5c3_Var10))
+				if templ_7745c5c3_Err != nil {
+					return templ_7745c5c3_Err
+				}
+				_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString("\"></div></div>")
 				if templ_7745c5c3_Err != nil {
 					return templ_7745c5c3_Err
 				}
 			}
-			_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString("</select></div></div><div><label>Title:</label> <input class=\"uk-input text-zinc-50 text-base\" type=\"text\"></div><div><label>Description:</label> <textarea class=\"uk-textarea\" rows=\"10\"></textarea></div><hr><div class=\"grid grid-cols-2\"><div><label>Assigned Team:</label> <input class=\"uk-input text-zinc-50 text-base\" type=\"text\" disabled value=\"Assigned Team\"></div><div><label>Assigned Analyst:</label> <input class=\"uk-input text-zinc-50 text-base\" type=\"text\" disabled value=\"Assigned Analyst\"></div></div><div class=\"grid grid-cols-3\"><div><label>Last Updated:</label> <input class=\"uk-input text-zinc-50 text-base\" type=\"text\" disabled value=\"")
-			if templ_7745c5c3_Err != nil {
-				return templ_7745c5c3_Err
-			}
-			var templ_7745c5c3_Var10 string
-			templ_7745c5c3_Var10, templ_7745c5c3_Err = templ.JoinStringErrs(ticket.Updated_at.Format("Mon 02/01 15:04 2006"))
-			if templ_7745c5c3_Err != nil {
-				return templ.Error{Err: templ_7745c5c3_Err, FileName: `views/ticket/ticket_form.templ`, Line: 98, Col: 132}
-			}
-			_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString(templ.EscapeString(templ_7745c5c3_Var10))
-			if templ_7745c5c3_Err != nil {
-				return templ_7745c5c3_Err
-			}
-			_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString("\"></div><div><label>Opened:</label> <input class=\"uk-input text-zinc-50 text-base\" type=\"text\" disabled value=\"")
-			if templ_7745c5c3_Err != nil {
-				return templ_7745c5c3_Err
-			}
-			var templ_7745c5c3_Var11 string
-			templ_7745c5c3_Var11, templ_7745c5c3_Err = templ.JoinStringErrs(ticket.Opened_Date.Format("Mon 02/01 15:04 2006"))
-			if templ_7745c5c3_Err != nil {
-				return templ.Error{Err: templ_7745c5c3_Err, FileName: `views/ticket/ticket_form.templ`, Line: 102, Col: 133}
-			}
-			_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString(templ.EscapeString(templ_7745c5c3_Var11))
-			if templ_7745c5c3_Err != nil {
-				return templ_7745c5c3_Err
-			}
-			_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString("\"></div><div><label>Closed:</label> <input class=\"uk-input text-zinc-50 text-base\" type=\"text\" disabled value=\"")
-			if templ_7745c5c3_Err != nil {
-				return templ_7745c5c3_Err
-			}
-			var templ_7745c5c3_Var12 string
-			templ_7745c5c3_Var12, templ_7745c5c3_Err = templ.JoinStringErrs(ticket.Closed_Date.Time.Format("Mon 02/01 15:04 2006"))
-			if templ_7745c5c3_Err != nil {
-				return templ.Error{Err: templ_7745c5c3_Err, FileName: `views/ticket/ticket_form.templ`, Line: 106, Col: 138}
-			}
-			_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString(templ.EscapeString(templ_7745c5c3_Var12))
-			if templ_7745c5c3_Err != nil {
-				return templ_7745c5c3_Err
-			}
-			_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString("\"></div></div><div class=\"grid grid-cols-2\"><div><label>Opened by:</label> <input class=\"uk-input text-zinc-50 text-base\" type=\"text\" disabled value=\"Opened by\"></div><div><label>Closed by:</label> <input class=\"uk-input text-zinc-50 text-base\" type=\"text\" disabled value=\"Closed by\"></div></div></form></div></div></div>")
+			_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString("</form></div></div></div>")
 			if templ_7745c5c3_Err != nil {
 				return templ_7745c5c3_Err
 			}

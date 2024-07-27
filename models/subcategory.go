@@ -53,3 +53,27 @@ func GetAllSubcategories() []Subcategory {
 
 	return subcategories
 }
+
+func GetSubcategories(category_id string) []Subcategory {
+	var db *sql.DB = database.DB_Connection
+	var subcategories []Subcategory
+
+	query := `select subcategory_id, subcategory_name from subcategory where category_id = $1;`
+	rows, err := db.Query(query, category_id)
+	if err != nil {
+		log.Fatal("error getting categories subcategories: ", err)
+	}
+	defer rows.Close()
+
+	subcategory := Subcategory{}
+	for rows.Next() {
+		err = rows.Scan(&subcategory.Subcategory_ID, &subcategory.Subcategory_Name)
+		if err != nil {
+			log.Fatal("error scanning categories subcategories: ", err)
+		}
+
+		subcategories = append(subcategories, subcategory)
+	}
+
+	return subcategories
+}
