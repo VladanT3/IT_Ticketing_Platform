@@ -21,18 +21,29 @@ type Analyst struct {
 	Number_of_closed_tickets int
 }
 
-func GetAnalystsTeam(analyst Analyst) string {
+func GetAnalyst(analystID string) Analyst {
 	var db *sql.DB = database.DB_Connection
-	var teamName string
-	query := `select t.team_name from team t join analyst a on t.team_id = a.team_id where a.analyst_id = $1;`
-	err := db.QueryRow(query, analyst.Analyst_id).Scan(&teamName)
+	analyst := Analyst{}
+
+	query := `select * from analyst where analyst_id = $1;`
+	err := db.QueryRow(query, analystID).Scan(
+		&analyst.Analyst_id,
+		&analyst.First_name,
+		&analyst.Last_name,
+		&analyst.Email,
+		&analyst.Password,
+		&analyst.Phone_number,
+		&analyst.Team_id,
+		&analyst.Number_of_open_tickets,
+		&analyst.Number_of_opened_tickets,
+		&analyst.Number_of_closed_tickets,
+	)
 	if err != nil {
 		if err == sql.ErrNoRows {
-			teamName = ""
-			return teamName
+			return Analyst{}
 		}
-		log.Fatal("error getting team name: ", err)
+		log.Fatal("error getting analyst: ", err)
 	}
 
-	return teamName
+	return analyst
 }

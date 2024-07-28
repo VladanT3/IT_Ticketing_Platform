@@ -68,3 +68,36 @@ func GetAnalystsTickets(analyst Analyst) []Ticket {
 
 	return tickets
 }
+
+func GetTicket(ticketID string) Ticket {
+	var db *sql.DB = database.DB_Connection
+	ticket := Ticket{}
+
+	query := `select * from ticket where ticket_id = $1;`
+	err := db.QueryRow(query, ticketID).Scan(
+		&ticket.Ticket_ID,
+		&ticket.Ticket_Number,
+		&ticket.Type,
+		&ticket.Status,
+		&ticket.Category,
+		&ticket.Subcategory,
+		&ticket.Title,
+		&ticket.Description,
+		&ticket.Customer_Contact,
+		&ticket.Opened_Date,
+		&ticket.Updated_at,
+		&ticket.Closed_Date,
+		&ticket.Assigned_Team,
+		&ticket.Assigned_Analyst,
+		&ticket.Opened_by,
+		&ticket.Closed_by,
+	)
+	if err != nil {
+		if err == sql.ErrNoRows {
+			return Ticket{}
+		}
+		log.Fatal("error getting ticket: ", err)
+	}
+
+	return ticket
+}

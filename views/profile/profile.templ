@@ -21,7 +21,7 @@ templ Profile(analyst models.Analyst, userType string) {
 					</div>
 					<div class="grid grid-cols-2">
 						<span>Team:</span>
-						<span>{ models.GetAnalystsTeam(analyst) }</span>
+						<span>{ models.GetAnalystsTeam(analyst.Analyst_id.String()).Team_Name }</span>
 					</div>
 					<div class="grid grid-cols-2">
 						<span>Open tickets:</span>

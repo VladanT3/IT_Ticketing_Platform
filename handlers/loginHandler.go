@@ -2,7 +2,6 @@ package handlers
 
 import (
 	"database/sql"
-	"log"
 	"net/http"
 
 	"github.com/VladanT3/IT_Ticketing_Platform/internal/database"
@@ -36,14 +35,16 @@ func LoginHandler(w http.ResponseWriter, r *http.Request) error {
 		if err == sql.ErrNoRows {
 			return Render(w, r, login.Login("Incorrect email!", "", email, password))
 		}
-		log.Fatal("email error: ", err)
+		errMsg := "email error: " + err.Error()
+		http.Error(w, errMsg, http.StatusInternalServerError)
 	}
 
 	var correctPassword bool
 	query = `select (password = crypt($1, password)) as password from analyst where email = $2;`
 	err = db.QueryRow(query, password, analyst.Email).Scan(&correctPassword)
 	if err != nil {
-		log.Fatal("password error: ", err)
+		errMsg := "password error: " + err.Error()
+		http.Error(w, errMsg, http.StatusInternalServerError)
 	}
 	if !correctPassword {
 		return Render(w, r, login.Login("", "Incorrect password!", email, password))
@@ -55,7 +56,8 @@ func LoginHandler(w http.ResponseWriter, r *http.Request) error {
 	query = `select count(*) as isManager from manager where manager_id = $1;`
 	err = db.QueryRow(query, analyst.Analyst_id).Scan(&isManager)
 	if err != nil {
-		log.Fatal("manager check error: ", err)
+		errMsg := "error checking if user is manager: " + err.Error()
+		http.Error(w, errMsg, http.StatusInternalServerError)
 	}
 	if isManager == 1 {
 		LoggedInUserType = "manager"
@@ -67,7 +69,8 @@ func LoginHandler(w http.ResponseWriter, r *http.Request) error {
 	query = `select count(*) as isAdmin from administrator where administrator_id = $1;`
 	err = db.QueryRow(query, analyst.Analyst_id).Scan(&isAdmin)
 	if err != nil {
-		log.Fatal("admin check error: ", err)
+		errMsg := "error checking if user is admin: " + err.Error()
+		http.Error(w, errMsg, http.StatusInternalServerError)
 	}
 	if isAdmin == 1 {
 		LoggedInUserType = "admin"

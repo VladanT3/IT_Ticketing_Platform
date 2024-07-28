@@ -3,31 +3,33 @@ package ticket
 import (
 	"github.com/VladanT3/IT_Ticketing_Platform/models"
 	"github.com/VladanT3/IT_Ticketing_Platform/views/layouts"
+	"github.com/google/uuid"
 	"strconv"
 )
 
-templ Ticket(ticket models.Ticket, userType string, mode string) {
+templ Ticket(ticket models.Ticket, userType string, mode string, categoryError string, subcategoryError string, newTicket models.Ticket) {
 	@layouts.Navbar(userType) {
 		<div class="container mx-auto mt-5">
-			<div class="grid grid-cols-5">
+			<form action="/ticket" method="POST" class="grid grid-cols-5">
+				<input type="hidden" value={ mode } name="mode"/>
+				<input type="hidden" value={ ticket.Ticket_ID.String() } name="ticketID"/>
 				<div class="col-span-1 grid grid-cols-5">
 					<div class="flex flex-col col-span-4">
-						<button class="uk-button uk-width-1-1 bg-zinc-50 text-zinc-900 border border-zinc-50 hover:bg-zinc-900 hover:text-zinc-50">Save</button>
-						<button class="uk-button uk-width-1-1 bg-zinc-50 text-zinc-900 border border-zinc-50 hover:bg-zinc-900 hover:text-zinc-50 mt-3">Save and Exit</button>
-						if mode == "create" {
-						} else {
-							<button class="uk-button uk-width-1-1 bg-zinc-50 text-zinc-900 border border-zinc-50 hover:bg-zinc-900 hover:text-zinc-50 mt-3">Close Ticket</button>
-							<button class="uk-button uk-width-1-1 bg-zinc-50 text-zinc-900 border border-zinc-50 hover:bg-zinc-900 hover:text-zinc-50 mt-3">Reopen</button>
-							<button class="uk-button uk-width-1-1 bg-zinc-50 text-zinc-900 border border-zinc-50 hover:bg-zinc-900 hover:text-zinc-50 mt-3">Assign to Me</button>
-							<button class="uk-button uk-width-1-1 bg-zinc-50 text-zinc-900 border border-zinc-50 hover:bg-zinc-900 hover:text-zinc-50 mt-3">Assign Ticket</button>
-							<button class="uk-button uk-width-1-1 bg-zinc-900 text-red-600 border border-red-600 hover:bg-red-600 hover:text-zinc-900 mt-3">Delete Ticket</button>
+						<button type="submit" name="save" class="uk-button uk-width-1-1 bg-zinc-50 text-zinc-900 border border-zinc-50 hover:bg-zinc-900 hover:text-zinc-50">Save</button>
+						<button type="submit" name="save" class="uk-button uk-width-1-1 bg-zinc-50 text-zinc-900 border border-zinc-50 hover:bg-zinc-900 hover:text-zinc-50 mt-3">Save and Exit</button>
+						if mode == "update" {
+							<button type="button" class="uk-button uk-width-1-1 bg-zinc-50 text-zinc-900 border border-zinc-50 hover:bg-zinc-900 hover:text-zinc-50 mt-3">Close Ticket</button>
+							<button type="button" class="uk-button uk-width-1-1 bg-zinc-50 text-zinc-900 border border-zinc-50 hover:bg-zinc-900 hover:text-zinc-50 mt-3">Reopen</button>
+							<button type="button" class="uk-button uk-width-1-1 bg-zinc-50 text-zinc-900 border border-zinc-50 hover:bg-zinc-900 hover:text-zinc-50 mt-3">Assign to Me</button>
+							<button type="button" class="uk-button uk-width-1-1 bg-zinc-50 text-zinc-900 border border-zinc-50 hover:bg-zinc-900 hover:text-zinc-50 mt-3">Assign Ticket</button>
+							<button type="button" class="uk-button uk-width-1-1 bg-zinc-900 text-red-600 border border-red-600 hover:bg-red-600 hover:text-zinc-900 mt-3">Delete Ticket</button>
 						}
 					</div>
 					<div class="uk-divider-vertical min-h-full"></div>
 				</div>
 				<div class="col-span-4">
-					<form class="flex flex-col">
-						if mode != "create" {
+					<div class="flex flex-col">
+						if mode == "update" {
 							<div class="grid grid-cols-4">
 								<div class="col-span-3">
 									if ticket.Type == "Request" {
@@ -45,45 +47,220 @@ templ Ticket(ticket models.Ticket, userType string, mode string) {
 						<div class="grid grid-cols-4">
 							<div>
 								<label>Ticket type:</label>
-								<select class="uk-select text-zinc-50">
-									<option value="none">Select...</option>
-									<option>Request</option>
-									<option>Incident</option>
-								</select>
-							</div>
-							<div></div>
-							<div>
-								<label>Customer contact:</label>
-								<input class="uk-input text-zinc-50 text-base" type="text"/>
-							</div>
-						</div>
-						<div class="grid grid-cols-4 mt-3">
-							<div>
-								<label>Category:</label>
-								<select name="category" class="uk-select text-zinc-50" hx-get="/getSubcategories" hx-target="#subcategories" hx-swap="outerHTML" hx-trigger="change">
-									<option value="none">Select...</option>
-									for _, category := range models.GetAllCategories() {
-										<option value={ category.Category_ID.String() }>{ category.Category_Name }</option>
+								<select name="type" class="uk-select text-zinc-50">
+									if mode == "update" {
+										if newTicket.Type == "Request" {
+											<option value="Request" selected>Request</option>
+											<option value="Incident">Incident</option>
+										} else if newTicket.Type == "Incident" {
+											<option value="Request">Request</option>
+											<option value="Incident" selected>Incident</option>
+										} else {
+											if ticket.Type == "Request" {
+												<option value="Request" selected>Request</option>
+												<option value="Incident">Incident</option>
+											} else if ticket.Type == "Incident" {
+												<option value="Request">Request</option>
+												<option value="Incident" selected>Incident</option>
+											}
+										}
+									} else if mode == "create" {
+										if newTicket.Type == "Request" {
+											<option value="Request" selected>Request</option>
+											<option value="Incident">Incident</option>
+										} else if newTicket.Type == "Incident" {
+											<option value="Request">Request</option>
+											<option value="Incident" selected>Incident</option>
+										} else {
+											<option value="Request">Request</option>
+											<option value="Incident">Incident</option>
+										}
 									}
 								</select>
 							</div>
 							<div></div>
 							<div>
+								<label>Customer contact:</label>
+								if mode ==  "update" {
+									if newTicket.Customer_Contact != "" {
+										<input name="customerContact" class="uk-input text-zinc-50 text-base" type="text" value={ newTicket.Customer_Contact } required/>
+									} else {
+										<input name="customerContact" class="uk-input text-zinc-50 text-base" type="text" value={ ticket.Customer_Contact } required/>
+									}
+								} else if mode == "create" {
+									<input name="customerContact" class="uk-input text-zinc-50 text-base" type="text" value={ newTicket.Customer_Contact } required/>
+								}
+							</div>
+						</div>
+						<div class="grid grid-cols-4 mt-3">
+							<div>
+								<label>Category:</label>
+								if mode == "update" {
+									if categoryError == "" {
+										<select name="category" class="uk-select text-zinc-50" hx-get="/getSubcategories" hx-target="#subcategories" hx-swap="outerHTML" hx-trigger="change">
+											<option value="none">Select...</option>
+											for _, category := range models.GetAllCategories() {
+												if newTicket.Category.UUID == category.Category_ID {
+													<option value={ category.Category_ID.String() } selected>{ category.Category_Name }</option>
+												} else {
+													if ticket.Category.UUID == category.Category_ID {
+														<option value={ category.Category_ID.String() } selected>{ category.Category_Name }</option>
+													} else {
+														<option value={ category.Category_ID.String() }>{ category.Category_Name }</option>
+													}
+												}
+											}
+										</select>
+									} else {
+										<select name="category" class="uk-select text-zinc-50 border border-red-600" hx-get="/getSubcategories" hx-target="#subcategories" hx-swap="outerHTML" hx-trigger="change">
+											<option value="none">Select...</option>
+											for _, category := range models.GetAllCategories() {
+												if newTicket.Category.UUID == category.Category_ID {
+													<option value={ category.Category_ID.String() } selected>{ category.Category_Name }</option>
+												} else {
+													if ticket.Category.UUID == category.Category_ID {
+														<option value={ category.Category_ID.String() } selected>{ category.Category_Name }</option>
+													} else {
+														<option value={ category.Category_ID.String() }>{ category.Category_Name }</option>
+													}
+												}
+											}
+										</select>
+										<label class="text-red-600">{ categoryError }</label>
+									}
+								} else if mode == "create" {
+									if categoryError == "" {
+										<select name="category" class="uk-select text-zinc-50" hx-get="/getSubcategories" hx-target="#subcategories" hx-swap="outerHTML" hx-trigger="change">
+											<option value="none">Select...</option>
+											for _, category := range models.GetAllCategories() {
+												if newTicket.Category.UUID == category.Category_ID {
+													<option value={ category.Category_ID.String() } selected>{ category.Category_Name }</option>
+												} else {
+													<option value={ category.Category_ID.String() }>{ category.Category_Name }</option>
+												}
+											}
+										</select>
+									} else {
+										<select name="category" class="uk-select text-zinc-50 border border-red-600" hx-get="/getSubcategories" hx-target="#subcategories" hx-swap="outerHTML" hx-trigger="change">
+											<option value="none">Select...</option>
+											for _, category := range models.GetAllCategories() {
+												if newTicket.Category.UUID == category.Category_ID {
+													<option value={ category.Category_ID.String() } selected>{ category.Category_Name }</option>
+												} else {
+													<option value={ category.Category_ID.String() }>{ category.Category_Name }</option>
+												}
+											}
+										</select>
+										<label class="text-red-600">{ categoryError }</label>
+									}
+								}
+							</div>
+							<div></div>
+							<div>
 								<label>Subcategory:</label>
-								<select class="uk-select text-zinc-50" id="subcategories" disabled>
-									<option value="none">Please select category</option>
-								</select>
+								if mode == "update" {
+									if subcategoryError == "" {
+										<select name="subcategory" class="uk-select text-zinc-50" id="subcategories">
+											for _, subcategory := range models.GetSubcategories(ticket.Category.UUID.String()) {
+												if newTicket.Subcategory.UUID == subcategory.Subcategory_ID {
+													<option value={ subcategory.Subcategory_ID.String() } selected>{ subcategory.Subcategory_Name }</option>
+												} else {
+													if ticket.Subcategory.UUID == subcategory.Subcategory_ID {
+														<option value={ subcategory.Subcategory_ID.String() } selected>{ subcategory.Subcategory_Name }</option>
+													} else {
+														<option value={ subcategory.Subcategory_ID.String() }>{ subcategory.Subcategory_Name }</option>
+													}
+												}
+											}
+										</select>
+									} else {
+										<select name="subcategory" class="uk-select text-zinc-50 border border-red-600" id="subcategories">
+											for _, subcategory := range models.GetSubcategories(ticket.Category.UUID.String()) {
+												if newTicket.Subcategory.UUID == subcategory.Subcategory_ID {
+													<option value={ subcategory.Subcategory_ID.String() } selected>{ subcategory.Subcategory_Name }</option>
+												} else {
+													if ticket.Subcategory.UUID == subcategory.Subcategory_ID {
+														<option value={ subcategory.Subcategory_ID.String() } selected>{ subcategory.Subcategory_Name }</option>
+													} else {
+														<option value={ subcategory.Subcategory_ID.String() }>{ subcategory.Subcategory_Name }</option>
+													}
+												}
+											}
+										</select>
+										<label class="text-red-600">{ subcategoryError }</label>
+									}
+								} else if mode == "create" {
+									if subcategoryError == "" {
+										if newTicket.Category.UUID != uuid.Nil {
+											<select name="subcategory" class="uk-select text-zinc-50" id="subcategories">
+												for _, subcategory := range models.GetSubcategories(ticket.Category.UUID.String()) {
+													if newTicket.Subcategory.UUID == subcategory.Subcategory_ID {
+														<option value={ subcategory.Subcategory_ID.String() } selected>{ subcategory.Subcategory_Name }</option>
+													} else {
+														if ticket.Subcategory.UUID == subcategory.Subcategory_ID {
+															<option value={ subcategory.Subcategory_ID.String() } selected>{ subcategory.Subcategory_Name }</option>
+														} else {
+															<option value={ subcategory.Subcategory_ID.String() }>{ subcategory.Subcategory_Name }</option>
+														}
+													}
+												}
+											</select>
+										} else {
+											<select name="subcategory" class="uk-select text-zinc-50" id="subcategories" disabled>
+												<option value="none">Please select category</option>
+											</select>
+										}
+									} else {
+										if newTicket.Category.UUID != uuid.Nil {
+											<select name="subcategory" class="uk-select text-zinc-50 border border-red-600" id="subcategories">
+												for _, subcategory := range models.GetSubcategories(ticket.Category.UUID.String()) {
+													if newTicket.Subcategory.UUID == subcategory.Subcategory_ID {
+														<option value={ subcategory.Subcategory_ID.String() } selected>{ subcategory.Subcategory_Name }</option>
+													} else {
+														if ticket.Subcategory.UUID == subcategory.Subcategory_ID {
+															<option value={ subcategory.Subcategory_ID.String() } selected>{ subcategory.Subcategory_Name }</option>
+														} else {
+															<option value={ subcategory.Subcategory_ID.String() }>{ subcategory.Subcategory_Name }</option>
+														}
+													}
+												}
+											</select>
+											<label class="text-red-600">{ subcategoryError }</label>
+										} else {
+											<select name="subcategory" class="uk-select text-zinc-50 border border-red-600" id="subcategories" disabled>
+												<option value="none">Please select category</option>
+											</select>
+											<label class="text-red-600">{ subcategoryError }</label>
+										}
+									}
+								}
 							</div>
 						</div>
 						<div class="mt-3">
 							<label>Title:</label>
-							<input class="uk-input text-zinc-50 text-base" type="text"/>
+							if mode == "update" {
+								if newTicket.Title != "" {
+									<input name="title" class="uk-input text-zinc-50 text-base" type="text" value={ newTicket.Title } required/>
+								} else {
+									<input name="title" class="uk-input text-zinc-50 text-base" type="text" value={ ticket.Title } required/>
+								}
+							} else if mode == "create" {
+								<input name="title" class="uk-input text-zinc-50 text-base" type="text" value={ newTicket.Title } required/>
+							}
 						</div>
 						<div class="mt-3">
 							<label>Description:</label>
-							<textarea class="uk-textarea font-mono text-zinc-50 text-base" rows="10"></textarea>
+							if mode == "update" {
+								if newTicket.Description != "" {
+									<textarea name="desc" class="uk-textarea font-mono text-zinc-50 text-base" rows="10" value={ newTicket.Description }></textarea>
+								} else {
+									<textarea name="desc" class="uk-textarea font-mono text-zinc-50 text-base" rows="10" value={ ticket.Description }></textarea>
+								}
+							} else if mode == "create" {
+								<textarea name="desc" class="uk-textarea font-mono text-zinc-50 text-base" rows="10" value={ newTicket.Description }></textarea>
+							}
 						</div>
-						if mode != "create" {
+						if mode == "update" {
 							<hr class="mt-5"/>
 							<div class="grid grid-cols-4 mt-3">
 								<div class="col-span-1">
@@ -94,18 +271,18 @@ templ Ticket(ticket models.Ticket, userType string, mode string) {
 							<div class="grid grid-cols-4 mt-3">
 								<div>
 									<label>Assigned Team:</label>
-									<input class="uk-input text-zinc-50 text-base" type="text" disabled value="Assigned Team"/>
+									<input class="uk-input text-zinc-50 text-base" type="text" disabled value={ models.GetAnalystsTeam(ticket.Assigned_Analyst.UUID.String()).Team_Name }/>
 								</div>
 								<div></div>
 								<div>
 									<label>Assigned Analyst:</label>
-									<input class="uk-input text-zinc-50 text-base" type="text" disabled value="Assigned Analyst"/>
+									<input class="uk-input text-zinc-50 text-base" type="text" disabled value={ models.GetAnalyst(ticket.Assigned_Analyst.UUID.String()).First_name + " " + models.GetAnalyst(ticket.Assigned_Analyst.UUID.String()).Last_name }/>
 								</div>
 							</div>
 							<div class="grid grid-cols-4">
 								<div>
 									<label>Opened by:</label>
-									<input class="uk-input text-zinc-50 text-base" type="text" disabled value="Opened by"/>
+									<input class="uk-input text-zinc-50 text-base" type="text" disabled value={ models.GetAnalyst(ticket.Opened_by.UUID.String()).First_name + " " + models.GetAnalyst(ticket.Opened_by.UUID.String()).Last_name }/>
 								</div>
 								<div></div>
 								<div>
@@ -116,7 +293,7 @@ templ Ticket(ticket models.Ticket, userType string, mode string) {
 							<div class="grid grid-cols-4">
 								<div>
 									<label>Closed by:</label>
-									<input class="uk-input text-zinc-50 text-base" type="text" disabled value="Closed by"/>
+									<input class="uk-input text-zinc-50 text-base" type="text" disabled value={ models.GetAnalyst(ticket.Closed_by.UUID.String()).First_name + " " + models.GetAnalyst(ticket.Closed_by.UUID.String()).Last_name }/>
 								</div>
 								<div></div>
 								<div>
@@ -125,9 +302,9 @@ templ Ticket(ticket models.Ticket, userType string, mode string) {
 								</div>
 							</div>
 						}
-					</form>
+					</div>
 				</div>
-			</div>
+			</form>
 		</div>
 	}
 }

@@ -23,8 +23,12 @@ func main() {
 	router.Post("/login", handlers.Make(handlers.LoginHandler))
 	router.Post("/logout", handlers.Make(handlers.LogoutHandler))
 	router.Get("/profile", handlers.Make(handlers.ProfileHandler))
-	router.Get("/ticket/new", handlers.Make(handlers.NewTicketHandler))
 	router.Get("/getSubcategories", handlers.Make(handlers.GetSubcategories))
+	router.Post("/ticket", handlers.Make(handlers.TicketHandler))
+	router.Get("/ticket/new", handlers.Make(handlers.NewTicketHandler))
+	router.Get("/ticket/create", handlers.Make(handlers.CreateTicketHandler))
+	router.Get("/ticket/update", handlers.Make(handlers.UpdateTicketHandler))
+	router.Get("/ticket/{ticketID}", handlers.Make(handlers.ShowTicketHandler))
 
 	port := os.Getenv("PORT")
 	fmt.Println("Server started on: http://localhost" + port)
