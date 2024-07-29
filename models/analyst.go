@@ -9,16 +9,16 @@ import (
 )
 
 type Analyst struct {
-	Analyst_id               uuid.UUID
-	First_name               string
-	Last_name                string
+	Analyst_ID               uuid.UUID
+	First_Name               string
+	Last_Name                string
 	Email                    string
 	Password                 string
-	Phone_number             string
-	Team_id                  uuid.NullUUID
-	Number_of_open_tickets   int
-	Number_of_opened_tickets int
-	Number_of_closed_tickets int
+	Phone_Number             string
+	Team_ID                  uuid.NullUUID
+	Number_of_Open_Tickets   int
+	Number_of_Opened_Tickets int
+	Number_of_Closed_Tickets int
 }
 
 func GetAnalyst(analystID string) Analyst {
@@ -27,16 +27,16 @@ func GetAnalyst(analystID string) Analyst {
 
 	query := `select * from analyst where analyst_id = $1;`
 	err := db.QueryRow(query, analystID).Scan(
-		&analyst.Analyst_id,
-		&analyst.First_name,
-		&analyst.Last_name,
+		&analyst.Analyst_ID,
+		&analyst.First_Name,
+		&analyst.Last_Name,
 		&analyst.Email,
 		&analyst.Password,
-		&analyst.Phone_number,
-		&analyst.Team_id,
-		&analyst.Number_of_open_tickets,
-		&analyst.Number_of_opened_tickets,
-		&analyst.Number_of_closed_tickets,
+		&analyst.Phone_Number,
+		&analyst.Team_ID,
+		&analyst.Number_of_Open_Tickets,
+		&analyst.Number_of_Opened_Tickets,
+		&analyst.Number_of_Closed_Tickets,
 	)
 	if err != nil {
 		if err == sql.ErrNoRows {

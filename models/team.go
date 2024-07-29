@@ -23,7 +23,20 @@ func GetAnalystsTeam(analystID string) Team {
 		if err == sql.ErrNoRows {
 			return Team{}
 		}
-		log.Fatal("error getting team name: ", err)
+		log.Fatal("error getting analysts team: ", err)
+	}
+
+	return team
+}
+
+func GetTeam(teamID string) Team {
+	var db *sql.DB = database.DB_Connection
+	team := Team{}
+
+	query := `select * from team where team_id = $1;`
+	err := db.QueryRow(query, teamID).Scan(&team.Team_ID, &team.Team_Name, &team.Manager_ID)
+	if err != nil {
+		log.Fatal("error getting team: ", err)
 	}
 
 	return team

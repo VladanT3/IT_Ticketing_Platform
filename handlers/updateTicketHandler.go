@@ -11,16 +11,63 @@ import (
 )
 
 func UpdateTicketHandler(w http.ResponseWriter, r *http.Request) error {
-	ticketType := r.FormValue("type")
-	category := r.FormValue("category")
-	subcategory := r.FormValue("subcategory")
-	title := r.FormValue("title")
-	desc := r.FormValue("desc")
-	customerContact := r.FormValue("customerContact")
-	saveType := r.FormValue("save")
-	ticketID := r.FormValue("ticketID")
+	typeCookie, err := r.Cookie("ticketType")
+	if err != nil {
+		errMsg := "No cookie with name 'ticketType': " + err.Error()
+		http.Error(w, errMsg, http.StatusInternalServerError)
+	}
+	ticketType := typeCookie.Value
 
-	if category == "none" {
+	categoryCookie, err := r.Cookie("category")
+	if err != nil {
+		errMsg := "No cookie with name 'category': " + err.Error()
+		http.Error(w, errMsg, http.StatusInternalServerError)
+	}
+	category := categoryCookie.Value
+
+	subcategoryCookie, err := r.Cookie("subcategory")
+	if err != nil {
+		errMsg := "No cookie with name 'subcategory': " + err.Error()
+		http.Error(w, errMsg, http.StatusInternalServerError)
+	}
+	subcategory := subcategoryCookie.Value
+
+	titleCookie, err := r.Cookie("title")
+	if err != nil {
+		errMsg := "No cookie with name 'title': " + err.Error()
+		http.Error(w, errMsg, http.StatusInternalServerError)
+	}
+	title := titleCookie.Value
+
+	descCookie, err := r.Cookie("desc")
+	if err != nil {
+		errMsg := "No cookie with name 'desc': " + err.Error()
+		http.Error(w, errMsg, http.StatusInternalServerError)
+	}
+	desc := descCookie.Value
+
+	customerContactCookie, err := r.Cookie("customerContact")
+	if err != nil {
+		errMsg := "No cookie with name 'customerContact': " + err.Error()
+		http.Error(w, errMsg, http.StatusInternalServerError)
+	}
+	customerContact := customerContactCookie.Value
+
+	saveTypeCookie, err := r.Cookie("saveType")
+	if err != nil {
+		errMsg := "No cookie with name 'saveType': " + err.Error()
+		http.Error(w, errMsg, http.StatusInternalServerError)
+	}
+	saveType := saveTypeCookie.Value
+
+	ticketIDCookie, err := r.Cookie("ticketID")
+	if err != nil {
+		errMsg := "No cookie with name 'ticketID': " + err.Error()
+		http.Error(w, errMsg, http.StatusInternalServerError)
+	}
+	ticketID := ticketIDCookie.Value
+
+	if category == "none" || category == "" {
 		newTicket := models.Ticket{
 			Type: ticketType,
 			Category: uuid.NullUUID{
@@ -36,7 +83,7 @@ func UpdateTicketHandler(w http.ResponseWriter, r *http.Request) error {
 			Customer_Contact: customerContact,
 		}
 
-		return Render(w, r, ticket.Ticket(models.GetTicket(ticketID), LoggedInUserType, "update", "Please select a valid category!", "Please select a valid subcategory!", newTicket))
+		return Render(w, r, ticket.Ticket(models.GetTicket(ticketID), LoggedInUser, LoggedInUserType, "update", "Please select a valid category!", "Please select a valid subcategory!", newTicket))
 	}
 
 	var db *sql.DB = database.DB_Connection
@@ -49,10 +96,11 @@ func UpdateTicketHandler(w http.ResponseWriter, r *http.Request) error {
 		description = $5,
 		customer_contact = $6,
 		updated_at = current_timestamp
+		where ticket_id = $7
 		returning ticket_id;
 	`
 	newTicketID := ""
-	err := db.QueryRow(query, ticketType, category, subcategory, title, desc, customerContact).Scan(&newTicketID)
+	err = db.QueryRow(query, ticketType, category, subcategory, title, desc, customerContact, ticketID).Scan(&newTicketID)
 	if err != nil {
 		errMsg := "error updating ticket: " + err.Error()
 		http.Error(w, errMsg, http.StatusInternalServerError)

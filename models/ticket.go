@@ -32,8 +32,8 @@ func GetAnalystsTickets(analyst Analyst) []Ticket {
 	var db *sql.DB = database.DB_Connection
 	var tickets []Ticket
 
-	query := `select t.* from ticket t join analyst a on t.assigned_analyst = a.analyst_id where a.analyst_id = $1;`
-	rows, err := db.Query(query, analyst.Analyst_id)
+	query := `select t.* from ticket t join analyst a on t.assigned_analyst = a.analyst_id where a.analyst_id = $1 order by t.opened_date;`
+	rows, err := db.Query(query, analyst.Analyst_ID)
 	if err != nil {
 		log.Fatal("error getting tickets: ", err)
 	}

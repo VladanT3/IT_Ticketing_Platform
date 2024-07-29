@@ -2,26 +2,50 @@ package handlers
 
 import (
 	"net/http"
+	"time"
 )
 
 func TicketHandler(w http.ResponseWriter, r *http.Request) error {
-	ticketType := r.FormValue("type")
-	category := r.FormValue("category")
-	subcategory := r.FormValue("subcategory")
-	title := r.FormValue("title")
-	desc := r.FormValue("desc")
-	customerContact := r.FormValue("customerContact")
-	saveType := r.FormValue("save")
-
-	session, _ := Store.Get(r, "ticket")
-	session.Values["ticketType"] = ticketType
-	session.Values["category"] = category
-	session.Values["subcategory"] = subcategory
-	session.Values["title"] = title
-	session.Values["desc"] = desc
-	session.Values["customerContact"] = customerContact
-	session.Values["saveType"] = saveType
-	session.Save(r, w)
+	http.SetCookie(w, &http.Cookie{
+		Name:    "ticketType",
+		Value:   r.FormValue("ticketType"),
+		Expires: time.Time.Add(time.Now(), time.Second*10),
+	})
+	http.SetCookie(w, &http.Cookie{
+		Name:    "category",
+		Value:   r.FormValue("category"),
+		Expires: time.Time.Add(time.Now(), time.Second*10),
+	})
+	http.SetCookie(w, &http.Cookie{
+		Name:    "subcategory",
+		Value:   r.FormValue("subcategory"),
+		Expires: time.Time.Add(time.Now(), time.Second*10),
+	})
+	http.SetCookie(w, &http.Cookie{
+		Name:    "title",
+		Value:   r.FormValue("title"),
+		Expires: time.Time.Add(time.Now(), time.Second*10),
+	})
+	http.SetCookie(w, &http.Cookie{
+		Name:    "desc",
+		Value:   r.FormValue("desc"),
+		Expires: time.Time.Add(time.Now(), time.Second*10),
+	})
+	http.SetCookie(w, &http.Cookie{
+		Name:    "customerContact",
+		Value:   r.FormValue("customerContact"),
+		Expires: time.Time.Add(time.Now(), time.Second*10),
+	})
+	http.SetCookie(w, &http.Cookie{
+		Name:    "saveType",
+		Value:   r.FormValue("saveType"),
+		Expires: time.Time.Add(time.Now(), time.Second*10),
+	})
+	http.SetCookie(w, &http.Cookie{
+		Name:    "ticketID",
+		Value:   r.FormValue("ticketID"),
+		Expires: time.Time.Add(time.Now(), time.Second*10),
+	})
 
 	mode := r.FormValue("mode")
 	if mode == "create" {

@@ -20,16 +20,16 @@ func LoginHandler(w http.ResponseWriter, r *http.Request) error {
 
 	query := `select * from analyst where email = $1;`
 	err := db.QueryRow(query, email).Scan(
-		&analyst.Analyst_id,
-		&analyst.First_name,
-		&analyst.Last_name,
+		&analyst.Analyst_ID,
+		&analyst.First_Name,
+		&analyst.Last_Name,
 		&analyst.Email,
 		&analyst.Password,
-		&analyst.Phone_number,
-		&analyst.Team_id,
-		&analyst.Number_of_open_tickets,
-		&analyst.Number_of_opened_tickets,
-		&analyst.Number_of_closed_tickets,
+		&analyst.Phone_Number,
+		&analyst.Team_ID,
+		&analyst.Number_of_Open_Tickets,
+		&analyst.Number_of_Opened_Tickets,
+		&analyst.Number_of_Closed_Tickets,
 	)
 	if err != nil {
 		if err == sql.ErrNoRows {
@@ -54,7 +54,7 @@ func LoginHandler(w http.ResponseWriter, r *http.Request) error {
 
 	var isManager int
 	query = `select count(*) as isManager from manager where manager_id = $1;`
-	err = db.QueryRow(query, analyst.Analyst_id).Scan(&isManager)
+	err = db.QueryRow(query, analyst.Analyst_ID).Scan(&isManager)
 	if err != nil {
 		errMsg := "error checking if user is manager: " + err.Error()
 		http.Error(w, errMsg, http.StatusInternalServerError)
@@ -67,7 +67,7 @@ func LoginHandler(w http.ResponseWriter, r *http.Request) error {
 
 	var isAdmin int
 	query = `select count(*) as isAdmin from administrator where administrator_id = $1;`
-	err = db.QueryRow(query, analyst.Analyst_id).Scan(&isAdmin)
+	err = db.QueryRow(query, analyst.Analyst_ID).Scan(&isAdmin)
 	if err != nil {
 		errMsg := "error checking if user is admin: " + err.Error()
 		http.Error(w, errMsg, http.StatusInternalServerError)

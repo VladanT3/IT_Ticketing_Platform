@@ -13,5 +13,5 @@ func ShowTicketHandler(w http.ResponseWriter, r *http.Request) error {
 
 	ticketToShow := models.GetTicket(ticketID)
 
-	return Render(w, r, ticket.Ticket(ticketToShow, LoggedInUserType, "update", "", "", models.Ticket{}))
+	return Render(w, r, ticket.Ticket(ticketToShow, LoggedInUser, LoggedInUserType, "update", "", "", models.Ticket{}))
 }

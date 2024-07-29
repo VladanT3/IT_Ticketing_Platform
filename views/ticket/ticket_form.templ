@@ -7,7 +7,7 @@ import (
 	"strconv"
 )
 
-templ Ticket(ticket models.Ticket, userType string, mode string, categoryError string, subcategoryError string, newTicket models.Ticket) {
+templ Ticket(ticket models.Ticket, currentUser models.Analyst, userType string, mode string, categoryError string, subcategoryError string, newTicket models.Ticket) {
 	@layouts.Navbar(userType) {
 		<div class="container mx-auto mt-5">
 			<form action="/ticket" method="POST" class="grid grid-cols-5">
@@ -15,14 +15,30 @@ templ Ticket(ticket models.Ticket, userType string, mode string, categoryError s
 				<input type="hidden" value={ ticket.Ticket_ID.String() } name="ticketID"/>
 				<div class="col-span-1 grid grid-cols-5">
 					<div class="flex flex-col col-span-4">
-						<button type="submit" name="save" class="uk-button uk-width-1-1 bg-zinc-50 text-zinc-900 border border-zinc-50 hover:bg-zinc-900 hover:text-zinc-50">Save</button>
-						<button type="submit" name="save" class="uk-button uk-width-1-1 bg-zinc-50 text-zinc-900 border border-zinc-50 hover:bg-zinc-900 hover:text-zinc-50 mt-3">Save and Exit</button>
+						<button type="submit" name="saveType" class="uk-button uk-width-1-1 bg-zinc-50 text-zinc-900 border border-zinc-50 hover:bg-zinc-900 hover:text-zinc-50" value="Save">Save</button>
+						<button type="submit" name="saveType" class="uk-button uk-width-1-1 bg-zinc-50 text-zinc-900 border border-zinc-50 hover:bg-zinc-900 hover:text-zinc-50 mt-3" value="Save and Exit">Save and Exit</button>
 						if mode == "update" {
 							<button type="button" class="uk-button uk-width-1-1 bg-zinc-50 text-zinc-900 border border-zinc-50 hover:bg-zinc-900 hover:text-zinc-50 mt-3">Close Ticket</button>
-							<button type="button" class="uk-button uk-width-1-1 bg-zinc-50 text-zinc-900 border border-zinc-50 hover:bg-zinc-900 hover:text-zinc-50 mt-3">Reopen</button>
-							<button type="button" class="uk-button uk-width-1-1 bg-zinc-50 text-zinc-900 border border-zinc-50 hover:bg-zinc-900 hover:text-zinc-50 mt-3">Assign to Me</button>
-							<button type="button" class="uk-button uk-width-1-1 bg-zinc-50 text-zinc-900 border border-zinc-50 hover:bg-zinc-900 hover:text-zinc-50 mt-3">Assign Ticket</button>
-							<button type="button" class="uk-button uk-width-1-1 bg-zinc-900 text-red-600 border border-red-600 hover:bg-red-600 hover:text-zinc-900 mt-3">Delete Ticket</button>
+							if ticket.Status == "Closed" {
+								<button type="button" class="uk-button uk-width-1-1 bg-zinc-50 text-zinc-900 border border-zinc-50 hover:bg-zinc-900 hover:text-zinc-50 mt-3">Reopen</button>
+							}
+							if models.GetAnalyst(ticket.Assigned_Analyst.UUID.String()).Analyst_ID != currentUser.Analyst_ID {
+								if !ticket.Assigned_Analyst.Valid {
+									<button type="button" class="uk-button uk-width-1-1 bg-zinc-50 text-zinc-900 border border-zinc-50 hover:bg-zinc-900 hover:text-zinc-50 mt-3">Assign to Me</button>
+								} else if models.IsUserManager(currentUser.Analyst_ID.String()) && currentUser.Analyst_ID == models.GetTeam(ticket.Assigned_Team.UUID.String()).Manager_ID.UUID {
+									<button type="button" class="uk-button uk-width-1-1 bg-zinc-50 text-zinc-900 border border-zinc-50 hover:bg-zinc-900 hover:text-zinc-50 mt-3">Assign to Me</button>
+								}
+							}
+							if models.GetAnalyst(ticket.Assigned_Analyst.UUID.String()).Analyst_ID == currentUser.Analyst_ID {
+								<button type="button" class="uk-button uk-width-1-1 bg-zinc-50 text-zinc-900 border border-zinc-50 hover:bg-zinc-900 hover:text-zinc-50 mt-3">Assign Ticket</button>
+							} else if !ticket.Assigned_Analyst.Valid {
+								<button type="button" class="uk-button uk-width-1-1 bg-zinc-50 text-zinc-900 border border-zinc-50 hover:bg-zinc-900 hover:text-zinc-50 mt-3">Assign Ticket</button>
+							} else if models.IsUserManager(currentUser.Analyst_ID.String()) && currentUser.Analyst_ID == models.GetTeam(ticket.Assigned_Team.UUID.String()).Manager_ID.UUID {
+								<button type="button" class="uk-button uk-width-1-1 bg-zinc-50 text-zinc-900 border border-zinc-50 hover:bg-zinc-900 hover:text-zinc-50 mt-3">Assign Ticket</button>
+							}
+							if models.IsUserManager(currentUser.Analyst_ID.String()) && currentUser.Analyst_ID == models.GetTeam(ticket.Assigned_Team.UUID.String()).Manager_ID.UUID {
+								<button type="button" class="uk-button uk-width-1-1 bg-zinc-900 text-red-600 border border-red-600 hover:bg-red-600 hover:text-zinc-900 mt-3">Delete Ticket</button>
+							}
 						}
 					</div>
 					<div class="uk-divider-vertical min-h-full"></div>
@@ -39,7 +55,7 @@ templ Ticket(ticket models.Ticket, userType string, mode string, categoryError s
 									}
 								</div>
 								<div>
-									<span class="border border-zinc-50 rounded-lg bg-zinc-50 text-zinc-900">{ ticket.Status }</span>
+									<span class="border border-zinc-50 rounded-full" style="padding-top: 0.25rem; padding-bottom: 0.25rem; padding-right: 1rem; padding-left: 1rem; user-select: none;">{ ticket.Status }</span>
 								</div>
 							</div>
 							<hr class="mt-5 mb-3"/>
@@ -47,7 +63,7 @@ templ Ticket(ticket models.Ticket, userType string, mode string, categoryError s
 						<div class="grid grid-cols-4">
 							<div>
 								<label>Ticket type:</label>
-								<select name="type" class="uk-select text-zinc-50">
+								<select name="ticketType" class="uk-select text-zinc-50">
 									if mode == "update" {
 										if newTicket.Type == "Request" {
 											<option value="Request" selected>Request</option>
@@ -252,12 +268,12 @@ templ Ticket(ticket models.Ticket, userType string, mode string, categoryError s
 							<label>Description:</label>
 							if mode == "update" {
 								if newTicket.Description != "" {
-									<textarea name="desc" class="uk-textarea font-mono text-zinc-50 text-base" rows="10" value={ newTicket.Description }></textarea>
+									<textarea name="desc" class="uk-textarea font-mono text-zinc-50 text-base" rows="10">{ newTicket.Description }</textarea>
 								} else {
-									<textarea name="desc" class="uk-textarea font-mono text-zinc-50 text-base" rows="10" value={ ticket.Description }></textarea>
+									<textarea name="desc" class="uk-textarea font-mono text-zinc-50 text-base" rows="10">{ ticket.Description }</textarea>
 								}
 							} else if mode == "create" {
-								<textarea name="desc" class="uk-textarea font-mono text-zinc-50 text-base" rows="10" value={ newTicket.Description }></textarea>
+								<textarea name="desc" class="uk-textarea font-mono text-zinc-50 text-base" rows="10">{ newTicket.Description }</textarea>
 							}
 						</div>
 						if mode == "update" {
@@ -276,13 +292,13 @@ templ Ticket(ticket models.Ticket, userType string, mode string, categoryError s
 								<div></div>
 								<div>
 									<label>Assigned Analyst:</label>
-									<input class="uk-input text-zinc-50 text-base" type="text" disabled value={ models.GetAnalyst(ticket.Assigned_Analyst.UUID.String()).First_name + " " + models.GetAnalyst(ticket.Assigned_Analyst.UUID.String()).Last_name }/>
+									<input class="uk-input text-zinc-50 text-base" type="text" disabled value={ models.GetAnalyst(ticket.Assigned_Analyst.UUID.String()).First_Name + " " + models.GetAnalyst(ticket.Assigned_Analyst.UUID.String()).Last_Name }/>
 								</div>
 							</div>
 							<div class="grid grid-cols-4">
 								<div>
 									<label>Opened by:</label>
-									<input class="uk-input text-zinc-50 text-base" type="text" disabled value={ models.GetAnalyst(ticket.Opened_by.UUID.String()).First_name + " " + models.GetAnalyst(ticket.Opened_by.UUID.String()).Last_name }/>
+									<input class="uk-input text-zinc-50 text-base" type="text" disabled value={ models.GetAnalyst(ticket.Opened_by.UUID.String()).First_Name + " " + models.GetAnalyst(ticket.Opened_by.UUID.String()).Last_Name }/>
 								</div>
 								<div></div>
 								<div>
@@ -293,7 +309,7 @@ templ Ticket(ticket models.Ticket, userType string, mode string, categoryError s
 							<div class="grid grid-cols-4">
 								<div>
 									<label>Closed by:</label>
-									<input class="uk-input text-zinc-50 text-base" type="text" disabled value={ models.GetAnalyst(ticket.Closed_by.UUID.String()).First_name + " " + models.GetAnalyst(ticket.Closed_by.UUID.String()).Last_name }/>
+									<input class="uk-input text-zinc-50 text-base" type="text" disabled value={ models.GetAnalyst(ticket.Closed_by.UUID.String()).First_Name + " " + models.GetAnalyst(ticket.Closed_by.UUID.String()).Last_Name }/>
 								</div>
 								<div></div>
 								<div>
