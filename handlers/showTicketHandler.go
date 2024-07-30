@@ -4,7 +4,7 @@ import (
 	"net/http"
 
 	"github.com/VladanT3/IT_Ticketing_Platform/models"
-	"github.com/VladanT3/IT_Ticketing_Platform/views/ticket"
+	"github.com/VladanT3/IT_Ticketing_Platform/views/tickets"
 	"github.com/go-chi/chi/v5"
 )
 
@@ -13,5 +13,5 @@ func ShowTicketHandler(w http.ResponseWriter, r *http.Request) error {
 
 	ticketToShow := models.GetTicket(ticketID)
 
-	return Render(w, r, ticket.Ticket(ticketToShow, LoggedInUser, LoggedInUserType, "update", "", "", models.Ticket{}))
+	return Render(w, r, tickets.Ticket(ticketToShow, LoggedInUser, LoggedInUserType, "update", "", "", models.Ticket{}))
 }

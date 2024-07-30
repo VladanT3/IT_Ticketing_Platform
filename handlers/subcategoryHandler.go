@@ -9,7 +9,7 @@ import (
 
 func GetSubcategories(w http.ResponseWriter, r *http.Request) error {
 	category := r.FormValue("category")
-	if category == "none" {
+	if category == "none" || category == "" {
 		return Render(w, r, layouts.Subcategories([]models.Subcategory{}))
 	}
 	subcategories := models.GetSubcategories(category)

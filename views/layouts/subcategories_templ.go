@@ -29,7 +29,7 @@ func Subcategories(subcategories []models.Subcategory) templ.Component {
 		}
 		ctx = templ.ClearChildren(ctx)
 		if len(subcategories) == 0 {
-			_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString("<select name=\"subcategory\" class=\"uk-select text-zinc-50\" id=\"subcategories\" disabled><option value=\"none\">Please select category</option></select>")
+			_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString("<select name=\"subcategory\" class=\"uk-select text-zinc-50\" id=\"subcategories\" disabled><option value=\"none\">Please select a category</option></select>")
 			if templ_7745c5c3_Err != nil {
 				return templ_7745c5c3_Err
 			}

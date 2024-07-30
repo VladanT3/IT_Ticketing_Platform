@@ -7,7 +7,7 @@ import (
 
 	"github.com/VladanT3/IT_Ticketing_Platform/internal/database"
 	"github.com/VladanT3/IT_Ticketing_Platform/models"
-	"github.com/VladanT3/IT_Ticketing_Platform/views/ticket"
+	"github.com/VladanT3/IT_Ticketing_Platform/views/tickets"
 	"github.com/google/uuid"
 )
 
@@ -72,7 +72,7 @@ func CreateTicketHandler(w http.ResponseWriter, r *http.Request) error {
 			Customer_Contact: customerContact,
 		}
 
-		return Render(w, r, ticket.Ticket(models.Ticket{}, LoggedInUser, LoggedInUserType, "create", "Please select a valid category!", "Please select a valid subcategory!", newTicket))
+		return Render(w, r, tickets.Ticket(models.Ticket{}, LoggedInUser, LoggedInUserType, "create", "Please select a valid category!", "Please select a valid subcategory!", newTicket))
 	}
 
 	var db *sql.DB = database.DB_Connection

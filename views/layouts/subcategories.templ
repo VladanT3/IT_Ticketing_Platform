@@ -5,7 +5,7 @@ import "github.com/VladanT3/IT_Ticketing_Platform/models"
 templ Subcategories(subcategories []models.Subcategory) {
 	if len(subcategories) == 0 {
 		<select name="subcategory" class="uk-select text-zinc-50" id="subcategories" disabled>
-			<option value="none">Please select category</option>
+			<option value="none">Please select a category</option>
 		</select>
 	} else {
 		<select name="subcategory" class="uk-select text-zinc-50" id="subcategories">

@@ -148,7 +148,7 @@ func Login(emailErr string, passErr string, email string, pass string) templ.Com
 					return templ_7745c5c3_Err
 				}
 			}
-			_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString("<label><input class=\"uk-checkbox border rounded-full border-zinc-50\" type=\"checkbox\" id=\"showPassword\"> Show password</label> <button class=\"uk-button bg-zinc-50 text-zinc-900 self-center mt-5\">Log In</button></form></div><div></div><div></div></div><div></div></div></div><script>\n\t\t\tconst showPassword = document.getElementById('showPassword');\n\t\t\tconst passInput = document.getElementById('passInput');\n\n\t\t\tshowPassword.addEventListener(\"change\", function () {\n\t\t\t\tif (showPassword.checked)\n\t\t\t\t\tpassInput.type = 'text';\n\t\t\t\telse\n\t\t\t\t\tpassInput.type = 'password';\n\t\t\t});\n\t\t</script>")
+			_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString("<label><input class=\"uk-checkbox border rounded-full border-zinc-50\" type=\"checkbox\" id=\"showPassword\"> Show password</label> <button class=\"uk-button bg-zinc-50 text-zinc-900 border border-zinc-50 self-center mt-5 hover:bg-zinc-900 hover:text-zinc-50\">Log In</button></form></div><div></div><div></div></div><div></div></div></div><script>\n\t\t\tconst showPassword = document.getElementById('showPassword');\n\t\t\tconst passInput = document.getElementById('passInput');\n\n\t\t\tshowPassword.addEventListener(\"change\", function () {\n\t\t\t\tif (showPassword.checked)\n\t\t\t\t\tpassInput.type = 'text';\n\t\t\t\telse\n\t\t\t\t\tpassInput.type = 'password';\n\t\t\t});\n\t\t</script>")
 			if templ_7745c5c3_Err != nil {
 				return templ_7745c5c3_Err
 			}
