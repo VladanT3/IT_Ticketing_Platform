@@ -1,0 +1,33 @@
+package layouts
+
+import (
+	"github.com/VladanT3/IT_Ticketing_Platform/models"
+	"strconv"
+)
+
+templ Tickets(tickets []models.Ticket) {
+	for _, ticket := range tickets {
+		<a href={ "/ticket/" + templ.SafeURL(ticket.Ticket_ID.String()) } style="margin-bottom: 0.5rem" class="border border-zinc-50 rounded-lg p-3 grid grid-rows-2 hover:border-zinc-900 hover:bg-zinc-50 hover:text-zinc-900 hover:cursor-pointer">
+			<div class="grid grid-cols-5">
+				<div class="col-span-4">
+					if ticket.Type == "Request" {
+						<span class="text-xl">REQ/{ strconv.Itoa(ticket.Ticket_Number) }</span>
+					} else {
+						<span class="text-xl">INC/{ strconv.Itoa(ticket.Ticket_Number) }</span>
+					}
+				</div>
+				<div class="col-span-1">
+					<span>Opened: { ticket.Opened_Date.Format("Mon 02/01 15:04") }</span>
+				</div>
+			</div>
+			<div class="grid grid-cols-5">
+				<div class="col-span-4">
+					<span>{ ticket.Title }</span>
+				</div>
+				<div class="col-span-1">
+					<span>Updated: { ticket.Updated_at.Format("Mon 02/01 15:04") }</span>
+				</div>
+			</div>
+		</a>
+	}
+}
