@@ -35,5 +35,4 @@ func main() {
 	port := os.Getenv("PORT")
 	fmt.Println("Server started on: http://localhost" + port)
 	log.Fatal(http.ListenAndServe(port, router))
-	//testing if git and development will work from laptop
 }
