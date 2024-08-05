@@ -29,7 +29,9 @@ func main() {
 	router.Get("/ticket/create", handlers.Make(handlers.CreateTicketHandler))
 	router.Get("/ticket/update", handlers.Make(handlers.UpdateTicketHandler))
 	router.Get("/ticket/{ticketID}", handlers.Make(handlers.ShowTicketHandler))
-	router.Get("/ticket/search", handlers.Make(handlers.ShowAllTicketSearchHandler))
+	router.Get("/tickets/search", handlers.Make(handlers.ShowAllTicketSearchHandler))
+	router.Get("/tickets/team", handlers.Make(handlers.ShowTeamTicketsHandler))
+	router.Get("/tickets/unassigned", handlers.Make(handlers.ShowUnassignedTicketsHandler))
 	router.Post("/searchTickets", handlers.Make(handlers.TicketSearchHandler))
 
 	port := os.Getenv("PORT")

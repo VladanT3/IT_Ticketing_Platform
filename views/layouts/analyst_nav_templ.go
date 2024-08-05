@@ -38,7 +38,7 @@ func Analyst_Nav() templ.Component {
 				}()
 			}
 			ctx = templ.InitializeContext(ctx)
-			_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString("<nav style=\"padding: 1rem\"><div class=\"uk-container\"><div uk-navbar class=\"flex flex-cols\"><div class=\"uk-navbar-left self-left\"><a href=\"/ticket/search\" class=\"uk-button hover:bg-zinc-50 hover:text-zinc-900\">Ticket Search</a> <button class=\"uk-button hover:bg-zinc-50 hover:text-zinc-900\">Unassigned Tickets</button></div><div class=\"uk-navbar-right self-right\"><a href=\"/profile\" class=\"uk-button hover:bg-zinc-50 hover:text-zinc-900\">Profile</a><form action=\"/logout\" method=\"POST\"><button class=\"uk-button hover:bg-zinc-50 hover:text-zinc-900 border border-zinc-50\">Log Out</button></form></div></div></div></nav><hr>")
+			_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString("<nav style=\"padding: 1rem\"><div class=\"uk-container\"><div uk-navbar class=\"flex flex-cols\"><div class=\"uk-navbar-left self-left\"><a href=\"/tickets/search\" class=\"uk-button hover:bg-zinc-50 hover:text-zinc-900\">Ticket Search</a> <a href=\"/tickets/unassigned\" class=\"uk-button hover:bg-zinc-50 hover:text-zinc-900\">Unassigned Tickets</a></div><div class=\"uk-navbar-right self-right\"><a href=\"/profile\" class=\"uk-button hover:bg-zinc-50 hover:text-zinc-900\">Profile</a><form action=\"/logout\" method=\"POST\"><button class=\"uk-button hover:bg-zinc-50 hover:text-zinc-900 border border-zinc-50\">Log Out</button></form></div></div></div></nav><hr>")
 			if templ_7745c5c3_Err != nil {
 				return templ_7745c5c3_Err
 			}
