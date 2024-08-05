@@ -29,7 +29,7 @@ func main() {
 	router.Get("/ticket/create", handlers.Make(handlers.CreateTicketHandler))
 	router.Get("/ticket/update", handlers.Make(handlers.UpdateTicketHandler))
 	router.Get("/ticket/{ticketID}", handlers.Make(handlers.ShowTicketHandler))
-	router.Get("/ticket/search", handlers.Make(handlers.ShowTicketsHandler))
+	router.Get("/ticket/search", handlers.Make(handlers.ShowAllTicketSearchHandler))
 	router.Post("/searchTickets", handlers.Make(handlers.TicketSearchHandler))
 
 	port := os.Getenv("PORT")

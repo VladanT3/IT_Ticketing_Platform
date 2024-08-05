@@ -14,8 +14,9 @@ func TicketSearchHandler(w http.ResponseWriter, r *http.Request) error {
 	status := r.FormValue("status")
 	category := r.FormValue("category")
 	subcategory := r.FormValue("subcategory")
+	searchType := r.FormValue("searchType")
 
-	tickets := models.FilterTickets(search, customer, ticketType, status, category, subcategory)
+	tickets := models.FilterTickets(search, customer, ticketType, status, category, subcategory, searchType, LoggedInUser.Team_ID.UUID.String())
 
 	return Render(w, r, layouts.Tickets(tickets))
 }

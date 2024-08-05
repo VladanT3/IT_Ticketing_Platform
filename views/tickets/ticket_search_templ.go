@@ -13,7 +13,7 @@ import (
 	"github.com/VladanT3/IT_Ticketing_Platform/views/layouts"
 )
 
-func TicketSearch(userType string, searchType string) templ.Component {
+func TicketSearch(currentUser models.Analyst, userType string, searchType string) templ.Component {
 	return templruntime.GeneratedTemplate(func(templ_7745c5c3_Input templruntime.GeneratedComponentInput) (templ_7745c5c3_Err error) {
 		templ_7745c5c3_W, ctx := templ_7745c5c3_Input.Writer, templ_7745c5c3_Input.Context
 		templ_7745c5c3_Buffer, templ_7745c5c3_IsBuffer := templruntime.GetBuffer(templ_7745c5c3_W)
@@ -56,7 +56,20 @@ func TicketSearch(userType string, searchType string) templ.Component {
 			if templ_7745c5c3_Err != nil {
 				return templ_7745c5c3_Err
 			}
-			_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString("</h1><hr></div><div class=\"grid grid-cols-5 mt-3\"><div class=\"col-span-1 grid grid-cols-5\"><form hx-post=\"/searchTickets\" hx-trigger=\"submit\" hx-swap=\"innerHTML\" hx-target=\"#tickets\" class=\"col-span-4 flex flex-col\"><div class=\"flex flex-col mt-3\"><label>Search:</label> <input type=\"text\" name=\"search\" class=\"uk-input text-zinc-50 text-base\"></div><div class=\"flex flex-col mt-3\"><label>Customer Search:</label> <input type=\"text\" name=\"customer\" class=\"uk-input text-zinc-50 text-base\"></div><div class=\"flex flex-col mt-3\"><label>Type:</label> <label><input type=\"radio\" name=\"type\" value=\"Both\" class=\"uk-checkbox border rounded-full border-zinc-50\" checked> Both</label> <label><input type=\"radio\" name=\"type\" value=\"Request\" class=\"uk-checkbox border rounded-full border-zinc-50\"> Request</label> <label><input type=\"radio\" name=\"type\" value=\"Incident\" class=\"uk-checkbox border rounded-full border-zinc-50\"> Incident</label></div><di class=\"flex flex-col mt-3\"><label>Status:</label> <label><input type=\"radio\" name=\"status\" value=\"Both\" class=\"uk-checkbox border rounded-full border-zinc-50\" checked> Both</label> <label><input type=\"radio\" name=\"status\" value=\"Open\" class=\"uk-checkbox border rounded-full border-zinc-50\"> Open</label> <label><input type=\"radio\" name=\"status\" value=\"Closed\" class=\"uk-checkbox border rounded-full border-zinc-50\"> Closed</label></di><div class=\"flex flex-col mt-3\"><label>Category:</label> <select name=\"category\" class=\"uk-select text-zinc-50\" hx-get=\"/getSubcategories\" hx-target=\"#subcategories\" hx-swap=\"outerHTML\" hx-trigger=\"change\"><option value=\"none\">Choose one...</option> ")
+			_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString("</h1><hr></div><div class=\"grid grid-cols-5 mt-3\"><div class=\"col-span-1 grid grid-cols-5\"><form hx-post=\"/searchTickets\" hx-trigger=\"submit\" hx-swap=\"innerHTML\" hx-target=\"#tickets\" class=\"col-span-4 flex flex-col\"><input type=\"hidden\" name=\"searchType\" value=\"")
+			if templ_7745c5c3_Err != nil {
+				return templ_7745c5c3_Err
+			}
+			var templ_7745c5c3_Var4 string
+			templ_7745c5c3_Var4, templ_7745c5c3_Err = templ.JoinStringErrs(searchType)
+			if templ_7745c5c3_Err != nil {
+				return templ.Error{Err: templ_7745c5c3_Err, FileName: `views/tickets/ticket_search.templ`, Line: 18, Col: 63}
+			}
+			_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString(templ.EscapeString(templ_7745c5c3_Var4))
+			if templ_7745c5c3_Err != nil {
+				return templ_7745c5c3_Err
+			}
+			_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString("\"><div class=\"flex flex-col mt-3\"><label>Search:</label> <input type=\"text\" name=\"search\" class=\"uk-input text-zinc-50 text-base\"></div><div class=\"flex flex-col mt-3\"><label>Customer Search:</label> <input type=\"text\" name=\"customer\" class=\"uk-input text-zinc-50 text-base\"></div><div class=\"flex flex-col mt-3\"><label>Type:</label> <label><input type=\"radio\" name=\"type\" value=\"Both\" class=\"uk-checkbox border rounded-full border-zinc-50\" checked> Both</label> <label><input type=\"radio\" name=\"type\" value=\"Request\" class=\"uk-checkbox border rounded-full border-zinc-50\"> Request</label> <label><input type=\"radio\" name=\"type\" value=\"Incident\" class=\"uk-checkbox border rounded-full border-zinc-50\"> Incident</label></div><di class=\"flex flex-col mt-3\"><label>Status:</label> <label><input type=\"radio\" name=\"status\" value=\"Both\" class=\"uk-checkbox border rounded-full border-zinc-50\" checked> Both</label> <label><input type=\"radio\" name=\"status\" value=\"Open\" class=\"uk-checkbox border rounded-full border-zinc-50\"> Open</label> <label><input type=\"radio\" name=\"status\" value=\"Closed\" class=\"uk-checkbox border rounded-full border-zinc-50\"> Closed</label></di><div class=\"flex flex-col mt-3\"><label>Category:</label> <select name=\"category\" class=\"uk-select text-zinc-50\" hx-get=\"/getSubcategories\" hx-target=\"#subcategories\" hx-swap=\"outerHTML\" hx-trigger=\"change\"><option value=\"none\">Choose one...</option> ")
 			if templ_7745c5c3_Err != nil {
 				return templ_7745c5c3_Err
 			}
@@ -65,12 +78,12 @@ func TicketSearch(userType string, searchType string) templ.Component {
 				if templ_7745c5c3_Err != nil {
 					return templ_7745c5c3_Err
 				}
-				var templ_7745c5c3_Var4 string
-				templ_7745c5c3_Var4, templ_7745c5c3_Err = templ.JoinStringErrs(category.Category_ID.String())
+				var templ_7745c5c3_Var5 string
+				templ_7745c5c3_Var5, templ_7745c5c3_Err = templ.JoinStringErrs(category.Category_ID.String())
 				if templ_7745c5c3_Err != nil {
-					return templ.Error{Err: templ_7745c5c3_Err, FileName: `views/tickets/ticket_search.templ`, Line: 43, Col: 54}
+					return templ.Error{Err: templ_7745c5c3_Err, FileName: `views/tickets/ticket_search.templ`, Line: 44, Col: 54}
 				}
-				_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString(templ.EscapeString(templ_7745c5c3_Var4))
+				_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString(templ.EscapeString(templ_7745c5c3_Var5))
 				if templ_7745c5c3_Err != nil {
 					return templ_7745c5c3_Err
 				}
@@ -78,12 +91,12 @@ func TicketSearch(userType string, searchType string) templ.Component {
 				if templ_7745c5c3_Err != nil {
 					return templ_7745c5c3_Err
 				}
-				var templ_7745c5c3_Var5 string
-				templ_7745c5c3_Var5, templ_7745c5c3_Err = templ.JoinStringErrs(category.Category_Name)
+				var templ_7745c5c3_Var6 string
+				templ_7745c5c3_Var6, templ_7745c5c3_Err = templ.JoinStringErrs(category.Category_Name)
 				if templ_7745c5c3_Err != nil {
-					return templ.Error{Err: templ_7745c5c3_Err, FileName: `views/tickets/ticket_search.templ`, Line: 43, Col: 81}
+					return templ.Error{Err: templ_7745c5c3_Err, FileName: `views/tickets/ticket_search.templ`, Line: 44, Col: 81}
 				}
-				_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString(templ.EscapeString(templ_7745c5c3_Var5))
+				_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString(templ.EscapeString(templ_7745c5c3_Var6))
 				if templ_7745c5c3_Err != nil {
 					return templ_7745c5c3_Err
 				}
@@ -96,9 +109,21 @@ func TicketSearch(userType string, searchType string) templ.Component {
 			if templ_7745c5c3_Err != nil {
 				return templ_7745c5c3_Err
 			}
-			templ_7745c5c3_Err = layouts.Tickets(models.GetAllTickets()).Render(ctx, templ_7745c5c3_Buffer)
-			if templ_7745c5c3_Err != nil {
-				return templ_7745c5c3_Err
+			if searchType == "All Ticket Search" {
+				templ_7745c5c3_Err = layouts.Tickets(models.GetAllTickets()).Render(ctx, templ_7745c5c3_Buffer)
+				if templ_7745c5c3_Err != nil {
+					return templ_7745c5c3_Err
+				}
+			} else if searchType == "Unassigned Tickets" {
+				templ_7745c5c3_Err = layouts.Tickets(models.GetTeamsUnassignedTickets(currentUser.Team_ID.UUID.String())).Render(ctx, templ_7745c5c3_Buffer)
+				if templ_7745c5c3_Err != nil {
+					return templ_7745c5c3_Err
+				}
+			} else if searchType == "Team Tickets" && models.IsUserManager(currentUser.Analyst_ID.String()) {
+				templ_7745c5c3_Err = layouts.Tickets(models.GetTeamTickets(currentUser.Team_ID.UUID.String())).Render(ctx, templ_7745c5c3_Buffer)
+				if templ_7745c5c3_Err != nil {
+					return templ_7745c5c3_Err
+				}
 			}
 			_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString("</div></div></div>")
 			if templ_7745c5c3_Err != nil {
