@@ -23,7 +23,7 @@ func main() {
 	router.Post("/login", handlers.Make(handlers.LoginHandler))
 	router.Post("/logout", handlers.Make(handlers.LogoutHandler))
 	router.Get("/profile", handlers.Make(handlers.ProfileHandler))
-	router.Get("/getSubcategories", handlers.Make(handlers.GetSubcategories))
+	router.Get("/get_subcategories", handlers.Make(handlers.GetSubcategories))
 	router.Post("/ticket", handlers.Make(handlers.TicketHandler))
 	router.Get("/ticket/new", handlers.Make(handlers.NewTicketHandler))
 	router.Get("/ticket/create", handlers.Make(handlers.CreateTicketHandler))
@@ -32,7 +32,7 @@ func main() {
 	router.Get("/tickets/search", handlers.Make(handlers.ShowAllTicketSearchHandler))
 	router.Get("/tickets/team", handlers.Make(handlers.ShowTeamTicketsHandler))
 	router.Get("/tickets/unassigned", handlers.Make(handlers.ShowUnassignedTicketsHandler))
-	router.Post("/searchTickets", handlers.Make(handlers.TicketSearchHandler))
+	router.Post("/search_tickets", handlers.Make(handlers.TicketSearchHandler))
 
 	port := os.Getenv("PORT")
 	fmt.Println("Server started on: http://localhost" + port)

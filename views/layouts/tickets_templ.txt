@@ -1,0 +1,10 @@
+<a href=\"
+\" style=\"margin-bottom: 0.5rem\" class=\"border border-zinc-50 rounded-lg p-3 grid grid-rows-2 hover:border-zinc-900 hover:bg-zinc-50 hover:text-zinc-900 hover:cursor-pointer\"><div class=\"grid grid-cols-5\"><div class=\"col-span-4\">
+<span class=\"text-xl\">REQ/
+</span>
+<span class=\"text-xl\">INC/
+</span>
+</div><div class=\"col-span-1\"><span>Opened: 
+</span></div></div><div class=\"grid grid-cols-5\"><div class=\"col-span-4\"><span>
+</span></div><div class=\"col-span-1\"><span>Updated: 
+</span></div></div></a>

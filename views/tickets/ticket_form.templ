@@ -113,7 +113,7 @@ templ Ticket(ticket models.Ticket, currentUser models.Analyst, userType string, 
 								<label>Category:</label>
 								if mode == "update" {
 									if categoryError == "" {
-										<select name="category" class="uk-select text-zinc-50" hx-get="/getSubcategories" hx-target="#subcategories" hx-swap="outerHTML" hx-trigger="change">
+										<select name="category" class="uk-select text-zinc-50" hx-get="/get_subcategories" hx-target="#subcategories" hx-swap="outerHTML" hx-trigger="change">
 											<option value="none">Select...</option>
 											for _, category := range models.GetAllCategories() {
 												if newTicket.Category.UUID == category.Category_ID {
@@ -128,7 +128,7 @@ templ Ticket(ticket models.Ticket, currentUser models.Analyst, userType string, 
 											}
 										</select>
 									} else {
-										<select name="category" class="uk-select text-zinc-50 border border-red-600" hx-get="/getSubcategories" hx-target="#subcategories" hx-swap="outerHTML" hx-trigger="change">
+										<select name="category" class="uk-select text-zinc-50 border border-red-600" hx-get="/get_subcategories" hx-target="#subcategories" hx-swap="outerHTML" hx-trigger="change">
 											<option value="none">Select...</option>
 											for _, category := range models.GetAllCategories() {
 												if newTicket.Category.UUID == category.Category_ID {
@@ -146,7 +146,7 @@ templ Ticket(ticket models.Ticket, currentUser models.Analyst, userType string, 
 									}
 								} else if mode == "create" {
 									if categoryError == "" {
-										<select name="category" class="uk-select text-zinc-50" hx-get="/getSubcategories" hx-target="#subcategories" hx-swap="outerHTML" hx-trigger="change">
+										<select name="category" class="uk-select text-zinc-50" hx-get="/get_subcategories" hx-target="#subcategories" hx-swap="outerHTML" hx-trigger="change">
 											<option value="none">Select...</option>
 											for _, category := range models.GetAllCategories() {
 												if newTicket.Category.UUID == category.Category_ID {
@@ -157,7 +157,7 @@ templ Ticket(ticket models.Ticket, currentUser models.Analyst, userType string, 
 											}
 										</select>
 									} else {
-										<select name="category" class="uk-select text-zinc-50 border border-red-600" hx-get="/getSubcategories" hx-target="#subcategories" hx-swap="outerHTML" hx-trigger="change">
+										<select name="category" class="uk-select text-zinc-50 border border-red-600" hx-get="/get_subcategories" hx-target="#subcategories" hx-swap="outerHTML" hx-trigger="change">
 											<option value="none">Select...</option>
 											for _, category := range models.GetAllCategories() {
 												if newTicket.Category.UUID == category.Category_ID {
