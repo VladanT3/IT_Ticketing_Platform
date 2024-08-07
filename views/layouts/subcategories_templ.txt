@@ -1,6 +1,0 @@
-<select name=\"subcategory\" class=\"uk-select text-zinc-50\" id=\"subcategories\" disabled><option value=\"none\">Please select a category</option></select>
-<select name=\"subcategory\" class=\"uk-select text-zinc-50\" id=\"subcategories\">
-<option value=\"
-\">
-</option>
-</select>

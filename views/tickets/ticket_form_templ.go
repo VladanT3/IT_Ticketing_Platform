@@ -45,7 +45,7 @@ func Ticket(ticket models.Ticket, currentUser models.Analyst, userType string, m
 				}()
 			}
 			ctx = templ.InitializeContext(ctx)
-			templ_7745c5c3_Err = templ.WriteWatchModeString(templ_7745c5c3_Buffer, 1)
+			_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString("<div class=\"container mx-auto mt-5\"><form action=\"/ticket\" method=\"POST\" class=\"grid grid-cols-5\"><input type=\"hidden\" value=\"")
 			if templ_7745c5c3_Err != nil {
 				return templ_7745c5c3_Err
 			}
@@ -58,7 +58,7 @@ func Ticket(ticket models.Ticket, currentUser models.Analyst, userType string, m
 			if templ_7745c5c3_Err != nil {
 				return templ_7745c5c3_Err
 			}
-			templ_7745c5c3_Err = templ.WriteWatchModeString(templ_7745c5c3_Buffer, 2)
+			_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString("\" name=\"mode\"> <input type=\"hidden\" value=\"")
 			if templ_7745c5c3_Err != nil {
 				return templ_7745c5c3_Err
 			}
@@ -71,80 +71,80 @@ func Ticket(ticket models.Ticket, currentUser models.Analyst, userType string, m
 			if templ_7745c5c3_Err != nil {
 				return templ_7745c5c3_Err
 			}
-			templ_7745c5c3_Err = templ.WriteWatchModeString(templ_7745c5c3_Buffer, 3)
+			_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString("\" name=\"ticketID\"><div class=\"col-span-1 grid grid-cols-5\"><div class=\"flex flex-col col-span-4\"><button type=\"submit\" name=\"saveType\" class=\"uk-button uk-width-1-1 bg-zinc-50 text-zinc-900 border border-zinc-50 hover:bg-zinc-900 hover:text-zinc-50\" value=\"Save\">Save</button> <button type=\"submit\" name=\"saveType\" class=\"uk-button uk-width-1-1 bg-zinc-50 text-zinc-900 border border-zinc-50 hover:bg-zinc-900 hover:text-zinc-50 mt-3\" value=\"Save and Exit\">Save and Exit</button> ")
 			if templ_7745c5c3_Err != nil {
 				return templ_7745c5c3_Err
 			}
 			if mode == "update" {
-				templ_7745c5c3_Err = templ.WriteWatchModeString(templ_7745c5c3_Buffer, 4)
+				_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString("<button type=\"button\" class=\"uk-button uk-width-1-1 bg-zinc-50 text-zinc-900 border border-zinc-50 hover:bg-zinc-900 hover:text-zinc-50 mt-3\">Close Ticket</button> ")
 				if templ_7745c5c3_Err != nil {
 					return templ_7745c5c3_Err
 				}
 				if ticket.Status == "Closed" {
-					templ_7745c5c3_Err = templ.WriteWatchModeString(templ_7745c5c3_Buffer, 5)
+					_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString("<button type=\"button\" class=\"uk-button uk-width-1-1 bg-zinc-50 text-zinc-900 border border-zinc-50 hover:bg-zinc-900 hover:text-zinc-50 mt-3\">Reopen</button>")
 					if templ_7745c5c3_Err != nil {
 						return templ_7745c5c3_Err
 					}
 				}
-				templ_7745c5c3_Err = templ.WriteWatchModeString(templ_7745c5c3_Buffer, 6)
+				_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString(" ")
 				if templ_7745c5c3_Err != nil {
 					return templ_7745c5c3_Err
 				}
 				if models.GetAnalyst(ticket.Assigned_Analyst.UUID.String()).Analyst_ID != currentUser.Analyst_ID {
 					if !ticket.Assigned_Analyst.Valid {
-						templ_7745c5c3_Err = templ.WriteWatchModeString(templ_7745c5c3_Buffer, 7)
+						_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString("<button type=\"button\" class=\"uk-button uk-width-1-1 bg-zinc-50 text-zinc-900 border border-zinc-50 hover:bg-zinc-900 hover:text-zinc-50 mt-3\">Assign to Me</button>")
 						if templ_7745c5c3_Err != nil {
 							return templ_7745c5c3_Err
 						}
 					} else if models.IsUserManager(currentUser.Analyst_ID.String()) && currentUser.Analyst_ID == models.GetTeam(ticket.Assigned_Team.UUID.String()).Manager_ID.UUID {
-						templ_7745c5c3_Err = templ.WriteWatchModeString(templ_7745c5c3_Buffer, 8)
+						_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString("<button type=\"button\" class=\"uk-button uk-width-1-1 bg-zinc-50 text-zinc-900 border border-zinc-50 hover:bg-zinc-900 hover:text-zinc-50 mt-3\">Assign to Me</button>")
 						if templ_7745c5c3_Err != nil {
 							return templ_7745c5c3_Err
 						}
 					}
 				}
-				templ_7745c5c3_Err = templ.WriteWatchModeString(templ_7745c5c3_Buffer, 9)
+				_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString(" ")
 				if templ_7745c5c3_Err != nil {
 					return templ_7745c5c3_Err
 				}
 				if models.GetAnalyst(ticket.Assigned_Analyst.UUID.String()).Analyst_ID == currentUser.Analyst_ID {
-					templ_7745c5c3_Err = templ.WriteWatchModeString(templ_7745c5c3_Buffer, 10)
+					_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString("<button type=\"button\" class=\"uk-button uk-width-1-1 bg-zinc-50 text-zinc-900 border border-zinc-50 hover:bg-zinc-900 hover:text-zinc-50 mt-3\">Assign Ticket</button>")
 					if templ_7745c5c3_Err != nil {
 						return templ_7745c5c3_Err
 					}
 				} else if !ticket.Assigned_Analyst.Valid {
-					templ_7745c5c3_Err = templ.WriteWatchModeString(templ_7745c5c3_Buffer, 11)
+					_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString("<button type=\"button\" class=\"uk-button uk-width-1-1 bg-zinc-50 text-zinc-900 border border-zinc-50 hover:bg-zinc-900 hover:text-zinc-50 mt-3\">Assign Ticket</button>")
 					if templ_7745c5c3_Err != nil {
 						return templ_7745c5c3_Err
 					}
 				} else if models.IsUserManager(currentUser.Analyst_ID.String()) && currentUser.Analyst_ID == models.GetTeam(ticket.Assigned_Team.UUID.String()).Manager_ID.UUID {
-					templ_7745c5c3_Err = templ.WriteWatchModeString(templ_7745c5c3_Buffer, 12)
+					_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString("<button type=\"button\" class=\"uk-button uk-width-1-1 bg-zinc-50 text-zinc-900 border border-zinc-50 hover:bg-zinc-900 hover:text-zinc-50 mt-3\">Assign Ticket</button>")
 					if templ_7745c5c3_Err != nil {
 						return templ_7745c5c3_Err
 					}
 				}
-				templ_7745c5c3_Err = templ.WriteWatchModeString(templ_7745c5c3_Buffer, 13)
+				_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString(" ")
 				if templ_7745c5c3_Err != nil {
 					return templ_7745c5c3_Err
 				}
 				if models.IsUserManager(currentUser.Analyst_ID.String()) && currentUser.Analyst_ID == models.GetTeam(ticket.Assigned_Team.UUID.String()).Manager_ID.UUID {
-					templ_7745c5c3_Err = templ.WriteWatchModeString(templ_7745c5c3_Buffer, 14)
+					_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString("<button type=\"button\" class=\"uk-button uk-width-1-1 bg-zinc-900 text-red-600 border border-red-600 hover:bg-red-600 hover:text-zinc-900 mt-3\">Delete Ticket</button>")
 					if templ_7745c5c3_Err != nil {
 						return templ_7745c5c3_Err
 					}
 				}
 			}
-			templ_7745c5c3_Err = templ.WriteWatchModeString(templ_7745c5c3_Buffer, 15)
+			_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString("</div><div class=\"uk-divider-vertical min-h-full\"></div></div><div class=\"col-span-4\"><div class=\"flex flex-col\">")
 			if templ_7745c5c3_Err != nil {
 				return templ_7745c5c3_Err
 			}
 			if mode == "update" {
-				templ_7745c5c3_Err = templ.WriteWatchModeString(templ_7745c5c3_Buffer, 16)
+				_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString("<div class=\"grid grid-cols-4\"><div class=\"col-span-3\">")
 				if templ_7745c5c3_Err != nil {
 					return templ_7745c5c3_Err
 				}
 				if ticket.Type == "Request" {
-					templ_7745c5c3_Err = templ.WriteWatchModeString(templ_7745c5c3_Buffer, 17)
+					_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString("<span class=\"text-xl\">REQ/")
 					if templ_7745c5c3_Err != nil {
 						return templ_7745c5c3_Err
 					}
@@ -157,12 +157,12 @@ func Ticket(ticket models.Ticket, currentUser models.Analyst, userType string, m
 					if templ_7745c5c3_Err != nil {
 						return templ_7745c5c3_Err
 					}
-					templ_7745c5c3_Err = templ.WriteWatchModeString(templ_7745c5c3_Buffer, 18)
+					_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString("</span>")
 					if templ_7745c5c3_Err != nil {
 						return templ_7745c5c3_Err
 					}
 				} else {
-					templ_7745c5c3_Err = templ.WriteWatchModeString(templ_7745c5c3_Buffer, 19)
+					_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString("<span class=\"text-xl\">INC/")
 					if templ_7745c5c3_Err != nil {
 						return templ_7745c5c3_Err
 					}
@@ -175,12 +175,12 @@ func Ticket(ticket models.Ticket, currentUser models.Analyst, userType string, m
 					if templ_7745c5c3_Err != nil {
 						return templ_7745c5c3_Err
 					}
-					templ_7745c5c3_Err = templ.WriteWatchModeString(templ_7745c5c3_Buffer, 20)
+					_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString("</span>")
 					if templ_7745c5c3_Err != nil {
 						return templ_7745c5c3_Err
 					}
 				}
-				templ_7745c5c3_Err = templ.WriteWatchModeString(templ_7745c5c3_Buffer, 21)
+				_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString("</div><div><span class=\"border border-zinc-50 rounded-full\" style=\"padding-top: 0.25rem; padding-bottom: 0.25rem; padding-right: 1rem; padding-left: 1rem; user-select: none;\">")
 				if templ_7745c5c3_Err != nil {
 					return templ_7745c5c3_Err
 				}
@@ -193,34 +193,34 @@ func Ticket(ticket models.Ticket, currentUser models.Analyst, userType string, m
 				if templ_7745c5c3_Err != nil {
 					return templ_7745c5c3_Err
 				}
-				templ_7745c5c3_Err = templ.WriteWatchModeString(templ_7745c5c3_Buffer, 22)
+				_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString("</span></div></div><hr class=\"mt-5 mb-3\">")
 				if templ_7745c5c3_Err != nil {
 					return templ_7745c5c3_Err
 				}
 			}
-			templ_7745c5c3_Err = templ.WriteWatchModeString(templ_7745c5c3_Buffer, 23)
+			_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString("<div class=\"grid grid-cols-4\"><div><label>Ticket type:</label> <select name=\"ticketType\" class=\"uk-select text-zinc-50\">")
 			if templ_7745c5c3_Err != nil {
 				return templ_7745c5c3_Err
 			}
 			if mode == "update" {
 				if newTicket.Type == "Request" {
-					templ_7745c5c3_Err = templ.WriteWatchModeString(templ_7745c5c3_Buffer, 24)
+					_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString("<option value=\"Request\" selected>Request</option> <option value=\"Incident\">Incident</option>")
 					if templ_7745c5c3_Err != nil {
 						return templ_7745c5c3_Err
 					}
 				} else if newTicket.Type == "Incident" {
-					templ_7745c5c3_Err = templ.WriteWatchModeString(templ_7745c5c3_Buffer, 25)
+					_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString("<option value=\"Request\">Request</option> <option value=\"Incident\" selected>Incident</option>")
 					if templ_7745c5c3_Err != nil {
 						return templ_7745c5c3_Err
 					}
 				} else {
 					if ticket.Type == "Request" {
-						templ_7745c5c3_Err = templ.WriteWatchModeString(templ_7745c5c3_Buffer, 26)
+						_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString("<option value=\"Request\" selected>Request</option> <option value=\"Incident\">Incident</option>")
 						if templ_7745c5c3_Err != nil {
 							return templ_7745c5c3_Err
 						}
 					} else if ticket.Type == "Incident" {
-						templ_7745c5c3_Err = templ.WriteWatchModeString(templ_7745c5c3_Buffer, 27)
+						_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString("<option value=\"Request\">Request</option> <option value=\"Incident\" selected>Incident</option>")
 						if templ_7745c5c3_Err != nil {
 							return templ_7745c5c3_Err
 						}
@@ -228,29 +228,29 @@ func Ticket(ticket models.Ticket, currentUser models.Analyst, userType string, m
 				}
 			} else if mode == "create" {
 				if newTicket.Type == "Request" {
-					templ_7745c5c3_Err = templ.WriteWatchModeString(templ_7745c5c3_Buffer, 28)
+					_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString("<option value=\"Request\" selected>Request</option> <option value=\"Incident\">Incident</option>")
 					if templ_7745c5c3_Err != nil {
 						return templ_7745c5c3_Err
 					}
 				} else if newTicket.Type == "Incident" {
-					templ_7745c5c3_Err = templ.WriteWatchModeString(templ_7745c5c3_Buffer, 29)
+					_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString("<option value=\"Request\">Request</option> <option value=\"Incident\" selected>Incident</option>")
 					if templ_7745c5c3_Err != nil {
 						return templ_7745c5c3_Err
 					}
 				} else {
-					templ_7745c5c3_Err = templ.WriteWatchModeString(templ_7745c5c3_Buffer, 30)
+					_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString("<option value=\"Request\">Request</option> <option value=\"Incident\">Incident</option>")
 					if templ_7745c5c3_Err != nil {
 						return templ_7745c5c3_Err
 					}
 				}
 			}
-			templ_7745c5c3_Err = templ.WriteWatchModeString(templ_7745c5c3_Buffer, 31)
+			_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString("</select></div><div></div><div><label>Customer contact:</label> ")
 			if templ_7745c5c3_Err != nil {
 				return templ_7745c5c3_Err
 			}
 			if mode == "update" {
 				if newTicket.Customer_Contact != "" {
-					templ_7745c5c3_Err = templ.WriteWatchModeString(templ_7745c5c3_Buffer, 32)
+					_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString("<input name=\"customerContact\" class=\"uk-input text-zinc-50 text-base\" type=\"text\" value=\"")
 					if templ_7745c5c3_Err != nil {
 						return templ_7745c5c3_Err
 					}
@@ -263,12 +263,12 @@ func Ticket(ticket models.Ticket, currentUser models.Analyst, userType string, m
 					if templ_7745c5c3_Err != nil {
 						return templ_7745c5c3_Err
 					}
-					templ_7745c5c3_Err = templ.WriteWatchModeString(templ_7745c5c3_Buffer, 33)
+					_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString("\" required>")
 					if templ_7745c5c3_Err != nil {
 						return templ_7745c5c3_Err
 					}
 				} else {
-					templ_7745c5c3_Err = templ.WriteWatchModeString(templ_7745c5c3_Buffer, 34)
+					_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString("<input name=\"customerContact\" class=\"uk-input text-zinc-50 text-base\" type=\"text\" value=\"")
 					if templ_7745c5c3_Err != nil {
 						return templ_7745c5c3_Err
 					}
@@ -281,13 +281,13 @@ func Ticket(ticket models.Ticket, currentUser models.Analyst, userType string, m
 					if templ_7745c5c3_Err != nil {
 						return templ_7745c5c3_Err
 					}
-					templ_7745c5c3_Err = templ.WriteWatchModeString(templ_7745c5c3_Buffer, 35)
+					_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString("\" required>")
 					if templ_7745c5c3_Err != nil {
 						return templ_7745c5c3_Err
 					}
 				}
 			} else if mode == "create" {
-				templ_7745c5c3_Err = templ.WriteWatchModeString(templ_7745c5c3_Buffer, 36)
+				_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString("<input name=\"customerContact\" class=\"uk-input text-zinc-50 text-base\" type=\"text\" value=\"")
 				if templ_7745c5c3_Err != nil {
 					return templ_7745c5c3_Err
 				}
@@ -300,24 +300,24 @@ func Ticket(ticket models.Ticket, currentUser models.Analyst, userType string, m
 				if templ_7745c5c3_Err != nil {
 					return templ_7745c5c3_Err
 				}
-				templ_7745c5c3_Err = templ.WriteWatchModeString(templ_7745c5c3_Buffer, 37)
+				_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString("\" required>")
 				if templ_7745c5c3_Err != nil {
 					return templ_7745c5c3_Err
 				}
 			}
-			templ_7745c5c3_Err = templ.WriteWatchModeString(templ_7745c5c3_Buffer, 38)
+			_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString("</div></div><div class=\"grid grid-cols-4 mt-3\"><div><label>Category:</label> ")
 			if templ_7745c5c3_Err != nil {
 				return templ_7745c5c3_Err
 			}
 			if mode == "update" {
 				if categoryError == "" {
-					templ_7745c5c3_Err = templ.WriteWatchModeString(templ_7745c5c3_Buffer, 39)
+					_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString("<select name=\"category\" class=\"uk-select text-zinc-50\" hx-get=\"/get_subcategories\" hx-target=\"#subcategories\" hx-swap=\"outerHTML\" hx-trigger=\"change\"><option value=\"none\">Select...</option> ")
 					if templ_7745c5c3_Err != nil {
 						return templ_7745c5c3_Err
 					}
 					for _, category := range models.GetAllCategories() {
 						if newTicket.Category.UUID == category.Category_ID {
-							templ_7745c5c3_Err = templ.WriteWatchModeString(templ_7745c5c3_Buffer, 40)
+							_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString("<option value=\"")
 							if templ_7745c5c3_Err != nil {
 								return templ_7745c5c3_Err
 							}
@@ -330,7 +330,7 @@ func Ticket(ticket models.Ticket, currentUser models.Analyst, userType string, m
 							if templ_7745c5c3_Err != nil {
 								return templ_7745c5c3_Err
 							}
-							templ_7745c5c3_Err = templ.WriteWatchModeString(templ_7745c5c3_Buffer, 41)
+							_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString("\" selected>")
 							if templ_7745c5c3_Err != nil {
 								return templ_7745c5c3_Err
 							}
@@ -343,13 +343,13 @@ func Ticket(ticket models.Ticket, currentUser models.Analyst, userType string, m
 							if templ_7745c5c3_Err != nil {
 								return templ_7745c5c3_Err
 							}
-							templ_7745c5c3_Err = templ.WriteWatchModeString(templ_7745c5c3_Buffer, 42)
+							_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString("</option>")
 							if templ_7745c5c3_Err != nil {
 								return templ_7745c5c3_Err
 							}
 						} else {
 							if ticket.Category.UUID == category.Category_ID {
-								templ_7745c5c3_Err = templ.WriteWatchModeString(templ_7745c5c3_Buffer, 43)
+								_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString("<option value=\"")
 								if templ_7745c5c3_Err != nil {
 									return templ_7745c5c3_Err
 								}
@@ -362,7 +362,7 @@ func Ticket(ticket models.Ticket, currentUser models.Analyst, userType string, m
 								if templ_7745c5c3_Err != nil {
 									return templ_7745c5c3_Err
 								}
-								templ_7745c5c3_Err = templ.WriteWatchModeString(templ_7745c5c3_Buffer, 44)
+								_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString("\" selected>")
 								if templ_7745c5c3_Err != nil {
 									return templ_7745c5c3_Err
 								}
@@ -375,12 +375,12 @@ func Ticket(ticket models.Ticket, currentUser models.Analyst, userType string, m
 								if templ_7745c5c3_Err != nil {
 									return templ_7745c5c3_Err
 								}
-								templ_7745c5c3_Err = templ.WriteWatchModeString(templ_7745c5c3_Buffer, 45)
+								_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString("</option>")
 								if templ_7745c5c3_Err != nil {
 									return templ_7745c5c3_Err
 								}
 							} else {
-								templ_7745c5c3_Err = templ.WriteWatchModeString(templ_7745c5c3_Buffer, 46)
+								_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString("<option value=\"")
 								if templ_7745c5c3_Err != nil {
 									return templ_7745c5c3_Err
 								}
@@ -393,7 +393,7 @@ func Ticket(ticket models.Ticket, currentUser models.Analyst, userType string, m
 								if templ_7745c5c3_Err != nil {
 									return templ_7745c5c3_Err
 								}
-								templ_7745c5c3_Err = templ.WriteWatchModeString(templ_7745c5c3_Buffer, 47)
+								_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString("\">")
 								if templ_7745c5c3_Err != nil {
 									return templ_7745c5c3_Err
 								}
@@ -406,25 +406,25 @@ func Ticket(ticket models.Ticket, currentUser models.Analyst, userType string, m
 								if templ_7745c5c3_Err != nil {
 									return templ_7745c5c3_Err
 								}
-								templ_7745c5c3_Err = templ.WriteWatchModeString(templ_7745c5c3_Buffer, 48)
+								_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString("</option>")
 								if templ_7745c5c3_Err != nil {
 									return templ_7745c5c3_Err
 								}
 							}
 						}
 					}
-					templ_7745c5c3_Err = templ.WriteWatchModeString(templ_7745c5c3_Buffer, 49)
+					_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString("</select>")
 					if templ_7745c5c3_Err != nil {
 						return templ_7745c5c3_Err
 					}
 				} else {
-					templ_7745c5c3_Err = templ.WriteWatchModeString(templ_7745c5c3_Buffer, 50)
+					_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString("<select name=\"category\" class=\"uk-select text-zinc-50 border border-red-600\" hx-get=\"/get_subcategories\" hx-target=\"#subcategories\" hx-swap=\"outerHTML\" hx-trigger=\"change\"><option value=\"none\">Select...</option> ")
 					if templ_7745c5c3_Err != nil {
 						return templ_7745c5c3_Err
 					}
 					for _, category := range models.GetAllCategories() {
 						if newTicket.Category.UUID == category.Category_ID {
-							templ_7745c5c3_Err = templ.WriteWatchModeString(templ_7745c5c3_Buffer, 51)
+							_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString("<option value=\"")
 							if templ_7745c5c3_Err != nil {
 								return templ_7745c5c3_Err
 							}
@@ -437,7 +437,7 @@ func Ticket(ticket models.Ticket, currentUser models.Analyst, userType string, m
 							if templ_7745c5c3_Err != nil {
 								return templ_7745c5c3_Err
 							}
-							templ_7745c5c3_Err = templ.WriteWatchModeString(templ_7745c5c3_Buffer, 52)
+							_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString("\" selected>")
 							if templ_7745c5c3_Err != nil {
 								return templ_7745c5c3_Err
 							}
@@ -450,13 +450,13 @@ func Ticket(ticket models.Ticket, currentUser models.Analyst, userType string, m
 							if templ_7745c5c3_Err != nil {
 								return templ_7745c5c3_Err
 							}
-							templ_7745c5c3_Err = templ.WriteWatchModeString(templ_7745c5c3_Buffer, 53)
+							_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString("</option>")
 							if templ_7745c5c3_Err != nil {
 								return templ_7745c5c3_Err
 							}
 						} else {
 							if ticket.Category.UUID == category.Category_ID {
-								templ_7745c5c3_Err = templ.WriteWatchModeString(templ_7745c5c3_Buffer, 54)
+								_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString("<option value=\"")
 								if templ_7745c5c3_Err != nil {
 									return templ_7745c5c3_Err
 								}
@@ -469,7 +469,7 @@ func Ticket(ticket models.Ticket, currentUser models.Analyst, userType string, m
 								if templ_7745c5c3_Err != nil {
 									return templ_7745c5c3_Err
 								}
-								templ_7745c5c3_Err = templ.WriteWatchModeString(templ_7745c5c3_Buffer, 55)
+								_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString("\" selected>")
 								if templ_7745c5c3_Err != nil {
 									return templ_7745c5c3_Err
 								}
@@ -482,12 +482,12 @@ func Ticket(ticket models.Ticket, currentUser models.Analyst, userType string, m
 								if templ_7745c5c3_Err != nil {
 									return templ_7745c5c3_Err
 								}
-								templ_7745c5c3_Err = templ.WriteWatchModeString(templ_7745c5c3_Buffer, 56)
+								_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString("</option>")
 								if templ_7745c5c3_Err != nil {
 									return templ_7745c5c3_Err
 								}
 							} else {
-								templ_7745c5c3_Err = templ.WriteWatchModeString(templ_7745c5c3_Buffer, 57)
+								_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString("<option value=\"")
 								if templ_7745c5c3_Err != nil {
 									return templ_7745c5c3_Err
 								}
@@ -500,7 +500,7 @@ func Ticket(ticket models.Ticket, currentUser models.Analyst, userType string, m
 								if templ_7745c5c3_Err != nil {
 									return templ_7745c5c3_Err
 								}
-								templ_7745c5c3_Err = templ.WriteWatchModeString(templ_7745c5c3_Buffer, 58)
+								_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString("\">")
 								if templ_7745c5c3_Err != nil {
 									return templ_7745c5c3_Err
 								}
@@ -513,14 +513,14 @@ func Ticket(ticket models.Ticket, currentUser models.Analyst, userType string, m
 								if templ_7745c5c3_Err != nil {
 									return templ_7745c5c3_Err
 								}
-								templ_7745c5c3_Err = templ.WriteWatchModeString(templ_7745c5c3_Buffer, 59)
+								_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString("</option>")
 								if templ_7745c5c3_Err != nil {
 									return templ_7745c5c3_Err
 								}
 							}
 						}
 					}
-					templ_7745c5c3_Err = templ.WriteWatchModeString(templ_7745c5c3_Buffer, 60)
+					_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString("</select> <label class=\"text-red-600\">")
 					if templ_7745c5c3_Err != nil {
 						return templ_7745c5c3_Err
 					}
@@ -533,20 +533,20 @@ func Ticket(ticket models.Ticket, currentUser models.Analyst, userType string, m
 					if templ_7745c5c3_Err != nil {
 						return templ_7745c5c3_Err
 					}
-					templ_7745c5c3_Err = templ.WriteWatchModeString(templ_7745c5c3_Buffer, 61)
+					_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString("</label>")
 					if templ_7745c5c3_Err != nil {
 						return templ_7745c5c3_Err
 					}
 				}
 			} else if mode == "create" {
 				if categoryError == "" {
-					templ_7745c5c3_Err = templ.WriteWatchModeString(templ_7745c5c3_Buffer, 62)
+					_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString("<select name=\"category\" class=\"uk-select text-zinc-50\" hx-get=\"/get_subcategories\" hx-target=\"#subcategories\" hx-swap=\"outerHTML\" hx-trigger=\"change\"><option value=\"none\">Select...</option> ")
 					if templ_7745c5c3_Err != nil {
 						return templ_7745c5c3_Err
 					}
 					for _, category := range models.GetAllCategories() {
 						if newTicket.Category.UUID == category.Category_ID {
-							templ_7745c5c3_Err = templ.WriteWatchModeString(templ_7745c5c3_Buffer, 63)
+							_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString("<option value=\"")
 							if templ_7745c5c3_Err != nil {
 								return templ_7745c5c3_Err
 							}
@@ -559,7 +559,7 @@ func Ticket(ticket models.Ticket, currentUser models.Analyst, userType string, m
 							if templ_7745c5c3_Err != nil {
 								return templ_7745c5c3_Err
 							}
-							templ_7745c5c3_Err = templ.WriteWatchModeString(templ_7745c5c3_Buffer, 64)
+							_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString("\" selected>")
 							if templ_7745c5c3_Err != nil {
 								return templ_7745c5c3_Err
 							}
@@ -572,12 +572,12 @@ func Ticket(ticket models.Ticket, currentUser models.Analyst, userType string, m
 							if templ_7745c5c3_Err != nil {
 								return templ_7745c5c3_Err
 							}
-							templ_7745c5c3_Err = templ.WriteWatchModeString(templ_7745c5c3_Buffer, 65)
+							_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString("</option>")
 							if templ_7745c5c3_Err != nil {
 								return templ_7745c5c3_Err
 							}
 						} else {
-							templ_7745c5c3_Err = templ.WriteWatchModeString(templ_7745c5c3_Buffer, 66)
+							_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString("<option value=\"")
 							if templ_7745c5c3_Err != nil {
 								return templ_7745c5c3_Err
 							}
@@ -590,7 +590,7 @@ func Ticket(ticket models.Ticket, currentUser models.Analyst, userType string, m
 							if templ_7745c5c3_Err != nil {
 								return templ_7745c5c3_Err
 							}
-							templ_7745c5c3_Err = templ.WriteWatchModeString(templ_7745c5c3_Buffer, 67)
+							_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString("\">")
 							if templ_7745c5c3_Err != nil {
 								return templ_7745c5c3_Err
 							}
@@ -603,24 +603,24 @@ func Ticket(ticket models.Ticket, currentUser models.Analyst, userType string, m
 							if templ_7745c5c3_Err != nil {
 								return templ_7745c5c3_Err
 							}
-							templ_7745c5c3_Err = templ.WriteWatchModeString(templ_7745c5c3_Buffer, 68)
+							_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString("</option>")
 							if templ_7745c5c3_Err != nil {
 								return templ_7745c5c3_Err
 							}
 						}
 					}
-					templ_7745c5c3_Err = templ.WriteWatchModeString(templ_7745c5c3_Buffer, 69)
+					_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString("</select>")
 					if templ_7745c5c3_Err != nil {
 						return templ_7745c5c3_Err
 					}
 				} else {
-					templ_7745c5c3_Err = templ.WriteWatchModeString(templ_7745c5c3_Buffer, 70)
+					_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString("<select name=\"category\" class=\"uk-select text-zinc-50 border border-red-600\" hx-get=\"/get_subcategories\" hx-target=\"#subcategories\" hx-swap=\"outerHTML\" hx-trigger=\"change\"><option value=\"none\">Select...</option> ")
 					if templ_7745c5c3_Err != nil {
 						return templ_7745c5c3_Err
 					}
 					for _, category := range models.GetAllCategories() {
 						if newTicket.Category.UUID == category.Category_ID {
-							templ_7745c5c3_Err = templ.WriteWatchModeString(templ_7745c5c3_Buffer, 71)
+							_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString("<option value=\"")
 							if templ_7745c5c3_Err != nil {
 								return templ_7745c5c3_Err
 							}
@@ -633,7 +633,7 @@ func Ticket(ticket models.Ticket, currentUser models.Analyst, userType string, m
 							if templ_7745c5c3_Err != nil {
 								return templ_7745c5c3_Err
 							}
-							templ_7745c5c3_Err = templ.WriteWatchModeString(templ_7745c5c3_Buffer, 72)
+							_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString("\" selected>")
 							if templ_7745c5c3_Err != nil {
 								return templ_7745c5c3_Err
 							}
@@ -646,12 +646,12 @@ func Ticket(ticket models.Ticket, currentUser models.Analyst, userType string, m
 							if templ_7745c5c3_Err != nil {
 								return templ_7745c5c3_Err
 							}
-							templ_7745c5c3_Err = templ.WriteWatchModeString(templ_7745c5c3_Buffer, 73)
+							_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString("</option>")
 							if templ_7745c5c3_Err != nil {
 								return templ_7745c5c3_Err
 							}
 						} else {
-							templ_7745c5c3_Err = templ.WriteWatchModeString(templ_7745c5c3_Buffer, 74)
+							_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString("<option value=\"")
 							if templ_7745c5c3_Err != nil {
 								return templ_7745c5c3_Err
 							}
@@ -664,7 +664,7 @@ func Ticket(ticket models.Ticket, currentUser models.Analyst, userType string, m
 							if templ_7745c5c3_Err != nil {
 								return templ_7745c5c3_Err
 							}
-							templ_7745c5c3_Err = templ.WriteWatchModeString(templ_7745c5c3_Buffer, 75)
+							_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString("\">")
 							if templ_7745c5c3_Err != nil {
 								return templ_7745c5c3_Err
 							}
@@ -677,13 +677,13 @@ func Ticket(ticket models.Ticket, currentUser models.Analyst, userType string, m
 							if templ_7745c5c3_Err != nil {
 								return templ_7745c5c3_Err
 							}
-							templ_7745c5c3_Err = templ.WriteWatchModeString(templ_7745c5c3_Buffer, 76)
+							_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString("</option>")
 							if templ_7745c5c3_Err != nil {
 								return templ_7745c5c3_Err
 							}
 						}
 					}
-					templ_7745c5c3_Err = templ.WriteWatchModeString(templ_7745c5c3_Buffer, 77)
+					_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString("</select> <label class=\"text-red-600\">")
 					if templ_7745c5c3_Err != nil {
 						return templ_7745c5c3_Err
 					}
@@ -696,25 +696,25 @@ func Ticket(ticket models.Ticket, currentUser models.Analyst, userType string, m
 					if templ_7745c5c3_Err != nil {
 						return templ_7745c5c3_Err
 					}
-					templ_7745c5c3_Err = templ.WriteWatchModeString(templ_7745c5c3_Buffer, 78)
+					_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString("</label>")
 					if templ_7745c5c3_Err != nil {
 						return templ_7745c5c3_Err
 					}
 				}
 			}
-			templ_7745c5c3_Err = templ.WriteWatchModeString(templ_7745c5c3_Buffer, 79)
+			_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString("</div><div></div><div><label>Subcategory:</label> ")
 			if templ_7745c5c3_Err != nil {
 				return templ_7745c5c3_Err
 			}
 			if mode == "update" {
 				if subcategoryError == "" {
-					templ_7745c5c3_Err = templ.WriteWatchModeString(templ_7745c5c3_Buffer, 80)
+					_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString("<select name=\"subcategory\" class=\"uk-select text-zinc-50\" id=\"subcategories\">")
 					if templ_7745c5c3_Err != nil {
 						return templ_7745c5c3_Err
 					}
 					for _, subcategory := range models.GetSubcategories(ticket.Category.UUID.String()) {
 						if newTicket.Subcategory.UUID == subcategory.Subcategory_ID {
-							templ_7745c5c3_Err = templ.WriteWatchModeString(templ_7745c5c3_Buffer, 81)
+							_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString("<option value=\"")
 							if templ_7745c5c3_Err != nil {
 								return templ_7745c5c3_Err
 							}
@@ -727,7 +727,7 @@ func Ticket(ticket models.Ticket, currentUser models.Analyst, userType string, m
 							if templ_7745c5c3_Err != nil {
 								return templ_7745c5c3_Err
 							}
-							templ_7745c5c3_Err = templ.WriteWatchModeString(templ_7745c5c3_Buffer, 82)
+							_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString("\" selected>")
 							if templ_7745c5c3_Err != nil {
 								return templ_7745c5c3_Err
 							}
@@ -740,13 +740,13 @@ func Ticket(ticket models.Ticket, currentUser models.Analyst, userType string, m
 							if templ_7745c5c3_Err != nil {
 								return templ_7745c5c3_Err
 							}
-							templ_7745c5c3_Err = templ.WriteWatchModeString(templ_7745c5c3_Buffer, 83)
+							_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString("</option>")
 							if templ_7745c5c3_Err != nil {
 								return templ_7745c5c3_Err
 							}
 						} else {
 							if ticket.Subcategory.UUID == subcategory.Subcategory_ID {
-								templ_7745c5c3_Err = templ.WriteWatchModeString(templ_7745c5c3_Buffer, 84)
+								_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString("<option value=\"")
 								if templ_7745c5c3_Err != nil {
 									return templ_7745c5c3_Err
 								}
@@ -759,7 +759,7 @@ func Ticket(ticket models.Ticket, currentUser models.Analyst, userType string, m
 								if templ_7745c5c3_Err != nil {
 									return templ_7745c5c3_Err
 								}
-								templ_7745c5c3_Err = templ.WriteWatchModeString(templ_7745c5c3_Buffer, 85)
+								_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString("\" selected>")
 								if templ_7745c5c3_Err != nil {
 									return templ_7745c5c3_Err
 								}
@@ -772,12 +772,12 @@ func Ticket(ticket models.Ticket, currentUser models.Analyst, userType string, m
 								if templ_7745c5c3_Err != nil {
 									return templ_7745c5c3_Err
 								}
-								templ_7745c5c3_Err = templ.WriteWatchModeString(templ_7745c5c3_Buffer, 86)
+								_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString("</option>")
 								if templ_7745c5c3_Err != nil {
 									return templ_7745c5c3_Err
 								}
 							} else {
-								templ_7745c5c3_Err = templ.WriteWatchModeString(templ_7745c5c3_Buffer, 87)
+								_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString("<option value=\"")
 								if templ_7745c5c3_Err != nil {
 									return templ_7745c5c3_Err
 								}
@@ -790,7 +790,7 @@ func Ticket(ticket models.Ticket, currentUser models.Analyst, userType string, m
 								if templ_7745c5c3_Err != nil {
 									return templ_7745c5c3_Err
 								}
-								templ_7745c5c3_Err = templ.WriteWatchModeString(templ_7745c5c3_Buffer, 88)
+								_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString("\">")
 								if templ_7745c5c3_Err != nil {
 									return templ_7745c5c3_Err
 								}
@@ -803,25 +803,25 @@ func Ticket(ticket models.Ticket, currentUser models.Analyst, userType string, m
 								if templ_7745c5c3_Err != nil {
 									return templ_7745c5c3_Err
 								}
-								templ_7745c5c3_Err = templ.WriteWatchModeString(templ_7745c5c3_Buffer, 89)
+								_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString("</option>")
 								if templ_7745c5c3_Err != nil {
 									return templ_7745c5c3_Err
 								}
 							}
 						}
 					}
-					templ_7745c5c3_Err = templ.WriteWatchModeString(templ_7745c5c3_Buffer, 90)
+					_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString("</select>")
 					if templ_7745c5c3_Err != nil {
 						return templ_7745c5c3_Err
 					}
 				} else {
-					templ_7745c5c3_Err = templ.WriteWatchModeString(templ_7745c5c3_Buffer, 91)
+					_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString("<select name=\"subcategory\" class=\"uk-select text-zinc-50 border border-red-600\" id=\"subcategories\">")
 					if templ_7745c5c3_Err != nil {
 						return templ_7745c5c3_Err
 					}
 					for _, subcategory := range models.GetSubcategories(ticket.Category.UUID.String()) {
 						if newTicket.Subcategory.UUID == subcategory.Subcategory_ID {
-							templ_7745c5c3_Err = templ.WriteWatchModeString(templ_7745c5c3_Buffer, 92)
+							_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString("<option value=\"")
 							if templ_7745c5c3_Err != nil {
 								return templ_7745c5c3_Err
 							}
@@ -834,7 +834,7 @@ func Ticket(ticket models.Ticket, currentUser models.Analyst, userType string, m
 							if templ_7745c5c3_Err != nil {
 								return templ_7745c5c3_Err
 							}
-							templ_7745c5c3_Err = templ.WriteWatchModeString(templ_7745c5c3_Buffer, 93)
+							_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString("\" selected>")
 							if templ_7745c5c3_Err != nil {
 								return templ_7745c5c3_Err
 							}
@@ -847,13 +847,13 @@ func Ticket(ticket models.Ticket, currentUser models.Analyst, userType string, m
 							if templ_7745c5c3_Err != nil {
 								return templ_7745c5c3_Err
 							}
-							templ_7745c5c3_Err = templ.WriteWatchModeString(templ_7745c5c3_Buffer, 94)
+							_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString("</option>")
 							if templ_7745c5c3_Err != nil {
 								return templ_7745c5c3_Err
 							}
 						} else {
 							if ticket.Subcategory.UUID == subcategory.Subcategory_ID {
-								templ_7745c5c3_Err = templ.WriteWatchModeString(templ_7745c5c3_Buffer, 95)
+								_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString("<option value=\"")
 								if templ_7745c5c3_Err != nil {
 									return templ_7745c5c3_Err
 								}
@@ -866,7 +866,7 @@ func Ticket(ticket models.Ticket, currentUser models.Analyst, userType string, m
 								if templ_7745c5c3_Err != nil {
 									return templ_7745c5c3_Err
 								}
-								templ_7745c5c3_Err = templ.WriteWatchModeString(templ_7745c5c3_Buffer, 96)
+								_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString("\" selected>")
 								if templ_7745c5c3_Err != nil {
 									return templ_7745c5c3_Err
 								}
@@ -879,12 +879,12 @@ func Ticket(ticket models.Ticket, currentUser models.Analyst, userType string, m
 								if templ_7745c5c3_Err != nil {
 									return templ_7745c5c3_Err
 								}
-								templ_7745c5c3_Err = templ.WriteWatchModeString(templ_7745c5c3_Buffer, 97)
+								_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString("</option>")
 								if templ_7745c5c3_Err != nil {
 									return templ_7745c5c3_Err
 								}
 							} else {
-								templ_7745c5c3_Err = templ.WriteWatchModeString(templ_7745c5c3_Buffer, 98)
+								_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString("<option value=\"")
 								if templ_7745c5c3_Err != nil {
 									return templ_7745c5c3_Err
 								}
@@ -897,7 +897,7 @@ func Ticket(ticket models.Ticket, currentUser models.Analyst, userType string, m
 								if templ_7745c5c3_Err != nil {
 									return templ_7745c5c3_Err
 								}
-								templ_7745c5c3_Err = templ.WriteWatchModeString(templ_7745c5c3_Buffer, 99)
+								_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString("\">")
 								if templ_7745c5c3_Err != nil {
 									return templ_7745c5c3_Err
 								}
@@ -910,14 +910,14 @@ func Ticket(ticket models.Ticket, currentUser models.Analyst, userType string, m
 								if templ_7745c5c3_Err != nil {
 									return templ_7745c5c3_Err
 								}
-								templ_7745c5c3_Err = templ.WriteWatchModeString(templ_7745c5c3_Buffer, 100)
+								_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString("</option>")
 								if templ_7745c5c3_Err != nil {
 									return templ_7745c5c3_Err
 								}
 							}
 						}
 					}
-					templ_7745c5c3_Err = templ.WriteWatchModeString(templ_7745c5c3_Buffer, 101)
+					_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString("</select> <label class=\"text-red-600\">")
 					if templ_7745c5c3_Err != nil {
 						return templ_7745c5c3_Err
 					}
@@ -930,7 +930,7 @@ func Ticket(ticket models.Ticket, currentUser models.Analyst, userType string, m
 					if templ_7745c5c3_Err != nil {
 						return templ_7745c5c3_Err
 					}
-					templ_7745c5c3_Err = templ.WriteWatchModeString(templ_7745c5c3_Buffer, 102)
+					_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString("</label>")
 					if templ_7745c5c3_Err != nil {
 						return templ_7745c5c3_Err
 					}
@@ -938,13 +938,13 @@ func Ticket(ticket models.Ticket, currentUser models.Analyst, userType string, m
 			} else if mode == "create" {
 				if subcategoryError == "" {
 					if newTicket.Category.UUID != uuid.Nil {
-						templ_7745c5c3_Err = templ.WriteWatchModeString(templ_7745c5c3_Buffer, 103)
+						_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString("<select name=\"subcategory\" class=\"uk-select text-zinc-50\" id=\"subcategories\">")
 						if templ_7745c5c3_Err != nil {
 							return templ_7745c5c3_Err
 						}
 						for _, subcategory := range models.GetSubcategories(ticket.Category.UUID.String()) {
 							if newTicket.Subcategory.UUID == subcategory.Subcategory_ID {
-								templ_7745c5c3_Err = templ.WriteWatchModeString(templ_7745c5c3_Buffer, 104)
+								_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString("<option value=\"")
 								if templ_7745c5c3_Err != nil {
 									return templ_7745c5c3_Err
 								}
@@ -957,7 +957,7 @@ func Ticket(ticket models.Ticket, currentUser models.Analyst, userType string, m
 								if templ_7745c5c3_Err != nil {
 									return templ_7745c5c3_Err
 								}
-								templ_7745c5c3_Err = templ.WriteWatchModeString(templ_7745c5c3_Buffer, 105)
+								_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString("\" selected>")
 								if templ_7745c5c3_Err != nil {
 									return templ_7745c5c3_Err
 								}
@@ -970,13 +970,13 @@ func Ticket(ticket models.Ticket, currentUser models.Analyst, userType string, m
 								if templ_7745c5c3_Err != nil {
 									return templ_7745c5c3_Err
 								}
-								templ_7745c5c3_Err = templ.WriteWatchModeString(templ_7745c5c3_Buffer, 106)
+								_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString("</option>")
 								if templ_7745c5c3_Err != nil {
 									return templ_7745c5c3_Err
 								}
 							} else {
 								if ticket.Subcategory.UUID == subcategory.Subcategory_ID {
-									templ_7745c5c3_Err = templ.WriteWatchModeString(templ_7745c5c3_Buffer, 107)
+									_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString("<option value=\"")
 									if templ_7745c5c3_Err != nil {
 										return templ_7745c5c3_Err
 									}
@@ -989,7 +989,7 @@ func Ticket(ticket models.Ticket, currentUser models.Analyst, userType string, m
 									if templ_7745c5c3_Err != nil {
 										return templ_7745c5c3_Err
 									}
-									templ_7745c5c3_Err = templ.WriteWatchModeString(templ_7745c5c3_Buffer, 108)
+									_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString("\" selected>")
 									if templ_7745c5c3_Err != nil {
 										return templ_7745c5c3_Err
 									}
@@ -1002,12 +1002,12 @@ func Ticket(ticket models.Ticket, currentUser models.Analyst, userType string, m
 									if templ_7745c5c3_Err != nil {
 										return templ_7745c5c3_Err
 									}
-									templ_7745c5c3_Err = templ.WriteWatchModeString(templ_7745c5c3_Buffer, 109)
+									_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString("</option>")
 									if templ_7745c5c3_Err != nil {
 										return templ_7745c5c3_Err
 									}
 								} else {
-									templ_7745c5c3_Err = templ.WriteWatchModeString(templ_7745c5c3_Buffer, 110)
+									_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString("<option value=\"")
 									if templ_7745c5c3_Err != nil {
 										return templ_7745c5c3_Err
 									}
@@ -1020,7 +1020,7 @@ func Ticket(ticket models.Ticket, currentUser models.Analyst, userType string, m
 									if templ_7745c5c3_Err != nil {
 										return templ_7745c5c3_Err
 									}
-									templ_7745c5c3_Err = templ.WriteWatchModeString(templ_7745c5c3_Buffer, 111)
+									_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString("\">")
 									if templ_7745c5c3_Err != nil {
 										return templ_7745c5c3_Err
 									}
@@ -1033,32 +1033,32 @@ func Ticket(ticket models.Ticket, currentUser models.Analyst, userType string, m
 									if templ_7745c5c3_Err != nil {
 										return templ_7745c5c3_Err
 									}
-									templ_7745c5c3_Err = templ.WriteWatchModeString(templ_7745c5c3_Buffer, 112)
+									_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString("</option>")
 									if templ_7745c5c3_Err != nil {
 										return templ_7745c5c3_Err
 									}
 								}
 							}
 						}
-						templ_7745c5c3_Err = templ.WriteWatchModeString(templ_7745c5c3_Buffer, 113)
+						_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString("</select>")
 						if templ_7745c5c3_Err != nil {
 							return templ_7745c5c3_Err
 						}
 					} else {
-						templ_7745c5c3_Err = templ.WriteWatchModeString(templ_7745c5c3_Buffer, 114)
+						_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString("<select name=\"subcategory\" class=\"uk-select text-zinc-50\" id=\"subcategories\" disabled><option value=\"none\">Please select category</option></select>")
 						if templ_7745c5c3_Err != nil {
 							return templ_7745c5c3_Err
 						}
 					}
 				} else {
 					if newTicket.Category.UUID != uuid.Nil {
-						templ_7745c5c3_Err = templ.WriteWatchModeString(templ_7745c5c3_Buffer, 115)
+						_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString("<select name=\"subcategory\" class=\"uk-select text-zinc-50 border border-red-600\" id=\"subcategories\">")
 						if templ_7745c5c3_Err != nil {
 							return templ_7745c5c3_Err
 						}
 						for _, subcategory := range models.GetSubcategories(ticket.Category.UUID.String()) {
 							if newTicket.Subcategory.UUID == subcategory.Subcategory_ID {
-								templ_7745c5c3_Err = templ.WriteWatchModeString(templ_7745c5c3_Buffer, 116)
+								_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString("<option value=\"")
 								if templ_7745c5c3_Err != nil {
 									return templ_7745c5c3_Err
 								}
@@ -1071,7 +1071,7 @@ func Ticket(ticket models.Ticket, currentUser models.Analyst, userType string, m
 								if templ_7745c5c3_Err != nil {
 									return templ_7745c5c3_Err
 								}
-								templ_7745c5c3_Err = templ.WriteWatchModeString(templ_7745c5c3_Buffer, 117)
+								_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString("\" selected>")
 								if templ_7745c5c3_Err != nil {
 									return templ_7745c5c3_Err
 								}
@@ -1084,13 +1084,13 @@ func Ticket(ticket models.Ticket, currentUser models.Analyst, userType string, m
 								if templ_7745c5c3_Err != nil {
 									return templ_7745c5c3_Err
 								}
-								templ_7745c5c3_Err = templ.WriteWatchModeString(templ_7745c5c3_Buffer, 118)
+								_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString("</option>")
 								if templ_7745c5c3_Err != nil {
 									return templ_7745c5c3_Err
 								}
 							} else {
 								if ticket.Subcategory.UUID == subcategory.Subcategory_ID {
-									templ_7745c5c3_Err = templ.WriteWatchModeString(templ_7745c5c3_Buffer, 119)
+									_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString("<option value=\"")
 									if templ_7745c5c3_Err != nil {
 										return templ_7745c5c3_Err
 									}
@@ -1103,7 +1103,7 @@ func Ticket(ticket models.Ticket, currentUser models.Analyst, userType string, m
 									if templ_7745c5c3_Err != nil {
 										return templ_7745c5c3_Err
 									}
-									templ_7745c5c3_Err = templ.WriteWatchModeString(templ_7745c5c3_Buffer, 120)
+									_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString("\" selected>")
 									if templ_7745c5c3_Err != nil {
 										return templ_7745c5c3_Err
 									}
@@ -1116,12 +1116,12 @@ func Ticket(ticket models.Ticket, currentUser models.Analyst, userType string, m
 									if templ_7745c5c3_Err != nil {
 										return templ_7745c5c3_Err
 									}
-									templ_7745c5c3_Err = templ.WriteWatchModeString(templ_7745c5c3_Buffer, 121)
+									_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString("</option>")
 									if templ_7745c5c3_Err != nil {
 										return templ_7745c5c3_Err
 									}
 								} else {
-									templ_7745c5c3_Err = templ.WriteWatchModeString(templ_7745c5c3_Buffer, 122)
+									_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString("<option value=\"")
 									if templ_7745c5c3_Err != nil {
 										return templ_7745c5c3_Err
 									}
@@ -1134,7 +1134,7 @@ func Ticket(ticket models.Ticket, currentUser models.Analyst, userType string, m
 									if templ_7745c5c3_Err != nil {
 										return templ_7745c5c3_Err
 									}
-									templ_7745c5c3_Err = templ.WriteWatchModeString(templ_7745c5c3_Buffer, 123)
+									_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString("\">")
 									if templ_7745c5c3_Err != nil {
 										return templ_7745c5c3_Err
 									}
@@ -1147,14 +1147,14 @@ func Ticket(ticket models.Ticket, currentUser models.Analyst, userType string, m
 									if templ_7745c5c3_Err != nil {
 										return templ_7745c5c3_Err
 									}
-									templ_7745c5c3_Err = templ.WriteWatchModeString(templ_7745c5c3_Buffer, 124)
+									_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString("</option>")
 									if templ_7745c5c3_Err != nil {
 										return templ_7745c5c3_Err
 									}
 								}
 							}
 						}
-						templ_7745c5c3_Err = templ.WriteWatchModeString(templ_7745c5c3_Buffer, 125)
+						_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString("</select> <label class=\"text-red-600\">")
 						if templ_7745c5c3_Err != nil {
 							return templ_7745c5c3_Err
 						}
@@ -1167,12 +1167,12 @@ func Ticket(ticket models.Ticket, currentUser models.Analyst, userType string, m
 						if templ_7745c5c3_Err != nil {
 							return templ_7745c5c3_Err
 						}
-						templ_7745c5c3_Err = templ.WriteWatchModeString(templ_7745c5c3_Buffer, 126)
+						_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString("</label>")
 						if templ_7745c5c3_Err != nil {
 							return templ_7745c5c3_Err
 						}
 					} else {
-						templ_7745c5c3_Err = templ.WriteWatchModeString(templ_7745c5c3_Buffer, 127)
+						_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString("<select name=\"subcategory\" class=\"uk-select text-zinc-50 border border-red-600\" id=\"subcategories\" disabled><option value=\"none\">Please select category</option></select> <label class=\"text-red-600\">")
 						if templ_7745c5c3_Err != nil {
 							return templ_7745c5c3_Err
 						}
@@ -1185,20 +1185,20 @@ func Ticket(ticket models.Ticket, currentUser models.Analyst, userType string, m
 						if templ_7745c5c3_Err != nil {
 							return templ_7745c5c3_Err
 						}
-						templ_7745c5c3_Err = templ.WriteWatchModeString(templ_7745c5c3_Buffer, 128)
+						_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString("</label>")
 						if templ_7745c5c3_Err != nil {
 							return templ_7745c5c3_Err
 						}
 					}
 				}
 			}
-			templ_7745c5c3_Err = templ.WriteWatchModeString(templ_7745c5c3_Buffer, 129)
+			_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString("</div></div><div class=\"mt-3\"><label>Title:</label> ")
 			if templ_7745c5c3_Err != nil {
 				return templ_7745c5c3_Err
 			}
 			if mode == "update" {
 				if newTicket.Title != "" {
-					templ_7745c5c3_Err = templ.WriteWatchModeString(templ_7745c5c3_Buffer, 130)
+					_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString("<input name=\"title\" class=\"uk-input text-zinc-50 text-base\" type=\"text\" value=\"")
 					if templ_7745c5c3_Err != nil {
 						return templ_7745c5c3_Err
 					}
@@ -1211,12 +1211,12 @@ func Ticket(ticket models.Ticket, currentUser models.Analyst, userType string, m
 					if templ_7745c5c3_Err != nil {
 						return templ_7745c5c3_Err
 					}
-					templ_7745c5c3_Err = templ.WriteWatchModeString(templ_7745c5c3_Buffer, 131)
+					_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString("\" required>")
 					if templ_7745c5c3_Err != nil {
 						return templ_7745c5c3_Err
 					}
 				} else {
-					templ_7745c5c3_Err = templ.WriteWatchModeString(templ_7745c5c3_Buffer, 132)
+					_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString("<input name=\"title\" class=\"uk-input text-zinc-50 text-base\" type=\"text\" value=\"")
 					if templ_7745c5c3_Err != nil {
 						return templ_7745c5c3_Err
 					}
@@ -1229,13 +1229,13 @@ func Ticket(ticket models.Ticket, currentUser models.Analyst, userType string, m
 					if templ_7745c5c3_Err != nil {
 						return templ_7745c5c3_Err
 					}
-					templ_7745c5c3_Err = templ.WriteWatchModeString(templ_7745c5c3_Buffer, 133)
+					_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString("\" required>")
 					if templ_7745c5c3_Err != nil {
 						return templ_7745c5c3_Err
 					}
 				}
 			} else if mode == "create" {
-				templ_7745c5c3_Err = templ.WriteWatchModeString(templ_7745c5c3_Buffer, 134)
+				_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString("<input name=\"title\" class=\"uk-input text-zinc-50 text-base\" type=\"text\" value=\"")
 				if templ_7745c5c3_Err != nil {
 					return templ_7745c5c3_Err
 				}
@@ -1248,18 +1248,18 @@ func Ticket(ticket models.Ticket, currentUser models.Analyst, userType string, m
 				if templ_7745c5c3_Err != nil {
 					return templ_7745c5c3_Err
 				}
-				templ_7745c5c3_Err = templ.WriteWatchModeString(templ_7745c5c3_Buffer, 135)
+				_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString("\" required>")
 				if templ_7745c5c3_Err != nil {
 					return templ_7745c5c3_Err
 				}
 			}
-			templ_7745c5c3_Err = templ.WriteWatchModeString(templ_7745c5c3_Buffer, 136)
+			_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString("</div><div class=\"mt-3\"><label>Description:</label> ")
 			if templ_7745c5c3_Err != nil {
 				return templ_7745c5c3_Err
 			}
 			if mode == "update" {
 				if newTicket.Description != "" {
-					templ_7745c5c3_Err = templ.WriteWatchModeString(templ_7745c5c3_Buffer, 137)
+					_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString("<textarea name=\"desc\" class=\"uk-textarea font-mono text-zinc-50 text-base\" rows=\"10\">")
 					if templ_7745c5c3_Err != nil {
 						return templ_7745c5c3_Err
 					}
@@ -1272,12 +1272,12 @@ func Ticket(ticket models.Ticket, currentUser models.Analyst, userType string, m
 					if templ_7745c5c3_Err != nil {
 						return templ_7745c5c3_Err
 					}
-					templ_7745c5c3_Err = templ.WriteWatchModeString(templ_7745c5c3_Buffer, 138)
+					_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString("</textarea>")
 					if templ_7745c5c3_Err != nil {
 						return templ_7745c5c3_Err
 					}
 				} else {
-					templ_7745c5c3_Err = templ.WriteWatchModeString(templ_7745c5c3_Buffer, 139)
+					_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString("<textarea name=\"desc\" class=\"uk-textarea font-mono text-zinc-50 text-base\" rows=\"10\">")
 					if templ_7745c5c3_Err != nil {
 						return templ_7745c5c3_Err
 					}
@@ -1290,13 +1290,13 @@ func Ticket(ticket models.Ticket, currentUser models.Analyst, userType string, m
 					if templ_7745c5c3_Err != nil {
 						return templ_7745c5c3_Err
 					}
-					templ_7745c5c3_Err = templ.WriteWatchModeString(templ_7745c5c3_Buffer, 140)
+					_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString("</textarea>")
 					if templ_7745c5c3_Err != nil {
 						return templ_7745c5c3_Err
 					}
 				}
 			} else if mode == "create" {
-				templ_7745c5c3_Err = templ.WriteWatchModeString(templ_7745c5c3_Buffer, 141)
+				_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString("<textarea name=\"desc\" class=\"uk-textarea font-mono text-zinc-50 text-base\" rows=\"10\">")
 				if templ_7745c5c3_Err != nil {
 					return templ_7745c5c3_Err
 				}
@@ -1309,17 +1309,17 @@ func Ticket(ticket models.Ticket, currentUser models.Analyst, userType string, m
 				if templ_7745c5c3_Err != nil {
 					return templ_7745c5c3_Err
 				}
-				templ_7745c5c3_Err = templ.WriteWatchModeString(templ_7745c5c3_Buffer, 142)
+				_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString("</textarea>")
 				if templ_7745c5c3_Err != nil {
 					return templ_7745c5c3_Err
 				}
 			}
-			templ_7745c5c3_Err = templ.WriteWatchModeString(templ_7745c5c3_Buffer, 143)
+			_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString("</div>")
 			if templ_7745c5c3_Err != nil {
 				return templ_7745c5c3_Err
 			}
 			if mode == "update" {
-				templ_7745c5c3_Err = templ.WriteWatchModeString(templ_7745c5c3_Buffer, 144)
+				_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString("<hr class=\"mt-5\"><div class=\"grid grid-cols-4 mt-3\"><div class=\"col-span-1\"><label>Last Updated:</label> <input class=\"uk-input text-zinc-50 text-base\" type=\"text\" disabled value=\"")
 				if templ_7745c5c3_Err != nil {
 					return templ_7745c5c3_Err
 				}
@@ -1332,7 +1332,7 @@ func Ticket(ticket models.Ticket, currentUser models.Analyst, userType string, m
 				if templ_7745c5c3_Err != nil {
 					return templ_7745c5c3_Err
 				}
-				templ_7745c5c3_Err = templ.WriteWatchModeString(templ_7745c5c3_Buffer, 145)
+				_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString("\"></div></div><div class=\"grid grid-cols-4 mt-3\"><div><label>Assigned Team:</label> <input class=\"uk-input text-zinc-50 text-base\" type=\"text\" disabled value=\"")
 				if templ_7745c5c3_Err != nil {
 					return templ_7745c5c3_Err
 				}
@@ -1345,7 +1345,7 @@ func Ticket(ticket models.Ticket, currentUser models.Analyst, userType string, m
 				if templ_7745c5c3_Err != nil {
 					return templ_7745c5c3_Err
 				}
-				templ_7745c5c3_Err = templ.WriteWatchModeString(templ_7745c5c3_Buffer, 146)
+				_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString("\"></div><div></div><div><label>Assigned Analyst:</label> <input class=\"uk-input text-zinc-50 text-base\" type=\"text\" disabled value=\"")
 				if templ_7745c5c3_Err != nil {
 					return templ_7745c5c3_Err
 				}
@@ -1358,7 +1358,7 @@ func Ticket(ticket models.Ticket, currentUser models.Analyst, userType string, m
 				if templ_7745c5c3_Err != nil {
 					return templ_7745c5c3_Err
 				}
-				templ_7745c5c3_Err = templ.WriteWatchModeString(templ_7745c5c3_Buffer, 147)
+				_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString("\"></div></div><div class=\"grid grid-cols-4\"><div><label>Opened by:</label> <input class=\"uk-input text-zinc-50 text-base\" type=\"text\" disabled value=\"")
 				if templ_7745c5c3_Err != nil {
 					return templ_7745c5c3_Err
 				}
@@ -1371,7 +1371,7 @@ func Ticket(ticket models.Ticket, currentUser models.Analyst, userType string, m
 				if templ_7745c5c3_Err != nil {
 					return templ_7745c5c3_Err
 				}
-				templ_7745c5c3_Err = templ.WriteWatchModeString(templ_7745c5c3_Buffer, 148)
+				_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString("\"></div><div></div><div><label>Opened:</label> <input class=\"uk-input text-zinc-50 text-base\" type=\"text\" disabled value=\"")
 				if templ_7745c5c3_Err != nil {
 					return templ_7745c5c3_Err
 				}
@@ -1384,7 +1384,7 @@ func Ticket(ticket models.Ticket, currentUser models.Analyst, userType string, m
 				if templ_7745c5c3_Err != nil {
 					return templ_7745c5c3_Err
 				}
-				templ_7745c5c3_Err = templ.WriteWatchModeString(templ_7745c5c3_Buffer, 149)
+				_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString("\"></div></div><div class=\"grid grid-cols-4\"><div><label>Closed by:</label> <input class=\"uk-input text-zinc-50 text-base\" type=\"text\" disabled value=\"")
 				if templ_7745c5c3_Err != nil {
 					return templ_7745c5c3_Err
 				}
@@ -1397,7 +1397,7 @@ func Ticket(ticket models.Ticket, currentUser models.Analyst, userType string, m
 				if templ_7745c5c3_Err != nil {
 					return templ_7745c5c3_Err
 				}
-				templ_7745c5c3_Err = templ.WriteWatchModeString(templ_7745c5c3_Buffer, 150)
+				_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString("\"></div><div></div><div><label>Closed:</label> <input class=\"uk-input text-zinc-50 text-base\" type=\"text\" disabled value=\"")
 				if templ_7745c5c3_Err != nil {
 					return templ_7745c5c3_Err
 				}
@@ -1410,12 +1410,12 @@ func Ticket(ticket models.Ticket, currentUser models.Analyst, userType string, m
 				if templ_7745c5c3_Err != nil {
 					return templ_7745c5c3_Err
 				}
-				templ_7745c5c3_Err = templ.WriteWatchModeString(templ_7745c5c3_Buffer, 151)
+				_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString("\"></div></div>")
 				if templ_7745c5c3_Err != nil {
 					return templ_7745c5c3_Err
 				}
 			}
-			templ_7745c5c3_Err = templ.WriteWatchModeString(templ_7745c5c3_Buffer, 152)
+			_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString("</div></div></form></div>")
 			if templ_7745c5c3_Err != nil {
 				return templ_7745c5c3_Err
 			}
