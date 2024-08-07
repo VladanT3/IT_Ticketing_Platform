@@ -72,7 +72,7 @@ func CreateTicketHandler(w http.ResponseWriter, r *http.Request) error {
 			Customer_Contact: customerContact,
 		}
 
-		return Render(w, r, tickets.Ticket(models.Ticket{}, LoggedInUser, LoggedInUserType, "create", "Please select a valid category!", "Please select a valid subcategory!", newTicket))
+		return Render(w, r, tickets.TicketForm(models.Ticket{}, LoggedInUser, LoggedInUserType, "create", "Please select a valid category!", "Please select a valid subcategory!", newTicket))
 	}
 
 	var db *sql.DB = database.DB_Connection

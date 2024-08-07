@@ -7,7 +7,7 @@ import (
 	"strconv"
 )
 
-templ Ticket(ticket models.Ticket, currentUser models.Analyst, userType string, mode string, categoryError string, subcategoryError string, newTicket models.Ticket) {
+templ TicketForm(ticket models.Ticket, currentUser models.Analyst, userType string, mode string, categoryError string, subcategoryError string, newTicket models.Ticket) {
 	@layouts.Navbar(userType) {
 		<div class="container mx-auto mt-5">
 			<form action="/ticket" method="POST" class="grid grid-cols-5">
@@ -15,28 +15,45 @@ templ Ticket(ticket models.Ticket, currentUser models.Analyst, userType string, 
 				<input type="hidden" value={ ticket.Ticket_ID.String() } name="ticketID"/>
 				<div class="col-span-1 grid grid-cols-5">
 					<div class="flex flex-col col-span-4">
-						<button type="submit" name="saveType" class="uk-button uk-width-1-1 bg-zinc-50 text-zinc-900 border border-zinc-50 hover:bg-zinc-900 hover:text-zinc-50" value="Save">Save</button>
-						<button type="submit" name="saveType" class="uk-button uk-width-1-1 bg-zinc-50 text-zinc-900 border border-zinc-50 hover:bg-zinc-900 hover:text-zinc-50 mt-3" value="Save and Exit">Save and Exit</button>
-						if mode == "update" {
-							<button type="button" class="uk-button uk-width-1-1 bg-zinc-50 text-zinc-900 border border-zinc-50 hover:bg-zinc-900 hover:text-zinc-50 mt-3">Close Ticket</button>
-							if ticket.Status == "Closed" {
-								<button type="button" class="uk-button uk-width-1-1 bg-zinc-50 text-zinc-900 border border-zinc-50 hover:bg-zinc-900 hover:text-zinc-50 mt-3">Reopen</button>
+						if mode == "create" {
+							<button type="submit" name="saveType" class="uk-button uk-width-1-1 bg-zinc-50 text-zinc-900 border border-zinc-50 hover:bg-zinc-900 hover:text-zinc-50" value="Save">Save</button>
+							<button type="submit" name="saveType" class="uk-button uk-width-1-1 bg-zinc-50 text-zinc-900 border border-zinc-50 hover:bg-zinc-900 hover:text-zinc-50 mt-3" value="Save and Exit">Save and Exit</button>
+						} else if mode == "update" {
+							if ticket.Assigned_Analyst.UUID != currentUser.Analyst_ID {
+								if currentUser.Analyst_ID == models.GetTeam(ticket.Assigned_Team.UUID.String()).Manager_ID.UUID {
+									<button type="submit" name="saveType" class="uk-button uk-width-1-1 bg-zinc-50 text-zinc-900 border border-zinc-50 hover:bg-zinc-900 hover:text-zinc-50" value="Save">Save</button>
+									<button type="submit" name="saveType" class="uk-button uk-width-1-1 bg-zinc-50 text-zinc-900 border border-zinc-50 hover:bg-zinc-900 hover:text-zinc-50 mt-3" value="Save and Exit">Save and Exit</button>
+									<button type="button" class="uk-button uk-width-1-1 bg-zinc-50 text-zinc-900 border border-zinc-50 hover:bg-zinc-900 hover:text-zinc-50 mt-3">Close Ticket</button>
+								} else {
+									<a href="/tickets/search" class="uk-button uk-width-1-1 bg-zinc-50 text-zinc-900 border border-zinc-50 hover:bg-zinc-900 hover:text-zinc-50">Exit</a>
+								}
+							} else {
+								<button type="submit" name="saveType" class="uk-button uk-width-1-1 bg-zinc-50 text-zinc-900 border border-zinc-50 hover:bg-zinc-900 hover:text-zinc-50" value="Save">Save</button>
+								<button type="submit" name="saveType" class="uk-button uk-width-1-1 bg-zinc-50 text-zinc-900 border border-zinc-50 hover:bg-zinc-900 hover:text-zinc-50 mt-3" value="Save and Exit">Save and Exit</button>
+								<button type="button" class="uk-button uk-width-1-1 bg-zinc-50 text-zinc-900 border border-zinc-50 hover:bg-zinc-900 hover:text-zinc-50 mt-3">Close Ticket</button>
 							}
-							if models.GetAnalyst(ticket.Assigned_Analyst.UUID.String()).Analyst_ID != currentUser.Analyst_ID {
+							if ticket.Status == "Closed" {
+								if ticket.Assigned_Analyst.UUID == currentUser.Analyst_ID {
+									<button type="button" class="uk-button uk-width-1-1 bg-zinc-50 text-zinc-900 border border-zinc-50 hover:bg-zinc-900 hover:text-zinc-50 mt-3">Reopen</button>
+								} else if currentUser.Analyst_ID == models.GetTeam(ticket.Assigned_Team.UUID.String()).Manager_ID.UUID {
+									<button type="button" class="uk-button uk-width-1-1 bg-zinc-50 text-zinc-900 border border-zinc-50 hover:bg-zinc-900 hover:text-zinc-50 mt-3">Reopen</button>
+								}
+							}
+							if ticket.Assigned_Analyst.UUID != currentUser.Analyst_ID {
 								if !ticket.Assigned_Analyst.Valid {
 									<button type="button" class="uk-button uk-width-1-1 bg-zinc-50 text-zinc-900 border border-zinc-50 hover:bg-zinc-900 hover:text-zinc-50 mt-3">Assign to Me</button>
-								} else if models.IsUserManager(currentUser.Analyst_ID.String()) && currentUser.Analyst_ID == models.GetTeam(ticket.Assigned_Team.UUID.String()).Manager_ID.UUID {
+								} else if currentUser.Analyst_ID == models.GetTeam(ticket.Assigned_Team.UUID.String()).Manager_ID.UUID {
 									<button type="button" class="uk-button uk-width-1-1 bg-zinc-50 text-zinc-900 border border-zinc-50 hover:bg-zinc-900 hover:text-zinc-50 mt-3">Assign to Me</button>
 								}
 							}
-							if models.GetAnalyst(ticket.Assigned_Analyst.UUID.String()).Analyst_ID == currentUser.Analyst_ID {
+							if ticket.Assigned_Analyst.UUID == currentUser.Analyst_ID {
 								<button type="button" class="uk-button uk-width-1-1 bg-zinc-50 text-zinc-900 border border-zinc-50 hover:bg-zinc-900 hover:text-zinc-50 mt-3">Assign Ticket</button>
 							} else if !ticket.Assigned_Analyst.Valid {
 								<button type="button" class="uk-button uk-width-1-1 bg-zinc-50 text-zinc-900 border border-zinc-50 hover:bg-zinc-900 hover:text-zinc-50 mt-3">Assign Ticket</button>
-							} else if models.IsUserManager(currentUser.Analyst_ID.String()) && currentUser.Analyst_ID == models.GetTeam(ticket.Assigned_Team.UUID.String()).Manager_ID.UUID {
+							} else if currentUser.Analyst_ID == models.GetTeam(ticket.Assigned_Team.UUID.String()).Manager_ID.UUID {
 								<button type="button" class="uk-button uk-width-1-1 bg-zinc-50 text-zinc-900 border border-zinc-50 hover:bg-zinc-900 hover:text-zinc-50 mt-3">Assign Ticket</button>
 							}
-							if models.IsUserManager(currentUser.Analyst_ID.String()) && currentUser.Analyst_ID == models.GetTeam(ticket.Assigned_Team.UUID.String()).Manager_ID.UUID {
+							if currentUser.Analyst_ID == models.GetTeam(ticket.Assigned_Team.UUID.String()).Manager_ID.UUID {
 								<button type="button" hx-delete={ "/ticket/delete/" + ticket.Ticket_ID.String() } hx-target="#ticket_form" hx-swap="innerHTML" class="uk-button uk-width-1-1 bg-zinc-900 text-red-600 border border-red-600 hover:bg-red-600 hover:text-zinc-900 mt-3">Delete Ticket</button>
 							}
 						}
@@ -63,8 +80,8 @@ templ Ticket(ticket models.Ticket, currentUser models.Analyst, userType string, 
 						<div class="grid grid-cols-4">
 							<div>
 								<label>Ticket type:</label>
-								<select name="ticketType" class="uk-select text-zinc-50">
-									if mode == "update" {
+								if mode == "create" {
+									<select name="ticketType" class="uk-select text-zinc-50">
 										if newTicket.Type == "Request" {
 											<option value="Request" selected>Request</option>
 											<option value="Incident">Incident</option>
@@ -72,46 +89,92 @@ templ Ticket(ticket models.Ticket, currentUser models.Analyst, userType string, 
 											<option value="Request">Request</option>
 											<option value="Incident" selected>Incident</option>
 										} else {
-											if ticket.Type == "Request" {
+											<option value="Request">Request</option>
+											<option value="Incident">Incident</option>
+										}
+									</select>
+								} else if mode == "update" {
+									if ticket.Assigned_Analyst.UUID != currentUser.Analyst_ID {
+										if currentUser.Analyst_ID == models.GetTeam(ticket.Assigned_Team.UUID.String()).Manager_ID.UUID {
+											<select name="ticketType" class="uk-select text-zinc-50">
+												if newTicket.Type == "Request" {
+													<option value="Request" selected>Request</option>
+													<option value="Incident">Incident</option>
+												} else if newTicket.Type == "Incident" {
+													<option value="Request">Request</option>
+													<option value="Incident" selected>Incident</option>
+												} else {
+													if ticket.Type == "Request" {
+														<option value="Request" selected>Request</option>
+														<option value="Incident">Incident</option>
+													} else if ticket.Type == "Incident" {
+														<option value="Request">Request</option>
+														<option value="Incident" selected>Incident</option>
+													}
+												}
+											</select>
+										} else {
+											<select name="ticketType" class="uk-select text-zinc-50" disabled>
+												if ticket.Type == "Request" {
+													<option value="Request" selected>Request</option>
+													<option value="Incident">Incident</option>
+												} else if ticket.Type == "Incident" {
+													<option value="Request">Request</option>
+													<option value="Incident" selected>Incident</option>
+												}
+											</select>
+										}
+									} else {
+										<select name="ticketType" class="uk-select text-zinc-50">
+											if newTicket.Type == "Request" {
 												<option value="Request" selected>Request</option>
 												<option value="Incident">Incident</option>
-											} else if ticket.Type == "Incident" {
+											} else if newTicket.Type == "Incident" {
 												<option value="Request">Request</option>
 												<option value="Incident" selected>Incident</option>
+											} else {
+												if ticket.Type == "Request" {
+													<option value="Request" selected>Request</option>
+													<option value="Incident">Incident</option>
+												} else if ticket.Type == "Incident" {
+													<option value="Request">Request</option>
+													<option value="Incident" selected>Incident</option>
+												}
 											}
-										}
-									} else if mode == "create" {
-										if newTicket.Type == "Request" {
-											<option value="Request" selected>Request</option>
-											<option value="Incident">Incident</option>
-										} else if newTicket.Type == "Incident" {
-											<option value="Request">Request</option>
-											<option value="Incident" selected>Incident</option>
-										} else {
-											<option value="Request">Request</option>
-											<option value="Incident">Incident</option>
-										}
+										</select>
 									}
-								</select>
+								}
 							</div>
 							<div></div>
 							<div>
 								<label>Customer contact:</label>
-								if mode ==  "update" {
-									if newTicket.Customer_Contact != "" {
-										<input name="customerContact" class="uk-input text-zinc-50 text-base" type="text" value={ newTicket.Customer_Contact } required/>
-									} else {
-										<input name="customerContact" class="uk-input text-zinc-50 text-base" type="text" value={ ticket.Customer_Contact } required/>
-									}
-								} else if mode == "create" {
+								if mode == "create" {
 									<input name="customerContact" class="uk-input text-zinc-50 text-base" type="text" value={ newTicket.Customer_Contact } required/>
+								} else if mode == "update" {
+									if ticket.Assigned_Analyst.UUID != currentUser.Analyst_ID {
+										if currentUser.Analyst_ID == models.GetTeam(ticket.Assigned_Team.UUID.String()).Manager_ID.UUID {
+											if newTicket.Customer_Contact != "" {
+												<input name="customerContact" class="uk-input text-zinc-50 text-base" type="text" value={ newTicket.Customer_Contact } required/>
+											} else {
+												<input name="customerContact" class="uk-input text-zinc-50 text-base" type="text" value={ ticket.Customer_Contact } required/>
+											}
+										} else {
+											<input disabled name="customerContact" class="uk-input text-zinc-50 text-base" type="text" value={ ticket.Customer_Contact } required/>
+										}
+									} else {
+										if newTicket.Customer_Contact != "" {
+											<input name="customerContact" class="uk-input text-zinc-50 text-base" type="text" value={ newTicket.Customer_Contact } required/>
+										} else {
+											<input name="customerContact" class="uk-input text-zinc-50 text-base" type="text" value={ ticket.Customer_Contact } required/>
+										}
+									}
 								}
 							</div>
 						</div>
 						<div class="grid grid-cols-4 mt-3">
 							<div>
 								<label>Category:</label>
-								if mode == "update" {
+								if mode == "create" {
 									if categoryError == "" {
 										<select name="category" class="uk-select text-zinc-50" hx-get="/get_subcategories" hx-target="#subcategories" hx-swap="outerHTML" hx-trigger="change">
 											<option value="none">Select...</option>
@@ -119,11 +182,7 @@ templ Ticket(ticket models.Ticket, currentUser models.Analyst, userType string, 
 												if newTicket.Category.UUID == category.Category_ID {
 													<option value={ category.Category_ID.String() } selected>{ category.Category_Name }</option>
 												} else {
-													if ticket.Category.UUID == category.Category_ID {
-														<option value={ category.Category_ID.String() } selected>{ category.Category_Name }</option>
-													} else {
-														<option value={ category.Category_ID.String() }>{ category.Category_Name }</option>
-													}
+													<option value={ category.Category_ID.String() }>{ category.Category_Name }</option>
 												}
 											}
 										</select>
@@ -134,78 +193,102 @@ templ Ticket(ticket models.Ticket, currentUser models.Analyst, userType string, 
 												if newTicket.Category.UUID == category.Category_ID {
 													<option value={ category.Category_ID.String() } selected>{ category.Category_Name }</option>
 												} else {
-													if ticket.Category.UUID == category.Category_ID {
-														<option value={ category.Category_ID.String() } selected>{ category.Category_Name }</option>
-													} else {
-														<option value={ category.Category_ID.String() }>{ category.Category_Name }</option>
-													}
+													<option value={ category.Category_ID.String() }>{ category.Category_Name }</option>
 												}
 											}
 										</select>
 										<label class="text-red-600">{ categoryError }</label>
 									}
-								} else if mode == "create" {
-									if categoryError == "" {
-										<select name="category" class="uk-select text-zinc-50" hx-get="/get_subcategories" hx-target="#subcategories" hx-swap="outerHTML" hx-trigger="change">
-											<option value="none">Select...</option>
-											for _, category := range models.GetAllCategories() {
-												if newTicket.Category.UUID == category.Category_ID {
-													<option value={ category.Category_ID.String() } selected>{ category.Category_Name }</option>
-												} else {
-													<option value={ category.Category_ID.String() }>{ category.Category_Name }</option>
-												}
+								} else if mode == "update" {
+									if ticket.Assigned_Analyst.UUID != currentUser.Analyst_ID {
+										if currentUser.Analyst_ID == models.GetTeam(ticket.Assigned_Team.UUID.String()).Manager_ID.UUID {
+											if categoryError == "" {
+												<select name="category" class="uk-select text-zinc-50" hx-get="/get_subcategories" hx-target="#subcategories" hx-swap="outerHTML" hx-trigger="change">
+													<option value="none">Select...</option>
+													for _, category := range models.GetAllCategories() {
+														if newTicket.Category.UUID == category.Category_ID {
+															<option value={ category.Category_ID.String() } selected>{ category.Category_Name }</option>
+														} else {
+															if ticket.Category.UUID == category.Category_ID {
+																<option value={ category.Category_ID.String() } selected>{ category.Category_Name }</option>
+															} else {
+																<option value={ category.Category_ID.String() }>{ category.Category_Name }</option>
+															}
+														}
+													}
+												</select>
+											} else {
+												<select name="category" class="uk-select text-zinc-50 border border-red-600" hx-get="/get_subcategories" hx-target="#subcategories" hx-swap="outerHTML" hx-trigger="change">
+													<option value="none">Select...</option>
+													for _, category := range models.GetAllCategories() {
+														if newTicket.Category.UUID == category.Category_ID {
+															<option value={ category.Category_ID.String() } selected>{ category.Category_Name }</option>
+														} else {
+															if ticket.Category.UUID == category.Category_ID {
+																<option value={ category.Category_ID.String() } selected>{ category.Category_Name }</option>
+															} else {
+																<option value={ category.Category_ID.String() }>{ category.Category_Name }</option>
+															}
+														}
+													}
+												</select>
+												<label class="text-red-600">{ categoryError }</label>
 											}
-										</select>
+										} else {
+											<select disabled name="category" class="uk-select text-zinc-50" hx-get="/get_subcategories" hx-target="#subcategories" hx-swap="outerHTML" hx-trigger="change">
+												for _, category := range models.GetAllCategories() {
+													if newTicket.Category.UUID == category.Category_ID {
+														<option value={ category.Category_ID.String() } selected>{ category.Category_Name }</option>
+													} else {
+														if ticket.Category.UUID == category.Category_ID {
+															<option value={ category.Category_ID.String() } selected>{ category.Category_Name }</option>
+														} else {
+															<option value={ category.Category_ID.String() }>{ category.Category_Name }</option>
+														}
+													}
+												}
+											</select>
+										}
 									} else {
-										<select name="category" class="uk-select text-zinc-50 border border-red-600" hx-get="/get_subcategories" hx-target="#subcategories" hx-swap="outerHTML" hx-trigger="change">
-											<option value="none">Select...</option>
-											for _, category := range models.GetAllCategories() {
-												if newTicket.Category.UUID == category.Category_ID {
-													<option value={ category.Category_ID.String() } selected>{ category.Category_Name }</option>
-												} else {
-													<option value={ category.Category_ID.String() }>{ category.Category_Name }</option>
+										if categoryError == "" {
+											<select name="category" class="uk-select text-zinc-50" hx-get="/get_subcategories" hx-target="#subcategories" hx-swap="outerHTML" hx-trigger="change">
+												<option value="none">Select...</option>
+												for _, category := range models.GetAllCategories() {
+													if newTicket.Category.UUID == category.Category_ID {
+														<option value={ category.Category_ID.String() } selected>{ category.Category_Name }</option>
+													} else {
+														if ticket.Category.UUID == category.Category_ID {
+															<option value={ category.Category_ID.String() } selected>{ category.Category_Name }</option>
+														} else {
+															<option value={ category.Category_ID.String() }>{ category.Category_Name }</option>
+														}
+													}
 												}
-											}
-										</select>
-										<label class="text-red-600">{ categoryError }</label>
+											</select>
+										} else {
+											<select name="category" class="uk-select text-zinc-50 border border-red-600" hx-get="/get_subcategories" hx-target="#subcategories" hx-swap="outerHTML" hx-trigger="change">
+												<option value="none">Select...</option>
+												for _, category := range models.GetAllCategories() {
+													if newTicket.Category.UUID == category.Category_ID {
+														<option value={ category.Category_ID.String() } selected>{ category.Category_Name }</option>
+													} else {
+														if ticket.Category.UUID == category.Category_ID {
+															<option value={ category.Category_ID.String() } selected>{ category.Category_Name }</option>
+														} else {
+															<option value={ category.Category_ID.String() }>{ category.Category_Name }</option>
+														}
+													}
+												}
+											</select>
+											<label class="text-red-600">{ categoryError }</label>
+										}
 									}
 								}
 							</div>
 							<div></div>
 							<div>
 								<label>Subcategory:</label>
-								if mode == "update" {
-									if subcategoryError == "" {
-										<select name="subcategory" class="uk-select text-zinc-50" id="subcategories">
-											for _, subcategory := range models.GetSubcategories(ticket.Category.UUID.String()) {
-												if newTicket.Subcategory.UUID == subcategory.Subcategory_ID {
-													<option value={ subcategory.Subcategory_ID.String() } selected>{ subcategory.Subcategory_Name }</option>
-												} else {
-													if ticket.Subcategory.UUID == subcategory.Subcategory_ID {
-														<option value={ subcategory.Subcategory_ID.String() } selected>{ subcategory.Subcategory_Name }</option>
-													} else {
-														<option value={ subcategory.Subcategory_ID.String() }>{ subcategory.Subcategory_Name }</option>
-													}
-												}
-											}
-										</select>
-									} else {
-										<select name="subcategory" class="uk-select text-zinc-50 border border-red-600" id="subcategories">
-											for _, subcategory := range models.GetSubcategories(ticket.Category.UUID.String()) {
-												if newTicket.Subcategory.UUID == subcategory.Subcategory_ID {
-													<option value={ subcategory.Subcategory_ID.String() } selected>{ subcategory.Subcategory_Name }</option>
-												} else {
-													if ticket.Subcategory.UUID == subcategory.Subcategory_ID {
-														<option value={ subcategory.Subcategory_ID.String() } selected>{ subcategory.Subcategory_Name }</option>
-													} else {
-														<option value={ subcategory.Subcategory_ID.String() }>{ subcategory.Subcategory_Name }</option>
-													}
-												}
-											}
-										</select>
-										<label class="text-red-600">{ subcategoryError }</label>
-									}
-								} else if mode == "create" {
+								if mode == "create" {
 									if subcategoryError == "" {
 										if newTicket.Category.UUID != uuid.Nil {
 											<select name="subcategory" class="uk-select text-zinc-50" id="subcategories">
@@ -249,31 +332,131 @@ templ Ticket(ticket models.Ticket, currentUser models.Analyst, userType string, 
 											<label class="text-red-600">{ subcategoryError }</label>
 										}
 									}
+								} else if mode == "update" {
+									if ticket.Assigned_Analyst.UUID != currentUser.Analyst_ID {
+										if currentUser.Analyst_ID == models.GetTeam(ticket.Assigned_Team.UUID.String()).Manager_ID.UUID {
+											if subcategoryError == "" {
+												<select name="subcategory" class="uk-select text-zinc-50" id="subcategories">
+													for _, subcategory := range models.GetSubcategories(ticket.Category.UUID.String()) {
+														if newTicket.Subcategory.UUID == subcategory.Subcategory_ID {
+															<option value={ subcategory.Subcategory_ID.String() } selected>{ subcategory.Subcategory_Name }</option>
+														} else {
+															if ticket.Subcategory.UUID == subcategory.Subcategory_ID {
+																<option value={ subcategory.Subcategory_ID.String() } selected>{ subcategory.Subcategory_Name }</option>
+															} else {
+																<option value={ subcategory.Subcategory_ID.String() }>{ subcategory.Subcategory_Name }</option>
+															}
+														}
+													}
+												</select>
+											} else {
+												<select name="subcategory" class="uk-select text-zinc-50 border border-red-600" id="subcategories">
+													for _, subcategory := range models.GetSubcategories(ticket.Category.UUID.String()) {
+														if newTicket.Subcategory.UUID == subcategory.Subcategory_ID {
+															<option value={ subcategory.Subcategory_ID.String() } selected>{ subcategory.Subcategory_Name }</option>
+														} else {
+															if ticket.Subcategory.UUID == subcategory.Subcategory_ID {
+																<option value={ subcategory.Subcategory_ID.String() } selected>{ subcategory.Subcategory_Name }</option>
+															} else {
+																<option value={ subcategory.Subcategory_ID.String() }>{ subcategory.Subcategory_Name }</option>
+															}
+														}
+													}
+												</select>
+												<label class="text-red-600">{ subcategoryError }</label>
+											}
+										} else {
+											<select disabled name="subcategory" class="uk-select text-zinc-50" id="subcategories">
+												for _, subcategory := range models.GetSubcategories(ticket.Category.UUID.String()) {
+													if ticket.Subcategory.UUID == subcategory.Subcategory_ID {
+														<option value={ subcategory.Subcategory_ID.String() } selected>{ subcategory.Subcategory_Name }</option>
+													} else {
+														<option value={ subcategory.Subcategory_ID.String() }>{ subcategory.Subcategory_Name }</option>
+													}
+												}
+											</select>
+										}
+									} else {
+										if subcategoryError == "" {
+											<select name="subcategory" class="uk-select text-zinc-50" id="subcategories">
+												for _, subcategory := range models.GetSubcategories(ticket.Category.UUID.String()) {
+													if newTicket.Subcategory.UUID == subcategory.Subcategory_ID {
+														<option value={ subcategory.Subcategory_ID.String() } selected>{ subcategory.Subcategory_Name }</option>
+													} else {
+														if ticket.Subcategory.UUID == subcategory.Subcategory_ID {
+															<option value={ subcategory.Subcategory_ID.String() } selected>{ subcategory.Subcategory_Name }</option>
+														} else {
+															<option value={ subcategory.Subcategory_ID.String() }>{ subcategory.Subcategory_Name }</option>
+														}
+													}
+												}
+											</select>
+										} else {
+											<select name="subcategory" class="uk-select text-zinc-50 border border-red-600" id="subcategories">
+												for _, subcategory := range models.GetSubcategories(ticket.Category.UUID.String()) {
+													if newTicket.Subcategory.UUID == subcategory.Subcategory_ID {
+														<option value={ subcategory.Subcategory_ID.String() } selected>{ subcategory.Subcategory_Name }</option>
+													} else {
+														if ticket.Subcategory.UUID == subcategory.Subcategory_ID {
+															<option value={ subcategory.Subcategory_ID.String() } selected>{ subcategory.Subcategory_Name }</option>
+														} else {
+															<option value={ subcategory.Subcategory_ID.String() }>{ subcategory.Subcategory_Name }</option>
+														}
+													}
+												}
+											</select>
+											<label class="text-red-600">{ subcategoryError }</label>
+										}
+									}
 								}
 							</div>
 						</div>
 						<div class="mt-3">
 							<label>Title:</label>
-							if mode == "update" {
-								if newTicket.Title != "" {
-									<input name="title" class="uk-input text-zinc-50 text-base" type="text" value={ newTicket.Title } required/>
-								} else {
-									<input name="title" class="uk-input text-zinc-50 text-base" type="text" value={ ticket.Title } required/>
-								}
-							} else if mode == "create" {
+							if mode == "create" {
 								<input name="title" class="uk-input text-zinc-50 text-base" type="text" value={ newTicket.Title } required/>
+							} else if mode == "update" {
+								if ticket.Assigned_Analyst.UUID != currentUser.Analyst_ID {
+									if currentUser.Analyst_ID == models.GetTeam(ticket.Assigned_Team.UUID.String()).Manager_ID.UUID {
+										if newTicket.Title != "" {
+											<input name="title" class="uk-input text-zinc-50 text-base" type="text" value={ newTicket.Title } required/>
+										} else {
+											<input name="title" class="uk-input text-zinc-50 text-base" type="text" value={ ticket.Title } required/>
+										}
+									} else {
+										<input disabled name="title" class="uk-input text-zinc-50 text-base" type="text" value={ ticket.Title } required/>
+									}
+								} else {
+									if newTicket.Title != "" {
+										<input name="title" class="uk-input text-zinc-50 text-base" type="text" value={ newTicket.Title } required/>
+									} else {
+										<input name="title" class="uk-input text-zinc-50 text-base" type="text" value={ ticket.Title } required/>
+									}
+								}
 							}
 						</div>
 						<div class="mt-3">
 							<label>Description:</label>
-							if mode == "update" {
-								if newTicket.Description != "" {
-									<textarea name="desc" class="uk-textarea font-mono text-zinc-50 text-base" rows="10">{ newTicket.Description }</textarea>
-								} else {
-									<textarea name="desc" class="uk-textarea font-mono text-zinc-50 text-base" rows="10">{ ticket.Description }</textarea>
-								}
-							} else if mode == "create" {
+							if mode == "create" {
 								<textarea name="desc" class="uk-textarea font-mono text-zinc-50 text-base" rows="10">{ newTicket.Description }</textarea>
+							} else if mode == "update" {
+								if ticket.Assigned_Analyst.UUID != currentUser.Analyst_ID {
+									if currentUser.Analyst_ID == models.GetTeam(ticket.Assigned_Team.UUID.String()).Manager_ID.UUID {
+										if newTicket.Description != "" {
+											<textarea name="desc" class="uk-textarea font-mono text-zinc-50 text-base" rows="10">{ newTicket.Description }</textarea>
+										} else {
+											<textarea name="desc" class="uk-textarea font-mono text-zinc-50 text-base" rows="10">{ ticket.Description }</textarea>
+										}
+									} else {
+										<textarea disabled name="desc" class="uk-textarea font-mono text-zinc-50 text-base" rows="10">{ ticket.Description }</textarea>
+									}
+								} else {
+									if newTicket.Description != "" {
+										<textarea name="desc" class="uk-textarea font-mono text-zinc-50 text-base" rows="10">{ newTicket.Description }</textarea>
+									} else {
+										<textarea name="desc" class="uk-textarea font-mono text-zinc-50 text-base" rows="10">{ ticket.Description }</textarea>
+									}
+								}
 							}
 						</div>
 						if mode == "update" {

@@ -1,8 +1,6 @@
 package layouts
 
-import "github.com/VladanT3/IT_Ticketing_Platform/models"
-
-templ AccessDenied(currentUser models.Analyst, userType string, errMsg string) {
+templ ErrorMessage(userType string, errMsg string) {
 	@Navbar(userType) {
 		<div class="container mx-auto mt-5">
 			<div class="grid grid-rows-5">

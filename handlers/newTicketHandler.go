@@ -8,5 +8,5 @@ import (
 )
 
 func NewTicketHandler(w http.ResponseWriter, r *http.Request) error {
-	return Render(w, r, tickets.Ticket(models.Ticket{}, LoggedInUser, LoggedInUserType, "create", "", "", models.Ticket{}))
+	return Render(w, r, tickets.TicketForm(models.Ticket{}, LoggedInUser, LoggedInUserType, "create", "", "", models.Ticket{}))
 }

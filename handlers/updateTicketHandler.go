@@ -83,7 +83,7 @@ func UpdateTicketHandler(w http.ResponseWriter, r *http.Request) error {
 			Customer_Contact: customerContact,
 		}
 
-		return Render(w, r, tickets.Ticket(models.GetTicket(ticketID), LoggedInUser, LoggedInUserType, "update", "Please select a valid category!", "Please select a valid subcategory!", newTicket))
+		return Render(w, r, tickets.TicketForm(models.GetTicket(ticketID), LoggedInUser, LoggedInUserType, "update", "Please select a valid category!", "Please select a valid subcategory!", newTicket))
 	}
 
 	var db *sql.DB = database.DB_Connection

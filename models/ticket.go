@@ -449,3 +449,18 @@ func DeleteTicket(ticketID string) {
 		log.Fatal("error deleting ticket: ", err)
 	}
 }
+
+func TicketExists(ticketID string) bool {
+	var db *sql.DB = database.DB_Connection
+	query := `select ticket_id from ticket where ticket_id = $1;`
+	var returnedTicketID uuid.UUID
+	err := db.QueryRow(query, ticketID).Scan(&returnedTicketID)
+	if err != nil {
+		if err == sql.ErrNoRows {
+			return false
+		}
+		log.Fatal("error checking if ticket exists: ", err)
+	}
+
+	return true
+}
