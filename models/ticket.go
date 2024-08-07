@@ -439,3 +439,13 @@ func GetTeamTickets(teamID string) []Ticket {
 
 	return tickets
 }
+
+func DeleteTicket(ticketID string) {
+	var db *sql.DB = database.DB_Connection
+	query := `delete from ticket where ticket_id = $1;`
+
+	_, err := db.Exec(query, ticketID)
+	if err != nil {
+		log.Fatal("error deleting ticket: ", err)
+	}
+}

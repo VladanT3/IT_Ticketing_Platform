@@ -28,6 +28,7 @@ func main() {
 	router.Get("/ticket/new", handlers.Make(handlers.NewTicketHandler))
 	router.Get("/ticket/create", handlers.Make(handlers.CreateTicketHandler))
 	router.Get("/ticket/update", handlers.Make(handlers.UpdateTicketHandler))
+	router.Delete("/ticket/delete/{ticketID}", handlers.Make(handlers.DeleteTicketHandler))
 	router.Get("/ticket/{ticketID}", handlers.Make(handlers.ShowTicketHandler))
 	router.Get("/tickets/search", handlers.Make(handlers.ShowAllTicketSearchHandler))
 	router.Get("/tickets/team", handlers.Make(handlers.ShowTeamTicketsHandler))

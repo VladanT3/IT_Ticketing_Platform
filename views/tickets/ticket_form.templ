@@ -37,14 +37,14 @@ templ Ticket(ticket models.Ticket, currentUser models.Analyst, userType string, 
 								<button type="button" class="uk-button uk-width-1-1 bg-zinc-50 text-zinc-900 border border-zinc-50 hover:bg-zinc-900 hover:text-zinc-50 mt-3">Assign Ticket</button>
 							}
 							if models.IsUserManager(currentUser.Analyst_ID.String()) && currentUser.Analyst_ID == models.GetTeam(ticket.Assigned_Team.UUID.String()).Manager_ID.UUID {
-								<button type="button" class="uk-button uk-width-1-1 bg-zinc-900 text-red-600 border border-red-600 hover:bg-red-600 hover:text-zinc-900 mt-3">Delete Ticket</button>
+								<button type="button" hx-delete={ "/ticket/delete/" + ticket.Ticket_ID.String() } hx-target="#ticket_form" hx-swap="innerHTML" class="uk-button uk-width-1-1 bg-zinc-900 text-red-600 border border-red-600 hover:bg-red-600 hover:text-zinc-900 mt-3">Delete Ticket</button>
 							}
 						}
 					</div>
 					<div class="uk-divider-vertical min-h-full"></div>
 				</div>
 				<div class="col-span-4">
-					<div class="flex flex-col">
+					<div class="flex flex-col" id="ticket_form">
 						if mode == "update" {
 							<div class="grid grid-cols-4">
 								<div class="col-span-3">
