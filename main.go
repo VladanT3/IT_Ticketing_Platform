@@ -34,6 +34,7 @@ func main() {
 	router.Get("/tickets/team", handlers.Make(handlers.ShowTeamTicketsHandler))
 	router.Get("/tickets/unassigned", handlers.Make(handlers.ShowUnassignedTicketsHandler))
 	router.Post("/search_tickets", handlers.Make(handlers.TicketSearchHandler))
+	router.Get("/categories", handlers.Make(handlers.CategoriesHandler))
 
 	port := os.Getenv("PORT")
 	fmt.Println("Server started on: http://localhost" + port)

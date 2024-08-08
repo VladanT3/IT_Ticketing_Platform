@@ -8795,6 +8795,10 @@ th.uk-text-break, td.uk-text-break {
   grid-column: span 4 / span 4;
 }
 
+.col-span-2 {
+  grid-column: span 2 / span 2;
+}
+
 .mx-auto {
   margin-left: auto;
   margin-right: auto;
@@ -8836,8 +8840,28 @@ th.uk-text-break, td.uk-text-break {
   min-height: 100%;
 }
 
+.w-48 {
+  width: 12rem;
+}
+
+.w-96 {
+  width: 24rem;
+}
+
 .shrink {
   flex-shrink: 1;
+}
+
+.basis-4 {
+  flex-basis: 1rem;
+}
+
+.basis-1\/4 {
+  flex-basis: 25%;
+}
+
+.basis-2\/4 {
+  flex-basis: 50%;
 }
 
 .grid-cols-2 {
@@ -8866,6 +8890,14 @@ th.uk-text-break, td.uk-text-break {
 
 .grid-rows-5 {
   grid-template-rows: repeat(5, minmax(0, 1fr));
+}
+
+.grid-rows-4 {
+  grid-template-rows: repeat(4, minmax(0, 1fr));
+}
+
+.flex-row {
+  flex-direction: row;
 }
 
 .flex-col {
@@ -8935,6 +8967,14 @@ th.uk-text-break, td.uk-text-break {
 
 .p-5 {
   padding: 1.25rem;
+}
+
+.pl-2 {
+  padding-left: 0.5rem;
+}
+
+.pr-2 {
+  padding-right: 0.5rem;
 }
 
 .font-mono {

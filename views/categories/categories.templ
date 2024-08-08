@@ -1,0 +1,24 @@
+package categories
+
+import "github.com/VladanT3/IT_Ticketing_Platform/views/layouts"
+
+templ Categories(userType string) {
+	@layouts.Navbar(userType) {
+		<div class="container mx-auto mt-5 grid grid-cols-2">
+			<div class="flex flex-col" style="padding-right:0.5rem">
+				<div class="flex flex-row">
+					<label class="w-48">Search categories:</label>
+					<input type="text" class="uk-input text-zinc-50 text-base w-48"/>
+				</div>
+			</div>
+			<div>
+				<div class="flex flex-col" style="padding-left:0.5rem">
+					<div class="flex flex-row">
+						<label>Search subcategories:</label>
+						<input type="text" class="uk-input text-zinc-50 text-base"/>
+					</div>
+				</div>
+			</div>
+		</div>
+	}
+}
