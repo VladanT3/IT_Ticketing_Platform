@@ -107,190 +107,78 @@ func FilterTickets(search string, customer string, ticketType string, status str
 	var db *sql.DB = database.DB_Connection
 	tickets := []Ticket{}
 	ticket := Ticket{}
-	var query string
-	var offset int
+	var queryArgs []any
+
 	search = "%" + search + "%"
 	customer = "%" + customer + "%"
 
-	if searchType == "All Ticket Search" {
-		query = `
-			select *
-			from ticket
-			where (ticket_number::varchar like $1 or
-			title like $1 or
-			description like $1) and
-			customer_contact like $2
+	queryArgs = append(queryArgs, search)
+	queryArgs = append(queryArgs, customer)
+	var queryArgIter int = 2
+
+	query := `
+		select *
+		from ticket
+		where (ticket_number::varchar like $1 or
+		title like $1 or
+		description like $1) and
+		customer_contact like $2
+	`
+
+	if searchType == "Team Tickets" {
+		query += `
+			and assigned_team = $3
 		`
-		offset = 0
-	} else if searchType == "Team Tickets" {
-		query = `
-			select *
-			from ticket
-			where (ticket_number::varchar like $1 or
-			title like $1 or
-			description like $1) and
-			customer_contact like $2 and
-			assigned_team = $3
-		`
-		offset = 1
+		queryArgs = append(queryArgs, teamID)
+		queryArgIter++
 	} else if searchType == "Unassigned Tickets" {
-		query = `
-			select *
-			from ticket
-			where (ticket_number::varchar like $1 or
-			title like $1 or
-			description like $1) and
-			customer_contact like $2 and
-			assigned_team = $3 and
+		query += `
+			and assigned_team = $3 and
 			assigned_analyst is null
 		`
-		offset = 1
+		queryArgs = append(queryArgs, teamID)
+		queryArgIter++
 	}
 
-	var rows *sql.Rows
-	var err error
+	if category != "none" {
+		query += `
+			and category_id = $` + strconv.Itoa(queryArgIter+1) + `
+		`
+		queryArgs = append(queryArgs, category)
+		queryArgIter++
 
-	if category == "none" {
-		if ticketType == "Both" {
-			if status == "Both" {
-				query += `
-					order by opened_date;
-				`
-
-				if offset == 0 {
-					rows, err = db.Query(query, search, customer)
-				} else {
-					rows, err = db.Query(query, search, customer, teamID)
-				}
-				if err != nil {
-					log.Fatal("error getting filtered tickets: ", err)
-				}
-				defer rows.Close()
-			} else {
-				query += `
-					and status = $` + strconv.Itoa(3+offset) + `
-					order by opened_date;
-				`
-
-				if offset == 0 {
-					rows, err = db.Query(query, search, customer, status)
-				} else {
-					rows, err = db.Query(query, search, customer, teamID, status)
-				}
-				if err != nil {
-					log.Fatal("error getting filtered tickets: ", err)
-				}
-				defer rows.Close()
-			}
-		} else {
-			if status == "Both" {
-				query += `
-					and type = $` + strconv.Itoa(3+offset) + `
-					order by opened_date;
-				`
-
-				if offset == 0 {
-					rows, err = db.Query(query, search, customer, ticketType)
-				} else {
-					rows, err = db.Query(query, search, customer, teamID, ticketType)
-				}
-				if err != nil {
-					log.Fatal("error getting filtered tickets: ", err)
-				}
-				defer rows.Close()
-			} else {
-				query += `
-					and type = $` + strconv.Itoa(3+offset) + ` and
-					status = $` + strconv.Itoa(4+offset) + `
-					order by opened_date;
-				`
-
-				if offset == 0 {
-					rows, err = db.Query(query, search, customer, ticketType, status)
-				} else {
-					rows, err = db.Query(query, search, customer, teamID, ticketType, status)
-				}
-				if err != nil {
-					log.Fatal("error getting filtered tickets: ", err)
-				}
-				defer rows.Close()
-			}
-		}
-	} else {
-		if ticketType == "Both" {
-			if status == "Both" {
-				query += `
-					and category_id = $` + strconv.Itoa(3+offset) + ` and
-					subcategory_id = $` + strconv.Itoa(4+offset) + `
-					order by opened_date;
-				`
-
-				if offset == 0 {
-					rows, err = db.Query(query, search, customer, category, subcategory)
-				} else {
-					rows, err = db.Query(query, search, customer, teamID, category, subcategory)
-				}
-				if err != nil {
-					log.Fatal("error getting filtered tickets: ", err)
-				}
-				defer rows.Close()
-			} else {
-				query += `
-					and status = $` + strconv.Itoa(3+offset) + ` and
-					category_id = $` + strconv.Itoa(4+offset) + ` and
-					subcategory_id = $` + strconv.Itoa(5+offset) + `
-					order by opened_date;
-				`
-
-				if offset == 0 {
-					rows, err = db.Query(query, search, customer, status, category, subcategory)
-				} else {
-					rows, err = db.Query(query, search, customer, teamID, status, category, subcategory)
-				}
-				if err != nil {
-					log.Fatal("error getting filtered tickets: ", err)
-				}
-				defer rows.Close()
-			}
-		} else {
-			if status == "Both" {
-				query += `
-					and type = $` + strconv.Itoa(3+offset) + ` and
-					category_id = $` + strconv.Itoa(4+offset) + ` and
-					subcategory_id = $` + strconv.Itoa(5+offset) + `
-					order by opened_date;
-				`
-
-				if offset == 0 {
-					rows, err = db.Query(query, search, customer, ticketType, category, subcategory)
-				} else {
-					rows, err = db.Query(query, search, customer, teamID, ticketType, category, subcategory)
-				}
-				if err != nil {
-					log.Fatal("error getting filtered tickets: ", err)
-				}
-				defer rows.Close()
-			} else {
-				query += `
-					and type = $` + strconv.Itoa(3+offset) + ` and
-					status = $` + strconv.Itoa(4+offset) + ` and
-					category_id = $` + strconv.Itoa(5+offset) + ` and
-					subcategory_id = $` + strconv.Itoa(6+offset) + `
-					order by opened_date;
-				`
-
-				if offset == 0 {
-					rows, err = db.Query(query, search, customer, ticketType, status, category, subcategory)
-				} else {
-					rows, err = db.Query(query, search, customer, teamID, ticketType, status, category, subcategory)
-				}
-				if err != nil {
-					log.Fatal("error getting filtered tickets: ", err)
-				}
-				defer rows.Close()
-			}
-		}
+		query += `
+			and subcategory_id = $` + strconv.Itoa(queryArgIter+1) + `
+		`
+		queryArgs = append(queryArgs, subcategory)
+		queryArgIter++
 	}
+
+	if ticketType != "Both" {
+		query += `
+			and type = $` + strconv.Itoa(queryArgIter+1) + `
+		`
+		queryArgs = append(queryArgs, ticketType)
+		queryArgIter++
+	}
+
+	if status != "Both" {
+		query += `
+			and status = $` + strconv.Itoa(queryArgIter+1) + `
+		`
+		queryArgs = append(queryArgs, status)
+		queryArgIter++
+	}
+
+	query += `
+		order by opened_date;
+	`
+
+	rows, err := db.Query(query, queryArgs...)
+	if err != nil {
+		log.Fatal("error getting filtered tickets: ", err)
+	}
+	defer rows.Close()
 
 	for rows.Next() {
 		err = rows.Scan(
