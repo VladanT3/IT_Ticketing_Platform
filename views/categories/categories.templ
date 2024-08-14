@@ -14,23 +14,21 @@ templ Categories(userType string) {
 					<div class="flex flex-col mt-3" style="margin-bottom: 1rem;">
 						<input type="text" class="uk-input text-zinc-50 text-base self-center" style="width: 65%;" placeholder="Search..."/>
 					</div>
-					for _, category := range models.GetAllCategories() {
-						<div class="border border-zinc-50 rounded-lg p-3 self-center hover:bg-zinc-50 hover:text-zinc-900 hover:cursor-pointer" style="width: 75%; margin-top: 1rem;">
-							<span class="text-xl">{ category.Category_Name }</span>
-						</div>
-					}
+					<form hx-get="/show_subcategories" hx-swap="innerHTML" hx-target="#subcategories" hx-trigger="submit" style="width: 75%;" class="self-center">
+						for _, category := range models.GetAllCategories() {
+							<button type="submit" name="category" value={ category.Category_ID.String() } class="flex flex-row justify-between border border-zinc-50 rounded-lg p-3 self-center hover:bg-zinc-50 hover:text-zinc-900 hover:cursor-pointer" style="width: 100%; margin-top: 1rem;">
+								<span class="text-xl">{ category.Category_Name }</span>
+								<a href={ "/category/edit/" + templ.SafeURL(category.Category_ID.String()) } class="uk-button border border-zinc-900 bg-zinc-50 text-zinc-900 hover:bg-zinc-900 hover:text-zinc-50">Edit</a>
+							</button>
+						}
+					</form>
 				</div>
 				<div class="uk-divider-vertical min-h-full"></div>
 			</div>
-			<div class="flex flex-col" style="width: 50%;">
+			<div id="subcategories" class="flex flex-col" style="width: 50%;">
 				<h1 class="self-center text-2xl">Subcategories</h1>
 				<div class="flex flex-col mt-3" style="margin-bottom: 1rem;">
-					<input type="text" class="uk-input text-zinc-50 text-base self-center" style="width: 65%;" placeholder="Search..."/>
-				</div>
-				<div class="flex flex-col" id="subcategories">
-					<div class="border border-zinc-50 rounded-lg p-3 self-center hover:bg-zinc-50 hover:text-zinc-900 hover:cursor-pointer" style="width: 75%; margin-top: 1rem;">
-						<span class="text-xl">Subcategory name</span>
-					</div>
+					<input type="text" class="uk-input text-zinc-50 text-base self-center" style="width: 65%;" placeholder="Search..." disabled/>
 				</div>
 			</div>
 		</div>

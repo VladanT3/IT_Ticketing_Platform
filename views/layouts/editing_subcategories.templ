@@ -1,0 +1,24 @@
+package layouts
+
+import "github.com/VladanT3/IT_Ticketing_Platform/models"
+
+templ EditingSubcategories(subcategories []models.Subcategory) {
+	if len(subcategories) == 0 {
+		<h1 class="self-center text-2xl">Subcategories</h1>
+		<div class="flex flex-col mt-3" style="margin-bottom: 1rem;">
+			<input type="text" class="uk-input text-zinc-50 text-base self-center" style="width: 65%;" placeholder="Search..." disabled/>
+		</div>
+	} else {
+		<h1 class="self-center text-2xl">Subcategories</h1>
+		<div class="flex flex-col mt-3" style="margin-bottom: 1rem;">
+			<input type="text" class="uk-input text-zinc-50 text-base self-center" style="width: 65%;" placeholder="Search..."/>
+		</div>
+		<div class="flex flex-col">
+			for _, subcategory := range subcategories {
+				<a href={ "/subcategory/edit/" + templ.SafeURL(subcategory.Subcategory_ID.String()) } class="border border-zinc-50 rounded-lg p-3 self-center hover:bg-zinc-50 hover:text-zinc-900 hover:cursor-pointer" style="width: 75%; margin-top: 1rem;">
+					<span class="text-xl">{ subcategory.Subcategory_Name }</span>
+				</a>
+			}
+		</div>
+	}
+}
