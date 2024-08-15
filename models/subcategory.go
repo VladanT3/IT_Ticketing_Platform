@@ -79,7 +79,7 @@ func GetSubcategories(category_id string) []Subcategory {
 	return subcategories
 }
 
-func SubcategorySearchByName(search_term string) []Subcategory {
+func SubcategorySearchByName(search_term string, categoryID string) []Subcategory {
 	var db *sql.DB = database.DB_Connection
 	var subcategories []Subcategory
 	subcategory := Subcategory{}
@@ -87,8 +87,8 @@ func SubcategorySearchByName(search_term string) []Subcategory {
 	search_term = strings.ToLower(search_term)
 	search_term = "%" + search_term + "%"
 
-	query := `select subcategory_id, subcategory_name from subcategory where lower(subcategory_name) like $1;`
-	rows, err := db.Query(query, search_term)
+	query := `select subcategory_id, subcategory_name from subcategory where category_id = $1 and lower(subcategory_name) like $2;`
+	rows, err := db.Query(query, categoryID, search_term)
 	if err != nil {
 		log.Fatal("Error getting subcategories by name: ", err)
 	}

@@ -10,7 +10,7 @@ import templruntime "github.com/a-h/templ/runtime"
 
 import "github.com/VladanT3/IT_Ticketing_Platform/models"
 
-func EditingSubcategories(subcategories []models.Subcategory) templ.Component {
+func EditingSubcategories(subcategories []models.Subcategory, category string) templ.Component {
 	return templruntime.GeneratedTemplate(func(templ_7745c5c3_Input templruntime.GeneratedComponentInput) (templ_7745c5c3_Err error) {
 		templ_7745c5c3_W, ctx := templ_7745c5c3_Input.Writer, templ_7745c5c3_Input.Context
 		templ_7745c5c3_Buffer, templ_7745c5c3_IsBuffer := templruntime.GetBuffer(templ_7745c5c3_W)
@@ -34,7 +34,20 @@ func EditingSubcategories(subcategories []models.Subcategory) templ.Component {
 				return templ_7745c5c3_Err
 			}
 		} else {
-			_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString("<h1 class=\"self-center text-2xl\">Subcategories</h1><div class=\"flex flex-col mt-3\" style=\"margin-bottom: 1rem;\"><input type=\"text\" name=\"subcategory_search\" hx-get=\"search_subcategories\" hx-trigger=\"keyup changed delay:500ms\" hx-swap=\"innerHTML\" hx-target=\"#subcategory_list\" class=\"uk-input text-zinc-50 text-base self-center\" style=\"width: 65%;\" placeholder=\"Search...\"></div><div class=\"flex flex-col\" id=\"subcategory_list\">")
+			_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString("<h1 class=\"self-center text-2xl\">Subcategories</h1><form hx-get=\"search_subcategories\" hx-trigger=\"keyup changed delay:500ms from:#subcategory_search\" hx-swap=\"innerHTML\" hx-target=\"#subcategory_list\" class=\"flex flex-col mt-3\" style=\"margin-bottom: 1rem;\"><input type=\"hidden\" name=\"category\" value=\"")
+			if templ_7745c5c3_Err != nil {
+				return templ_7745c5c3_Err
+			}
+			var templ_7745c5c3_Var2 string
+			templ_7745c5c3_Var2, templ_7745c5c3_Err = templ.JoinStringErrs(category)
+			if templ_7745c5c3_Err != nil {
+				return templ.Error{Err: templ_7745c5c3_Err, FileName: `views/layouts/editing_subcategories.templ`, Line: 14, Col: 56}
+			}
+			_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString(templ.EscapeString(templ_7745c5c3_Var2))
+			if templ_7745c5c3_Err != nil {
+				return templ_7745c5c3_Err
+			}
+			_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString("\"> <input type=\"text\" id=\"subcategory_search\" name=\"subcategory_search\" class=\"uk-input text-zinc-50 text-base self-center\" style=\"width: 65%;\" placeholder=\"Search...\"></form><div class=\"flex flex-col\" id=\"subcategory_list\">")
 			if templ_7745c5c3_Err != nil {
 				return templ_7745c5c3_Err
 			}
@@ -43,8 +56,8 @@ func EditingSubcategories(subcategories []models.Subcategory) templ.Component {
 				if templ_7745c5c3_Err != nil {
 					return templ_7745c5c3_Err
 				}
-				var templ_7745c5c3_Var2 templ.SafeURL = "/subcategory/edit/" + templ.SafeURL(subcategory.Subcategory_ID.String())
-				_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString(templ.EscapeString(string(templ_7745c5c3_Var2)))
+				var templ_7745c5c3_Var3 templ.SafeURL = "/subcategory/edit/" + templ.SafeURL(subcategory.Subcategory_ID.String())
+				_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString(templ.EscapeString(string(templ_7745c5c3_Var3)))
 				if templ_7745c5c3_Err != nil {
 					return templ_7745c5c3_Err
 				}
@@ -52,21 +65,21 @@ func EditingSubcategories(subcategories []models.Subcategory) templ.Component {
 				if templ_7745c5c3_Err != nil {
 					return templ_7745c5c3_Err
 				}
-				var templ_7745c5c3_Var3 string
-				templ_7745c5c3_Var3, templ_7745c5c3_Err = templ.JoinStringErrs(subcategory.Subcategory_Name)
+				var templ_7745c5c3_Var4 string
+				templ_7745c5c3_Var4, templ_7745c5c3_Err = templ.JoinStringErrs(subcategory.Subcategory_Name)
 				if templ_7745c5c3_Err != nil {
-					return templ.Error{Err: templ_7745c5c3_Err, FileName: `views/layouts/editing_subcategories.templ`, Line: 19, Col: 57}
+					return templ.Error{Err: templ_7745c5c3_Err, FileName: `views/layouts/editing_subcategories.templ`, Line: 20, Col: 57}
 				}
-				_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString(templ.EscapeString(templ_7745c5c3_Var3))
+				_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString(templ.EscapeString(templ_7745c5c3_Var4))
 				if templ_7745c5c3_Err != nil {
 					return templ_7745c5c3_Err
 				}
-				_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString("</span></a>")
+				_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString("</span></a> ")
 				if templ_7745c5c3_Err != nil {
 					return templ_7745c5c3_Err
 				}
 			}
-			_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString("</div>")
+			_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString("<a href=\"/subcategory/create\" class=\"border border-green-600 rounded-lg p-3 self-center text-green-600 hover:bg-green-600 hover:text-zinc-900 hover:cursor-pointer\" style=\"width: 75%; margin-top: 1rem;\"><span class=\"text-xl\">+ Add a new Subcategory</span></a></div>")
 			if templ_7745c5c3_Err != nil {
 				return templ_7745c5c3_Err
 			}

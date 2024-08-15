@@ -30,5 +30,5 @@ func EditingSubcategories(w http.ResponseWriter, r *http.Request) error {
 	}
 	subcategories := models.GetSubcategories(category)
 
-	return Render(w, r, layouts.EditingSubcategories(subcategories))
+	return Render(w, r, layouts.EditingSubcategories(subcategories, category))
 }

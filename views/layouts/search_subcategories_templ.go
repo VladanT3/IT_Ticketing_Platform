@@ -51,10 +51,14 @@ func SearchSubcategories(subcategories []models.Subcategory) templ.Component {
 			if templ_7745c5c3_Err != nil {
 				return templ_7745c5c3_Err
 			}
-			_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString("</span></a>")
+			_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString("</span></a> ")
 			if templ_7745c5c3_Err != nil {
 				return templ_7745c5c3_Err
 			}
+		}
+		_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString("<a href=\"/subcategory/create\" class=\"border border-green-600 rounded-lg p-3 self-center text-green-600 hover:bg-green-600 hover:text-zinc-900 hover:cursor-pointer\" style=\"width: 75%; margin-top: 1rem;\"><span class=\"text-xl\">+ Add a new Subcategory</span></a>")
+		if templ_7745c5c3_Err != nil {
+			return templ_7745c5c3_Err
 		}
 		return templ_7745c5c3_Err
 	})

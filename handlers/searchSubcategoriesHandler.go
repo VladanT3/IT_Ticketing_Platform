@@ -9,8 +9,9 @@ import (
 
 func SearchSubcategories(w http.ResponseWriter, r *http.Request) error {
 	search := r.FormValue("subcategory_search")
+	category := r.FormValue("category")
 
-	subcategories := models.SubcategorySearchByName(search)
+	subcategories := models.SubcategorySearchByName(search, category)
 
 	return Render(w, r, layouts.SearchSubcategories(subcategories))
 }

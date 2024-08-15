@@ -2,7 +2,7 @@ package layouts
 
 import "github.com/VladanT3/IT_Ticketing_Platform/models"
 
-templ EditingSubcategories(subcategories []models.Subcategory) {
+templ EditingSubcategories(subcategories []models.Subcategory, category string) {
 	if len(subcategories) == 0 {
 		<h1 class="self-center text-2xl">Subcategories</h1>
 		<div class="flex flex-col mt-3" style="margin-bottom: 1rem;">
@@ -10,15 +10,19 @@ templ EditingSubcategories(subcategories []models.Subcategory) {
 		</div>
 	} else {
 		<h1 class="self-center text-2xl">Subcategories</h1>
-		<div class="flex flex-col mt-3" style="margin-bottom: 1rem;">
-			<input type="text" name="subcategory_search" hx-get="search_subcategories" hx-trigger="keyup changed delay:500ms" hx-swap="innerHTML" hx-target="#subcategory_list" class="uk-input text-zinc-50 text-base self-center" style="width: 65%;" placeholder="Search..."/>
-		</div>
+		<form hx-get="search_subcategories" hx-trigger="keyup changed delay:500ms from:#subcategory_search" hx-swap="innerHTML" hx-target="#subcategory_list" class="flex flex-col mt-3" style="margin-bottom: 1rem;">
+			<input type="hidden" name="category" value={ category }/>
+			<input type="text" id="subcategory_search" name="subcategory_search" class="uk-input text-zinc-50 text-base self-center" style="width: 65%;" placeholder="Search..."/>
+		</form>
 		<div class="flex flex-col" id="subcategory_list">
 			for _, subcategory := range subcategories {
 				<a href={ "/subcategory/edit/" + templ.SafeURL(subcategory.Subcategory_ID.String()) } class="border border-zinc-50 rounded-lg p-3 self-center hover:bg-zinc-50 hover:text-zinc-900 hover:cursor-pointer" style="width: 75%; margin-top: 1rem;">
 					<span class="text-xl">{ subcategory.Subcategory_Name }</span>
 				</a>
 			}
+			<a href="/subcategory/create" class="border border-green-600 rounded-lg p-3 self-center text-green-600 hover:bg-green-600 hover:text-zinc-900 hover:cursor-pointer" style="width: 75%; margin-top: 1rem;">
+				<span class="text-xl">+ Add a new Subcategory</span>
+			</a>
 		</div>
 	}
 }
