@@ -8783,14 +8783,6 @@ th.uk-text-break, td.uk-text-break {
   position: sticky;
 }
 
-.order-first {
-  order: -9999;
-}
-
-.order-last {
-  order: 9999;
-}
-
 .col-span-1 {
   grid-column: span 1 / span 1;
 }
@@ -8886,14 +8878,6 @@ th.uk-text-break, td.uk-text-break {
 
 .justify-between {
   justify-content: space-between;
-}
-
-.self-start {
-  align-self: flex-start;
-}
-
-.self-end {
-  align-self: flex-end;
 }
 
 .self-center {

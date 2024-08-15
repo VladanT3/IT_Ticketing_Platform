@@ -43,7 +43,7 @@ func Categories(userType string) templ.Component {
 				}()
 			}
 			ctx = templ.InitializeContext(ctx)
-			_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString("<div class=\"container mx-auto mt-5 flex flex-row\"><div class=\"flex flex-row\" style=\"width: 50%;\"><div class=\"flex flex-col\" style=\"width: 100%;\"><h1 class=\"self-center text-2xl\">Categories</h1><div class=\"flex flex-col mt-3\" style=\"margin-bottom: 1rem;\"><input type=\"text\" class=\"uk-input text-zinc-50 text-base self-center\" style=\"width: 65%;\" placeholder=\"Search...\"></div><form hx-get=\"/show_subcategories\" hx-swap=\"innerHTML\" hx-target=\"#subcategories\" hx-trigger=\"submit\" style=\"width: 75%;\" class=\"self-center\">")
+			_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString("<div class=\"container mx-auto mt-5 flex flex-row\"><div class=\"flex flex-row\" style=\"width: 50%;\"><div class=\"flex flex-col\" style=\"width: 100%;\"><h1 class=\"self-center text-2xl\">Categories</h1><div class=\"flex flex-col mt-3\" style=\"margin-bottom: 1rem;\"><input type=\"text\" name=\"category_search\" hx-get=\"/search_categories\" hx-trigger=\"keyup changed delay:500ms\" hx-target=\"#category_list\" hx-swap=\"innerHTML\" class=\"uk-input text-zinc-50 text-base self-center\" style=\"width: 65%;\" placeholder=\"Search...\"></div><form id=\"category_list\" hx-get=\"/show_subcategories\" hx-swap=\"innerHTML\" hx-target=\"#subcategories\" hx-trigger=\"submit\" style=\"width: 75%;\" class=\"self-center\">")
 			if templ_7745c5c3_Err != nil {
 				return templ_7745c5c3_Err
 			}
@@ -83,7 +83,7 @@ func Categories(userType string) templ.Component {
 				if templ_7745c5c3_Err != nil {
 					return templ_7745c5c3_Err
 				}
-				_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString("\" class=\"uk-button border border-zinc-900 bg-zinc-50 text-zinc-900 hover:bg-zinc-900 hover:text-zinc-50\">Edit</a></button>")
+				_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString("\" class=\"uk-button border border-zinc-50 bg-zinc-900 text-zinc-50 hover:bg-zinc-50 hover:text-zinc-900 hover:border-zinc-900\">Edit</a></button>")
 				if templ_7745c5c3_Err != nil {
 					return templ_7745c5c3_Err
 				}

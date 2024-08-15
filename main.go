@@ -37,6 +37,8 @@ func main() {
 	router.Get("/categories", handlers.Make(handlers.CategoriesHandler))
 	//router.Get("/category/edit/{categoryID}", handlers.Make())
 	router.Get("/show_subcategories", handlers.Make(handlers.EditingSubcategories))
+	router.Get("/search_categories", handlers.Make(handlers.SearchCategories))
+	router.Get("/search_subcategories", handlers.Make(handlers.SearchSubcategories))
 
 	port := os.Getenv("PORT")
 	fmt.Println("Server started on: http://localhost" + port)

@@ -3,6 +3,7 @@ package models
 import (
 	"database/sql"
 	"log"
+	"strings"
 
 	"github.com/VladanT3/IT_Ticketing_Platform/internal/database"
 	"github.com/google/uuid"
@@ -76,4 +77,31 @@ func GetSubcategories(category_id string) []Subcategory {
 	}
 
 	return subcategories
+}
+
+func SubcategorySearchByName(search_term string) []Subcategory {
+	var db *sql.DB = database.DB_Connection
+	var subcategories []Subcategory
+	subcategory := Subcategory{}
+
+	search_term = strings.ToLower(search_term)
+	search_term = "%" + search_term + "%"
+
+	query := `select subcategory_id, subcategory_name from subcategory where lower(subcategory_name) like $1;`
+	rows, err := db.Query(query, search_term)
+	if err != nil {
+		log.Fatal("Error getting subcategories by name: ", err)
+	}
+	defer rows.Close()
+
+	for rows.Next() {
+		err = rows.Scan(&subcategory.Subcategory_ID, &subcategory.Subcategory_Name)
+		if err != nil {
+			log.Fatal("error scanning subcategories by name: ", err)
+		}
+		subcategories = append(subcategories, subcategory)
+	}
+
+	return subcategories
+
 }

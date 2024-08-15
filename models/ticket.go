@@ -4,6 +4,7 @@ import (
 	"database/sql"
 	"log"
 	"strconv"
+	"strings"
 	"time"
 
 	"github.com/VladanT3/IT_Ticketing_Platform/internal/database"
@@ -109,6 +110,8 @@ func FilterTickets(search string, customer string, ticketType string, status str
 	ticket := Ticket{}
 	var queryArgs []any
 
+	search = strings.ToLower(search)
+	customer = strings.ToLower(customer)
 	search = "%" + search + "%"
 	customer = "%" + customer + "%"
 
@@ -120,9 +123,9 @@ func FilterTickets(search string, customer string, ticketType string, status str
 		select *
 		from ticket
 		where (ticket_number::varchar like $1 or
-		title like $1 or
-		description like $1) and
-		customer_contact like $2
+		lower(title) like $1 or
+		lower(description) like $1) and
+		lower(customer_contact) like $2
 	`
 
 	if searchType == "Team Tickets" {
