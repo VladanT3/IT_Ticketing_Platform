@@ -11,6 +11,7 @@ import templruntime "github.com/a-h/templ/runtime"
 import (
 	"github.com/VladanT3/IT_Ticketing_Platform/models"
 	"github.com/VladanT3/IT_Ticketing_Platform/views/layouts"
+	"github.com/VladanT3/IT_Ticketing_Platform/views/tickets"
 	"strconv"
 )
 
@@ -51,7 +52,7 @@ func Profile(analyst models.Analyst, userType string) templ.Component {
 			var templ_7745c5c3_Var3 string
 			templ_7745c5c3_Var3, templ_7745c5c3_Err = templ.JoinStringErrs(analyst.First_Name)
 			if templ_7745c5c3_Err != nil {
-				return templ.Error{Err: templ_7745c5c3_Err, FileName: `views/profile/profile.templ`, Line: 16, Col: 32}
+				return templ.Error{Err: templ_7745c5c3_Err, FileName: `views/profile/profile.templ`, Line: 17, Col: 32}
 			}
 			_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString(templ.EscapeString(templ_7745c5c3_Var3))
 			if templ_7745c5c3_Err != nil {
@@ -64,7 +65,7 @@ func Profile(analyst models.Analyst, userType string) templ.Component {
 			var templ_7745c5c3_Var4 string
 			templ_7745c5c3_Var4, templ_7745c5c3_Err = templ.JoinStringErrs(analyst.Last_Name)
 			if templ_7745c5c3_Err != nil {
-				return templ.Error{Err: templ_7745c5c3_Err, FileName: `views/profile/profile.templ`, Line: 16, Col: 54}
+				return templ.Error{Err: templ_7745c5c3_Err, FileName: `views/profile/profile.templ`, Line: 17, Col: 54}
 			}
 			_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString(templ.EscapeString(templ_7745c5c3_Var4))
 			if templ_7745c5c3_Err != nil {
@@ -77,7 +78,7 @@ func Profile(analyst models.Analyst, userType string) templ.Component {
 			var templ_7745c5c3_Var5 string
 			templ_7745c5c3_Var5, templ_7745c5c3_Err = templ.JoinStringErrs(analyst.Email)
 			if templ_7745c5c3_Err != nil {
-				return templ.Error{Err: templ_7745c5c3_Err, FileName: `views/profile/profile.templ`, Line: 20, Col: 27}
+				return templ.Error{Err: templ_7745c5c3_Err, FileName: `views/profile/profile.templ`, Line: 21, Col: 27}
 			}
 			_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString(templ.EscapeString(templ_7745c5c3_Var5))
 			if templ_7745c5c3_Err != nil {
@@ -90,7 +91,7 @@ func Profile(analyst models.Analyst, userType string) templ.Component {
 			var templ_7745c5c3_Var6 string
 			templ_7745c5c3_Var6, templ_7745c5c3_Err = templ.JoinStringErrs(models.GetAnalystsTeam(analyst.Analyst_ID.String()).Team_Name)
 			if templ_7745c5c3_Err != nil {
-				return templ.Error{Err: templ_7745c5c3_Err, FileName: `views/profile/profile.templ`, Line: 24, Col: 75}
+				return templ.Error{Err: templ_7745c5c3_Err, FileName: `views/profile/profile.templ`, Line: 25, Col: 75}
 			}
 			_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString(templ.EscapeString(templ_7745c5c3_Var6))
 			if templ_7745c5c3_Err != nil {
@@ -103,7 +104,7 @@ func Profile(analyst models.Analyst, userType string) templ.Component {
 			var templ_7745c5c3_Var7 string
 			templ_7745c5c3_Var7, templ_7745c5c3_Err = templ.JoinStringErrs(strconv.Itoa(analyst.Number_of_Open_Tickets))
 			if templ_7745c5c3_Err != nil {
-				return templ.Error{Err: templ_7745c5c3_Err, FileName: `views/profile/profile.templ`, Line: 28, Col: 58}
+				return templ.Error{Err: templ_7745c5c3_Err, FileName: `views/profile/profile.templ`, Line: 29, Col: 58}
 			}
 			_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString(templ.EscapeString(templ_7745c5c3_Var7))
 			if templ_7745c5c3_Err != nil {
@@ -116,7 +117,7 @@ func Profile(analyst models.Analyst, userType string) templ.Component {
 			var templ_7745c5c3_Var8 string
 			templ_7745c5c3_Var8, templ_7745c5c3_Err = templ.JoinStringErrs(strconv.Itoa(analyst.Number_of_Opened_Tickets))
 			if templ_7745c5c3_Err != nil {
-				return templ.Error{Err: templ_7745c5c3_Err, FileName: `views/profile/profile.templ`, Line: 32, Col: 60}
+				return templ.Error{Err: templ_7745c5c3_Err, FileName: `views/profile/profile.templ`, Line: 33, Col: 60}
 			}
 			_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString(templ.EscapeString(templ_7745c5c3_Var8))
 			if templ_7745c5c3_Err != nil {
@@ -129,7 +130,7 @@ func Profile(analyst models.Analyst, userType string) templ.Component {
 			var templ_7745c5c3_Var9 string
 			templ_7745c5c3_Var9, templ_7745c5c3_Err = templ.JoinStringErrs(strconv.Itoa(analyst.Number_of_Closed_Tickets))
 			if templ_7745c5c3_Err != nil {
-				return templ.Error{Err: templ_7745c5c3_Err, FileName: `views/profile/profile.templ`, Line: 36, Col: 60}
+				return templ.Error{Err: templ_7745c5c3_Err, FileName: `views/profile/profile.templ`, Line: 37, Col: 60}
 			}
 			_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString(templ.EscapeString(templ_7745c5c3_Var9))
 			if templ_7745c5c3_Err != nil {
@@ -139,7 +140,7 @@ func Profile(analyst models.Analyst, userType string) templ.Component {
 			if templ_7745c5c3_Err != nil {
 				return templ_7745c5c3_Err
 			}
-			templ_7745c5c3_Err = layouts.Tickets(models.GetAnalystsTickets(analyst.Analyst_ID.String())).Render(ctx, templ_7745c5c3_Buffer)
+			templ_7745c5c3_Err = tickets.Tickets(models.GetAnalystsTickets(analyst.Analyst_ID.String())).Render(ctx, templ_7745c5c3_Buffer)
 			if templ_7745c5c3_Err != nil {
 				return templ_7745c5c3_Err
 			}

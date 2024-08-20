@@ -4,7 +4,7 @@ import (
 	"net/http"
 
 	"github.com/VladanT3/IT_Ticketing_Platform/models"
-	"github.com/VladanT3/IT_Ticketing_Platform/views/layouts"
+	"github.com/VladanT3/IT_Ticketing_Platform/views/tickets"
 	"github.com/go-chi/chi/v5"
 )
 
@@ -13,5 +13,5 @@ func DeleteTicketHandler(w http.ResponseWriter, r *http.Request) error {
 
 	models.DeleteTicket(ticketID)
 
-	return Render(w, r, layouts.DeletedTicket())
+	return Render(w, r, tickets.DeletedTicket())
 }

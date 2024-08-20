@@ -5,16 +5,17 @@ import (
 
 	"github.com/VladanT3/IT_Ticketing_Platform/models"
 	"github.com/VladanT3/IT_Ticketing_Platform/views/layouts"
+	"github.com/VladanT3/IT_Ticketing_Platform/views/subcategories"
 )
 
 func SelectSubcategories(w http.ResponseWriter, r *http.Request) error {
 	category := r.FormValue("category")
 	if category == "none" || category == "" {
-		return Render(w, r, layouts.SelectSubcategories([]models.Subcategory{}))
+		return Render(w, r, subcategories.SelectSubcategories([]models.Subcategory{}))
 	}
-	subcategories := models.GetSubcategories(category)
+	subcategoryOutput := models.GetSubcategories(category)
 
-	return Render(w, r, layouts.SelectSubcategories(subcategories))
+	return Render(w, r, subcategories.SelectSubcategories(subcategoryOutput))
 }
 
 func EditingSubcategories(w http.ResponseWriter, r *http.Request) error {
@@ -28,7 +29,7 @@ func EditingSubcategories(w http.ResponseWriter, r *http.Request) error {
 			return Render(w, r, layouts.ErrorMessage(LoggedInUserType, "Access Denied: Lack of administrational credentials!"))
 		}
 	}
-	subcategories := models.GetSubcategories(category)
+	subcategoryOutput := models.GetSubcategories(category)
 
-	return Render(w, r, layouts.EditingSubcategories(subcategories, category))
+	return Render(w, r, subcategories.EditingSubcategories(subcategoryOutput, category))
 }

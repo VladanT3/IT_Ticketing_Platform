@@ -110,17 +110,17 @@ func TicketSearch(currentUser models.Analyst, userType string, searchType string
 				return templ_7745c5c3_Err
 			}
 			if searchType == "All Ticket Search" {
-				templ_7745c5c3_Err = layouts.Tickets(models.GetAllTickets()).Render(ctx, templ_7745c5c3_Buffer)
+				templ_7745c5c3_Err = Tickets(models.GetAllTickets()).Render(ctx, templ_7745c5c3_Buffer)
 				if templ_7745c5c3_Err != nil {
 					return templ_7745c5c3_Err
 				}
 			} else if searchType == "Unassigned Tickets" {
-				templ_7745c5c3_Err = layouts.Tickets(models.GetTeamsUnassignedTickets(currentUser.Team_ID.UUID.String())).Render(ctx, templ_7745c5c3_Buffer)
+				templ_7745c5c3_Err = Tickets(models.GetTeamsUnassignedTickets(currentUser.Team_ID.UUID.String())).Render(ctx, templ_7745c5c3_Buffer)
 				if templ_7745c5c3_Err != nil {
 					return templ_7745c5c3_Err
 				}
 			} else if searchType == "Team Tickets" && models.IsUserManager(currentUser.Analyst_ID.String()) {
-				templ_7745c5c3_Err = layouts.Tickets(models.GetTeamTickets(currentUser.Team_ID.UUID.String())).Render(ctx, templ_7745c5c3_Buffer)
+				templ_7745c5c3_Err = Tickets(models.GetTeamTickets(currentUser.Team_ID.UUID.String())).Render(ctx, templ_7745c5c3_Buffer)
 				if templ_7745c5c3_Err != nil {
 					return templ_7745c5c3_Err
 				}

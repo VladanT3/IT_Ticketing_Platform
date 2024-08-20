@@ -88,7 +88,7 @@ func Categories(userType string) templ.Component {
 					return templ_7745c5c3_Err
 				}
 			}
-			_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString("</form><a href=\"/category/create\" class=\"border border-green-600 rounded-lg p-3 self-center text-green-600 hover:bg-green-600 hover:text-zinc-900 hover:cursor-pointer\" style=\"width: 75%; margin-top: 1rem;\"><span class=\"text-xl\">+ Add a new Category</span></a></div><div class=\"uk-divider-vertical min-h-full\"></div></div><div id=\"subcategories\" class=\"flex flex-col\" style=\"width: 50%;\"><h1 class=\"self-center text-2xl\">Subcategories</h1><div class=\"flex flex-col mt-3\" style=\"margin-bottom: 1rem;\"><input type=\"text\" class=\"uk-input text-zinc-50 text-base self-center\" style=\"width: 65%;\" placeholder=\"Search...\" disabled></div></div></div>")
+			_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString("</form><button hx-get=\"/category/create/popup\" hx-target=\"body\" hx-swap=\"beforeend\" class=\"border border-green-600 rounded-lg p-3 self-center text-green-600 hover:bg-green-600 hover:text-zinc-900 hover:cursor-pointer\" style=\"width: 75%; margin-top: 1rem;\"><span class=\"text-xl\">+ Add a new Category</span></button></div><div class=\"uk-divider-vertical min-h-full\"></div></div><div id=\"subcategories\" class=\"flex flex-col\" style=\"width: 50%;\"><h1 class=\"self-center text-2xl\">Subcategories</h1><div class=\"flex flex-col mt-3\" style=\"margin-bottom: 1rem;\"><input type=\"text\" class=\"uk-input text-zinc-50 text-base self-center\" style=\"width: 65%;\" placeholder=\"Search...\" disabled></div></div></div>")
 			if templ_7745c5c3_Err != nil {
 				return templ_7745c5c3_Err
 			}

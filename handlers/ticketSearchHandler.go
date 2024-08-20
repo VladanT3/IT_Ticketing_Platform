@@ -4,7 +4,7 @@ import (
 	"net/http"
 
 	"github.com/VladanT3/IT_Ticketing_Platform/models"
-	"github.com/VladanT3/IT_Ticketing_Platform/views/layouts"
+	"github.com/VladanT3/IT_Ticketing_Platform/views/tickets"
 )
 
 func TicketSearchHandler(w http.ResponseWriter, r *http.Request) error {
@@ -16,7 +16,7 @@ func TicketSearchHandler(w http.ResponseWriter, r *http.Request) error {
 	subcategory := r.FormValue("subcategory")
 	searchType := r.FormValue("searchType")
 
-	tickets := models.FilterTickets(search, customer, ticketType, status, category, subcategory, searchType, LoggedInUser.Team_ID.UUID.String())
+	fileteredTickets := models.FilterTickets(search, customer, ticketType, status, category, subcategory, searchType, LoggedInUser.Team_ID.UUID.String())
 
-	return Render(w, r, layouts.Tickets(tickets))
+	return Render(w, r, tickets.Tickets(fileteredTickets))
 }

@@ -22,9 +22,9 @@ templ Categories(userType string) {
 							</button>
 						}
 					</form>
-					<a href="/category/create" class="border border-green-600 rounded-lg p-3 self-center text-green-600 hover:bg-green-600 hover:text-zinc-900 hover:cursor-pointer" style="width: 75%; margin-top: 1rem;">
+					<button hx-get="/category/create/popup" hx-target="body" hx-swap="beforeend" class="border border-green-600 rounded-lg p-3 self-center text-green-600 hover:bg-green-600 hover:text-zinc-900 hover:cursor-pointer" style="width: 75%; margin-top: 1rem;">
 						<span class="text-xl">+ Add a new Category</span>
-					</a>
+					</button>
 				</div>
 				<div class="uk-divider-vertical min-h-full"></div>
 			</div>

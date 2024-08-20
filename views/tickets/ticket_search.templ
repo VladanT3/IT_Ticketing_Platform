@@ -63,11 +63,11 @@ templ TicketSearch(currentUser models.Analyst, userType string, searchType strin
 				</div>
 				<div class="col-span-4 flex flex-col" id="tickets">
 					if searchType == "All Ticket Search" {
-						@layouts.Tickets(models.GetAllTickets())
+						@Tickets(models.GetAllTickets())
 					} else if searchType == "Unassigned Tickets" {
-						@layouts.Tickets(models.GetTeamsUnassignedTickets(currentUser.Team_ID.UUID.String()))
+						@Tickets(models.GetTeamsUnassignedTickets(currentUser.Team_ID.UUID.String()))
 					} else if searchType == "Team Tickets" && models.IsUserManager(currentUser.Analyst_ID.String()) {
-						@layouts.Tickets(models.GetTeamTickets(currentUser.Team_ID.UUID.String()))
+						@Tickets(models.GetTeamTickets(currentUser.Team_ID.UUID.String()))
 					}
 				</div>
 			</div>
