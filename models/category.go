@@ -34,7 +34,7 @@ func GetAllCategories() []Category {
 	var db *sql.DB = database.DB_Connection
 	var categories []Category
 
-	query := `select * from category;`
+	query := `select * from category order by lower(category_name);`
 	rows, err := db.Query(query)
 	if err != nil {
 		log.Fatal("error getting categories: ", err)
@@ -62,7 +62,7 @@ func CategorySearchByName(search_term string) []Category {
 	search_term = strings.ToLower(search_term)
 	search_term = "%" + search_term + "%"
 
-	query := `select * from category where lower(category_name) like $1;`
+	query := `select * from category where lower(category_name) like $1 order by lower(category_name);`
 	rows, err := db.Query(query, search_term)
 	if err != nil {
 		log.Fatal("Error getting categories by name: ", err)
@@ -78,4 +78,34 @@ func CategorySearchByName(search_term string) []Category {
 	}
 
 	return categories
+}
+
+func CreateCategory(name string) {
+	var db *sql.DB = database.DB_Connection
+	query := `insert into category values(gen_random_uuid(), $1);`
+
+	_, err := db.Exec(query, name)
+	if err != nil {
+		log.Fatal("error inserting category: ", err)
+	}
+}
+
+func UpdateCategory(id string, name string) {
+	var db *sql.DB = database.DB_Connection
+	query := `update category set category_name = $1 where category_id = $2;`
+
+	_, err := db.Exec(query, name, id)
+	if err != nil {
+		log.Fatal("error updating category: ", err)
+	}
+}
+
+func DeleteCategory(id string) {
+	var db *sql.DB = database.DB_Connection
+	query := `delete from category where category_id = $1`
+
+	_, err := db.Exec(query, id)
+	if err != nil {
+		log.Fatal("error deleting category: ", err)
+	}
 }

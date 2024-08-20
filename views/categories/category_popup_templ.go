@@ -8,7 +8,7 @@ package categories
 import "github.com/a-h/templ"
 import templruntime "github.com/a-h/templ/runtime"
 
-func CategoryPopup() templ.Component {
+func CategoryPopup(operation string, category_id string, category_name string) templ.Component {
 	return templruntime.GeneratedTemplate(func(templ_7745c5c3_Input templruntime.GeneratedComponentInput) (templ_7745c5c3_Err error) {
 		templ_7745c5c3_W, ctx := templ_7745c5c3_Input.Writer, templ_7745c5c3_Input.Context
 		templ_7745c5c3_Buffer, templ_7745c5c3_IsBuffer := templruntime.GetBuffer(templ_7745c5c3_W)
@@ -26,9 +26,73 @@ func CategoryPopup() templ.Component {
 			templ_7745c5c3_Var1 = templ.NopComponent
 		}
 		ctx = templ.ClearChildren(ctx)
-		_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString("<div id=\"modal\" _=\"on closeModal add .closing then wait for animationend then remove me\"><div class=\"modal-underlay\" _=\"on click trigger closeModal\"></div><div class=\"modal-content bg-zinc-900 border border-zinc-50 rounded-lg p-5 max-w-md w-4/5 mt-24\"><h1 class=\"text-xl\">Add a new Category</h1><form class=\"flex flex-col\"><label class=\"mt-3\">Category name:</label> <input type=\"text\" class=\"uk-input text-base text-zinc-50\"> <button hx-post=\"/category/create\" class=\"uk-button bg-zinc-50 text-zinc-900 border border-zinc-50 self-center mt-3 hover:bg-zinc-900 hover:text-zinc-50\" _=\"on click trigger closeModal\">Add</button></form></div></div>")
-		if templ_7745c5c3_Err != nil {
-			return templ_7745c5c3_Err
+		if operation == "create" {
+			_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString("<div id=\"modal\" _=\"on closeModal add .closing then wait for animationend then remove me\"><div class=\"modal-underlay\" _=\"on click trigger closeModal\"></div><div class=\"modal-content bg-zinc-900 border border-zinc-50 rounded-lg p-5 max-w-md w-4/5 mt-24\"><h1 class=\"text-xl\">Add a new Category</h1><form class=\"flex flex-col\" hx-post=\"/category/create\" hx-swap=\"innerHTML\" hx-target=\"#category_list\" hx-trigger=\"submit\"><label class=\"mt-3\">Category name:</label> <input type=\"text\" name=\"category_name\" class=\"uk-input text-base text-zinc-50\"> <button type=\"submit\" class=\"uk-button bg-zinc-50 text-zinc-900 border border-zinc-50 self-center mt-3 hover:bg-zinc-900 hover:text-zinc-50\" _=\"on click trigger closeModal\">Add</button></form></div></div>")
+			if templ_7745c5c3_Err != nil {
+				return templ_7745c5c3_Err
+			}
+		} else if operation == "update" {
+			_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString("<div id=\"modal\" _=\"on closeModal add .closing then wait for animationend then remove me\"><div class=\"modal-underlay\" _=\"on click trigger closeModal\"></div><div class=\"modal-content bg-zinc-900 border border-zinc-50 rounded-lg p-5 max-w-md w-4/5 mt-24\"><h1 class=\"text-xl\">Edit Category</h1><form class=\"flex flex-col\" hx-put=\"")
+			if templ_7745c5c3_Err != nil {
+				return templ_7745c5c3_Err
+			}
+			var templ_7745c5c3_Var2 string
+			templ_7745c5c3_Var2, templ_7745c5c3_Err = templ.JoinStringErrs("/category/update/" + category_id)
+			if templ_7745c5c3_Err != nil {
+				return templ.Error{Err: templ_7745c5c3_Err, FileName: `views/categories/category_popup.templ`, Line: 21, Col: 74}
+			}
+			_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString(templ.EscapeString(templ_7745c5c3_Var2))
+			if templ_7745c5c3_Err != nil {
+				return templ_7745c5c3_Err
+			}
+			_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString("\" hx-swap=\"innerHTML\" hx-target=\"#category_list\" hx-trigger=\"submit\"><label class=\"mt-3\">Category name:</label> <input type=\"text\" name=\"category_name\" value=\"")
+			if templ_7745c5c3_Err != nil {
+				return templ_7745c5c3_Err
+			}
+			var templ_7745c5c3_Var3 string
+			templ_7745c5c3_Var3, templ_7745c5c3_Err = templ.JoinStringErrs(category_name)
+			if templ_7745c5c3_Err != nil {
+				return templ.Error{Err: templ_7745c5c3_Err, FileName: `views/categories/category_popup.templ`, Line: 23, Col: 66}
+			}
+			_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString(templ.EscapeString(templ_7745c5c3_Var3))
+			if templ_7745c5c3_Err != nil {
+				return templ_7745c5c3_Err
+			}
+			_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString("\" class=\"uk-input text-base text-zinc-50\"> <button type=\"submit\" class=\"uk-button bg-zinc-50 text-zinc-900 border border-zinc-50 self-center mt-3 hover:bg-zinc-900 hover:text-zinc-50\" _=\"on click trigger closeModal\">Edit</button></form></div></div>")
+			if templ_7745c5c3_Err != nil {
+				return templ_7745c5c3_Err
+			}
+		} else if operation == "delete" {
+			_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString("<div id=\"modal\" _=\"on closeModal add .closing then wait for animationend then remove me\"><div class=\"modal-underlay\" _=\"on click trigger closeModal\"></div><div class=\"modal-content bg-zinc-900 border border-zinc-50 rounded-lg p-5 max-w-md w-4/5 mt-24\"><h1 class=\"text-xl\">Delete Category</h1><form class=\"flex flex-col\" hx-delete=\"")
+			if templ_7745c5c3_Err != nil {
+				return templ_7745c5c3_Err
+			}
+			var templ_7745c5c3_Var4 string
+			templ_7745c5c3_Var4, templ_7745c5c3_Err = templ.JoinStringErrs("/category/delete/" + category_id)
+			if templ_7745c5c3_Err != nil {
+				return templ.Error{Err: templ_7745c5c3_Err, FileName: `views/categories/category_popup.templ`, Line: 33, Col: 77}
+			}
+			_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString(templ.EscapeString(templ_7745c5c3_Var4))
+			if templ_7745c5c3_Err != nil {
+				return templ_7745c5c3_Err
+			}
+			_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString("\" hx-swap=\"innerHTML\" hx-target=\"#category_list\" hx-trigger=\"submit\"><label>Are you sure you want to delete following category?</label> <label class=\"mt-3\">Category name:</label> <input type=\"text\" value=\"")
+			if templ_7745c5c3_Err != nil {
+				return templ_7745c5c3_Err
+			}
+			var templ_7745c5c3_Var5 string
+			templ_7745c5c3_Var5, templ_7745c5c3_Err = templ.JoinStringErrs(category_name)
+			if templ_7745c5c3_Err != nil {
+				return templ.Error{Err: templ_7745c5c3_Err, FileName: `views/categories/category_popup.templ`, Line: 36, Col: 45}
+			}
+			_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString(templ.EscapeString(templ_7745c5c3_Var5))
+			if templ_7745c5c3_Err != nil {
+				return templ_7745c5c3_Err
+			}
+			_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString("\" disabled class=\"uk-input text-base text-zinc-50\"> <button type=\"submit\" class=\"uk-button bg-zinc-50 text-zinc-900 border border-zinc-50 self-center mt-3 hover:bg-zinc-900 hover:text-zinc-50\" _=\"on click trigger closeModal\">Delete</button></form></div></div>")
+			if templ_7745c5c3_Err != nil {
+				return templ_7745c5c3_Err
+			}
 		}
 		return templ_7745c5c3_Err
 	})

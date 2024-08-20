@@ -1,0 +1,17 @@
+package categories
+
+import "github.com/VladanT3/IT_Ticketing_Platform/models"
+
+templ ShowCategories(categories []models.Category) {
+	for _, category := range categories {
+		<button type="submit" name="category" value={ category.Category_ID.String() } class="flex flex-row justify-between border border-zinc-50 rounded-lg p-3 self-center hover:bg-zinc-50 hover:text-zinc-900 hover:cursor-pointer" style="width: 100%; margin-top: 1rem;">
+			<span class="text-xl">{ category.Category_Name }</span>
+			<form class="flex flex-row" style="gap: 0.75rem;" hx-get="/category/popup" hx-target="body" hx-swap="beforeend" hx-trigger="submit">
+				<input type="hidden" name="id" value={ category.Category_ID.String() }/>
+				<input type="hidden" name="name" value={ category.Category_Name }/>
+				<button type="submit" name="category_operation" value="update" class="uk-button border border-zinc-50 bg-zinc-900 text-zinc-50 hover:bg-zinc-50 hover:text-zinc-900 hover:border-zinc-900">Edit</button>
+				<button type="submit" name="category_operation" value="delete" class="uk-button border border-red-600 bg-zinc-900 text-red-600 hover:bg-red-600 hover:text-zinc-900">Delete</button>
+			</form>
+		</button>
+	}
+}
