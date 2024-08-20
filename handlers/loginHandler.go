@@ -12,7 +12,7 @@ import (
 var LoggedInUser models.Analyst = models.Analyst{}
 var LoggedInUserType string
 
-func LoginHandler(w http.ResponseWriter, r *http.Request) error {
+func Login(w http.ResponseWriter, r *http.Request) error {
 	analyst := models.Analyst{}
 	email := r.FormValue("email")
 	password := r.FormValue("password")

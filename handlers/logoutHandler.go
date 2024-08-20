@@ -6,7 +6,7 @@ import (
 	"github.com/VladanT3/IT_Ticketing_Platform/models"
 )
 
-func LogoutHandler(w http.ResponseWriter, r *http.Request) error {
+func Logout(w http.ResponseWriter, r *http.Request) error {
 	LoggedInUser = models.Analyst{}
 	LoggedInUserType = ""
 

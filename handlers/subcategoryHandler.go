@@ -18,6 +18,15 @@ func SelectSubcategories(w http.ResponseWriter, r *http.Request) error {
 	return Render(w, r, subcategories.SelectSubcategories(subcategoryOutput))
 }
 
+func SearchSubcategories(w http.ResponseWriter, r *http.Request) error {
+	search := r.FormValue("subcategory_search")
+	category := r.FormValue("category")
+
+	searchedSubcategories := models.SubcategorySearchByName(search, category)
+
+	return Render(w, r, subcategories.SearchSubcategories(searchedSubcategories))
+}
+
 func EditingSubcategories(w http.ResponseWriter, r *http.Request) error {
 	category := r.FormValue("category")
 
