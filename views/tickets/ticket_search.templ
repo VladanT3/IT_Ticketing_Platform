@@ -14,7 +14,7 @@ templ TicketSearch(currentUser models.Analyst, userType string, searchType strin
 			</div>
 			<div class="grid grid-cols-5 mt-3">
 				<div class="col-span-1 grid grid-cols-5">
-					<form hx-post="/search_tickets" hx-trigger="submit" hx-swap="innerHTML" hx-target="#tickets" class="col-span-4 flex flex-col">
+					<form hx-post="/tickets/filter" hx-trigger="submit" hx-swap="innerHTML" hx-target="#tickets" class="col-span-4 flex flex-col">
 						<input type="hidden" name="searchType" value={ searchType }/>
 						<div class="flex flex-col mt-3">
 							<label>Search:</label>
@@ -38,7 +38,7 @@ templ TicketSearch(currentUser models.Analyst, userType string, searchType strin
 						</di>
 						<div class="flex flex-col mt-3">
 							<label>Category:</label>
-							<select name="category" class="uk-select text-zinc-50" hx-get="/get_subcategories" hx-target="#subcategories" hx-swap="outerHTML" hx-trigger="change">
+							<select name="category" class="uk-select text-zinc-50" hx-get="/subcategories/get/select" hx-target="#subcategories" hx-swap="outerHTML" hx-trigger="change">
 								<option value="none">Choose one...</option>
 								for _, category := range models.GetAllCategories() {
 									<option value={ category.Category_ID.String() }>{ category.Category_Name }</option>

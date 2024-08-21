@@ -34,6 +34,7 @@ func ShowCategoryPopup(w http.ResponseWriter, r *http.Request) error {
 }
 
 func CreateCategory(w http.ResponseWriter, r *http.Request) error {
+	//TODO: handle error if user inputs a name that already exists
 	name := r.FormValue("category_name")
 
 	models.CreateCategory(name)
@@ -42,6 +43,7 @@ func CreateCategory(w http.ResponseWriter, r *http.Request) error {
 }
 
 func UpdateCategory(w http.ResponseWriter, r *http.Request) error {
+	//TODO: same as above
 	category_id := chi.URLParam(r, "categoryID")
 	category_name := r.FormValue("category_name")
 

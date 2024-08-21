@@ -299,7 +299,7 @@ func ShowUnassignedTickets(w http.ResponseWriter, r *http.Request) error {
 	return Render(w, r, tickets.TicketSearch(LoggedInUser, LoggedInUserType, "Unassigned Tickets"))
 }
 
-func TicketSearch(w http.ResponseWriter, r *http.Request) error {
+func FilterTickets(w http.ResponseWriter, r *http.Request) error {
 	search := r.FormValue("search")
 	customer := r.FormValue("customer")
 	ticketType := r.FormValue("type")

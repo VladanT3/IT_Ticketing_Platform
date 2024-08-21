@@ -8888,10 +8888,6 @@ th.uk-text-break, td.uk-text-break {
   flex-direction: column;
 }
 
-.justify-between {
-  justify-content: space-between;
-}
-
 .self-center {
   align-self: center;
 }
@@ -8960,10 +8956,6 @@ th.uk-text-break, td.uk-text-break {
 
 .p-5 {
   padding: 1.25rem;
-}
-
-.p-4 {
-  padding: 1rem;
 }
 
 .font-mono {

@@ -12,12 +12,12 @@ templ Categories(userType string) {
 				<div class="flex flex-col" style="width: 100%;">
 					<h1 class="self-center text-2xl">Categories</h1>
 					<div class="flex flex-col mt-3" style="margin-bottom: 1rem;">
-						<input type="text" name="category_search" hx-get="/search_categories" hx-trigger="keyup changed delay:500ms" hx-target="#category_list" hx-swap="innerHTML" class="uk-input text-zinc-50 text-base self-center" style="width: 65%;" placeholder="Search..."/>
+						<input type="text" name="category_search" hx-get="/categories/search" hx-trigger="keyup changed delay:500ms" hx-target="#category_list" hx-swap="innerHTML" class="uk-input text-zinc-50 text-base self-center" style="width: 65%;" placeholder="Search..."/>
 					</div>
 					<div id="category_list" style="width: 75%;" class="self-center flex flex-col">
 						for _, category := range models.GetAllCategories() {
 							<div class="flex flex-row" style="gap: 0.5rem; width: 100%; margin-top: 1rem;">
-								<button type="button" hx-get="/show_subcategories" hx-swap="innerHTML" hx-target="#subcategories" name="category" value={ category.Category_ID.String() } class="border border-zinc-50 rounded-lg p-3 hover:bg-zinc-50 hover:text-zinc-900 hover:cursor-pointer" style="width: 70%;">
+								<button type="button" hx-get="/subcategories/get/modifiable" hx-swap="innerHTML" hx-target="#subcategories" name="category" value={ category.Category_ID.String() } class="border border-zinc-50 rounded-lg p-3 hover:bg-zinc-50 hover:text-zinc-900 hover:cursor-pointer" style="width: 70%;">
 									<span class="">{ category.Category_Name }</span>
 								</button>
 								<form hx-get="/category/popup" hx-target="body" hx-swap="beforeend" style="width: 15%;">

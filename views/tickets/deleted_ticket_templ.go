@@ -26,7 +26,7 @@ func DeletedTicket() templ.Component {
 			templ_7745c5c3_Var1 = templ.NopComponent
 		}
 		ctx = templ.ClearChildren(ctx)
-		_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString("<div class=\"grid grid-rows-5\"><div></div><div></div><div class=\"grid grid-cols-3\"><div></div><div class=\"border border-zinc-50 rounded-lg p-10 flex flex-col\"><span class=\"self-center font-bold\">Ticket successfully deleted!</span></div><div></div></div><div class=\"flex flex-col mt-5\"><a href=\"/profile\" class=\"uk-button border border-zinc-50 self-center bg-zinc-50 text-zinc-900 hover:text-zinc-50 hover:bg-zinc-900\">Back to Profile</a></div><div></div></div>")
+		templ_7745c5c3_Err = templ.WriteWatchModeString(templ_7745c5c3_Buffer, 1)
 		if templ_7745c5c3_Err != nil {
 			return templ_7745c5c3_Err
 		}
