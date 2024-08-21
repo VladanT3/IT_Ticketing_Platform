@@ -14,10 +14,26 @@ templ Categories(userType string) {
 					<div class="flex flex-col mt-3" style="margin-bottom: 1rem;">
 						<input type="text" name="category_search" hx-get="/search_categories" hx-trigger="keyup changed delay:500ms" hx-target="#category_list" hx-swap="innerHTML" class="uk-input text-zinc-50 text-base self-center" style="width: 65%;" placeholder="Search..."/>
 					</div>
-					<form id="category_list" hx-get="/show_subcategories" hx-swap="innerHTML" hx-target="#subcategories" hx-trigger="submit" style="width: 75%;" class="self-center">
-						@ShowCategories(models.GetAllCategories())
-					</form>
-					<button name="category_operation" value="create" hx-get="/category/popup" hx-target="body" hx-swap="beforeend" hx-trigger="click" class="border border-green-600 rounded-lg p-3 self-center text-green-600 hover:bg-green-600 hover:text-zinc-900 hover:cursor-pointer" style="width: 75%; margin-top: 1rem;">
+					<div id="category_list" style="width: 75%;" class="self-center flex flex-col">
+						for _, category := range models.GetAllCategories() {
+							<div class="flex flex-row" style="gap: 0.5rem; width: 100%; margin-top: 1rem;">
+								<button type="button" hx-get="/show_subcategories" hx-swap="innerHTML" hx-target="#subcategories" name="category" value={ category.Category_ID.String() } class="border border-zinc-50 rounded-lg p-3 hover:bg-zinc-50 hover:text-zinc-900 hover:cursor-pointer" style="width: 70%;">
+									<span class="">{ category.Category_Name }</span>
+								</button>
+								<form hx-get="/category/popup" hx-target="body" hx-swap="beforeend" style="width: 15%;">
+									<input type="hidden" name="id" value={ category.Category_ID.String() }/>
+									<input type="hidden" name="name" value={ category.Category_Name }/>
+									<button type="submit" name="category_operation" value="update" class="rounded-lg p-3 border border-zinc-50 bg-zinc-900 text-zinc-50 hover:bg-zinc-50 hover:text-zinc-900 hover:border-zinc-900" style="width: 100%;">Edit</button>
+								</form>
+								<form hx-get="/category/popup" hx-target="body" hx-swap="beforeend" style="width: 15%;">
+									<input type="hidden" name="id" value={ category.Category_ID.String() }/>
+									<input type="hidden" name="name" value={ category.Category_Name }/>
+									<button type="submit" name="category_operation" value="delete" class="rounded-lg p-3 border border-red-600 bg-zinc-900 text-red-600 hover:bg-red-600 hover:text-zinc-900" style="width: 100%;">Delete</button>
+								</form>
+							</div>
+						}
+					</div>
+					<button type="button" name="category_operation" value="create" hx-get="/category/popup" hx-target="body" hx-swap="beforeend" hx-trigger="click" class="border border-green-600 rounded-lg p-3 self-center text-green-600 hover:bg-green-600 hover:text-zinc-900 hover:cursor-pointer" style="width: 75%; margin-top: 1rem;">
 						<span class="text-xl">+ Add a new Category</span>
 					</button>
 				</div>

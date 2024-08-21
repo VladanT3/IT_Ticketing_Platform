@@ -29,40 +29,40 @@ func ShowCategories(categories []models.Category) templ.Component {
 		}
 		ctx = templ.ClearChildren(ctx)
 		for _, category := range categories {
-			_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString("<button type=\"submit\" name=\"category\" value=\"")
+			_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString("<div class=\"flex flex-row\" style=\"gap: 0.5rem; width: 100%; margin-top: 1rem;\"><button type=\"button\" hx-get=\"/show_subcategories\" hx-swap=\"innerHTML\" hx-target=\"#subcategories\" name=\"category\" value=\"")
 			if templ_7745c5c3_Err != nil {
 				return templ_7745c5c3_Err
 			}
 			var templ_7745c5c3_Var2 string
 			templ_7745c5c3_Var2, templ_7745c5c3_Err = templ.JoinStringErrs(category.Category_ID.String())
 			if templ_7745c5c3_Err != nil {
-				return templ.Error{Err: templ_7745c5c3_Err, FileName: `views/categories/show_categories.templ`, Line: 7, Col: 77}
+				return templ.Error{Err: templ_7745c5c3_Err, FileName: `views/categories/show_categories.templ`, Line: 8, Col: 154}
 			}
 			_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString(templ.EscapeString(templ_7745c5c3_Var2))
 			if templ_7745c5c3_Err != nil {
 				return templ_7745c5c3_Err
 			}
-			_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString("\" class=\"flex flex-row justify-between border border-zinc-50 rounded-lg p-3 self-center hover:bg-zinc-50 hover:text-zinc-900 hover:cursor-pointer\" style=\"width: 100%; margin-top: 1rem;\"><span class=\"text-xl\">")
+			_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString("\" class=\"border border-zinc-50 rounded-lg p-3 hover:bg-zinc-50 hover:text-zinc-900 hover:cursor-pointer\" style=\"width: 70%;\"><span class=\"\">")
 			if templ_7745c5c3_Err != nil {
 				return templ_7745c5c3_Err
 			}
 			var templ_7745c5c3_Var3 string
 			templ_7745c5c3_Var3, templ_7745c5c3_Err = templ.JoinStringErrs(category.Category_Name)
 			if templ_7745c5c3_Err != nil {
-				return templ.Error{Err: templ_7745c5c3_Err, FileName: `views/categories/show_categories.templ`, Line: 8, Col: 49}
+				return templ.Error{Err: templ_7745c5c3_Err, FileName: `views/categories/show_categories.templ`, Line: 9, Col: 43}
 			}
 			_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString(templ.EscapeString(templ_7745c5c3_Var3))
 			if templ_7745c5c3_Err != nil {
 				return templ_7745c5c3_Err
 			}
-			_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString("</span><form class=\"flex flex-row\" style=\"gap: 0.75rem;\" hx-get=\"/category/popup\" hx-target=\"body\" hx-swap=\"beforeend\" hx-trigger=\"submit\"><input type=\"hidden\" name=\"id\" value=\"")
+			_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString("</span></button><form hx-get=\"/category/popup\" hx-target=\"body\" hx-swap=\"beforeend\" style=\"width: 15%;\"><input type=\"hidden\" name=\"id\" value=\"")
 			if templ_7745c5c3_Err != nil {
 				return templ_7745c5c3_Err
 			}
 			var templ_7745c5c3_Var4 string
 			templ_7745c5c3_Var4, templ_7745c5c3_Err = templ.JoinStringErrs(category.Category_ID.String())
 			if templ_7745c5c3_Err != nil {
-				return templ.Error{Err: templ_7745c5c3_Err, FileName: `views/categories/show_categories.templ`, Line: 10, Col: 72}
+				return templ.Error{Err: templ_7745c5c3_Err, FileName: `views/categories/show_categories.templ`, Line: 12, Col: 72}
 			}
 			_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString(templ.EscapeString(templ_7745c5c3_Var4))
 			if templ_7745c5c3_Err != nil {
@@ -75,13 +75,39 @@ func ShowCategories(categories []models.Category) templ.Component {
 			var templ_7745c5c3_Var5 string
 			templ_7745c5c3_Var5, templ_7745c5c3_Err = templ.JoinStringErrs(category.Category_Name)
 			if templ_7745c5c3_Err != nil {
-				return templ.Error{Err: templ_7745c5c3_Err, FileName: `views/categories/show_categories.templ`, Line: 11, Col: 67}
+				return templ.Error{Err: templ_7745c5c3_Err, FileName: `views/categories/show_categories.templ`, Line: 13, Col: 67}
 			}
 			_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString(templ.EscapeString(templ_7745c5c3_Var5))
 			if templ_7745c5c3_Err != nil {
 				return templ_7745c5c3_Err
 			}
-			_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString("\"> <button type=\"submit\" name=\"category_operation\" value=\"update\" class=\"uk-button border border-zinc-50 bg-zinc-900 text-zinc-50 hover:bg-zinc-50 hover:text-zinc-900 hover:border-zinc-900\">Edit</button> <button type=\"submit\" name=\"category_operation\" value=\"delete\" class=\"uk-button border border-red-600 bg-zinc-900 text-red-600 hover:bg-red-600 hover:text-zinc-900\">Delete</button></form></button>")
+			_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString("\"> <button type=\"submit\" name=\"category_operation\" value=\"update\" class=\"rounded-lg p-3 border border-zinc-50 bg-zinc-900 text-zinc-50 hover:bg-zinc-50 hover:text-zinc-900 hover:border-zinc-900\" style=\"width: 100%;\">Edit</button></form><form hx-get=\"/category/popup\" hx-target=\"body\" hx-swap=\"beforeend\" style=\"width: 15%;\"><input type=\"hidden\" name=\"id\" value=\"")
+			if templ_7745c5c3_Err != nil {
+				return templ_7745c5c3_Err
+			}
+			var templ_7745c5c3_Var6 string
+			templ_7745c5c3_Var6, templ_7745c5c3_Err = templ.JoinStringErrs(category.Category_ID.String())
+			if templ_7745c5c3_Err != nil {
+				return templ.Error{Err: templ_7745c5c3_Err, FileName: `views/categories/show_categories.templ`, Line: 17, Col: 72}
+			}
+			_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString(templ.EscapeString(templ_7745c5c3_Var6))
+			if templ_7745c5c3_Err != nil {
+				return templ_7745c5c3_Err
+			}
+			_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString("\"> <input type=\"hidden\" name=\"name\" value=\"")
+			if templ_7745c5c3_Err != nil {
+				return templ_7745c5c3_Err
+			}
+			var templ_7745c5c3_Var7 string
+			templ_7745c5c3_Var7, templ_7745c5c3_Err = templ.JoinStringErrs(category.Category_Name)
+			if templ_7745c5c3_Err != nil {
+				return templ.Error{Err: templ_7745c5c3_Err, FileName: `views/categories/show_categories.templ`, Line: 18, Col: 67}
+			}
+			_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString(templ.EscapeString(templ_7745c5c3_Var7))
+			if templ_7745c5c3_Err != nil {
+				return templ_7745c5c3_Err
+			}
+			_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString("\"> <button type=\"submit\" name=\"category_operation\" value=\"delete\" class=\"rounded-lg p-3 border border-red-600 bg-zinc-900 text-red-600 hover:bg-red-600 hover:text-zinc-900\" style=\"width: 100%;\">Delete</button></form></div>")
 			if templ_7745c5c3_Err != nil {
 				return templ_7745c5c3_Err
 			}
