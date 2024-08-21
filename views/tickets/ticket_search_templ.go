@@ -43,7 +43,7 @@ func TicketSearch(currentUser models.Analyst, userType string, searchType string
 				}()
 			}
 			ctx = templ.InitializeContext(ctx)
-			templ_7745c5c3_Err = templ.WriteWatchModeString(templ_7745c5c3_Buffer, 1)
+			_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString("<div class=\"container mx-auto mt-5 flex flex-col\"><div class=\"flex flex-col\"><h1 class=\"text-2xl mb-3\">")
 			if templ_7745c5c3_Err != nil {
 				return templ_7745c5c3_Err
 			}
@@ -56,7 +56,7 @@ func TicketSearch(currentUser models.Analyst, userType string, searchType string
 			if templ_7745c5c3_Err != nil {
 				return templ_7745c5c3_Err
 			}
-			templ_7745c5c3_Err = templ.WriteWatchModeString(templ_7745c5c3_Buffer, 2)
+			_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString("</h1><hr></div><div class=\"grid grid-cols-5 mt-3\"><div class=\"col-span-1 grid grid-cols-5\"><form hx-post=\"/tickets/filter\" hx-trigger=\"submit\" hx-swap=\"innerHTML\" hx-target=\"#tickets\" class=\"col-span-4 flex flex-col\"><input type=\"hidden\" name=\"searchType\" value=\"")
 			if templ_7745c5c3_Err != nil {
 				return templ_7745c5c3_Err
 			}
@@ -69,12 +69,12 @@ func TicketSearch(currentUser models.Analyst, userType string, searchType string
 			if templ_7745c5c3_Err != nil {
 				return templ_7745c5c3_Err
 			}
-			templ_7745c5c3_Err = templ.WriteWatchModeString(templ_7745c5c3_Buffer, 3)
+			_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString("\"><div class=\"flex flex-col mt-3\"><label>Search:</label> <input type=\"text\" name=\"search\" class=\"uk-input text-zinc-50 text-base\"></div><div class=\"flex flex-col mt-3\"><label>Customer Search:</label> <input type=\"text\" name=\"customer\" class=\"uk-input text-zinc-50 text-base\"></div><div class=\"flex flex-col mt-3\"><label>Type:</label> <label><input type=\"radio\" name=\"type\" value=\"Both\" class=\"uk-checkbox border rounded-full border-zinc-50\" checked> Both</label> <label><input type=\"radio\" name=\"type\" value=\"Request\" class=\"uk-checkbox border rounded-full border-zinc-50\"> Request</label> <label><input type=\"radio\" name=\"type\" value=\"Incident\" class=\"uk-checkbox border rounded-full border-zinc-50\"> Incident</label></div><di class=\"flex flex-col mt-3\"><label>Status:</label> <label><input type=\"radio\" name=\"status\" value=\"Both\" class=\"uk-checkbox border rounded-full border-zinc-50\" checked> Both</label> <label><input type=\"radio\" name=\"status\" value=\"Open\" class=\"uk-checkbox border rounded-full border-zinc-50\"> Open</label> <label><input type=\"radio\" name=\"status\" value=\"Closed\" class=\"uk-checkbox border rounded-full border-zinc-50\"> Closed</label></di><div class=\"flex flex-col mt-3\"><label>Category:</label> <select name=\"category\" class=\"uk-select text-zinc-50\" hx-get=\"/subcategories/get/select\" hx-target=\"#subcategories\" hx-swap=\"outerHTML\" hx-trigger=\"change\"><option value=\"none\">Choose one...</option> ")
 			if templ_7745c5c3_Err != nil {
 				return templ_7745c5c3_Err
 			}
 			for _, category := range models.GetAllCategories() {
-				templ_7745c5c3_Err = templ.WriteWatchModeString(templ_7745c5c3_Buffer, 4)
+				_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString("<option value=\"")
 				if templ_7745c5c3_Err != nil {
 					return templ_7745c5c3_Err
 				}
@@ -87,7 +87,7 @@ func TicketSearch(currentUser models.Analyst, userType string, searchType string
 				if templ_7745c5c3_Err != nil {
 					return templ_7745c5c3_Err
 				}
-				templ_7745c5c3_Err = templ.WriteWatchModeString(templ_7745c5c3_Buffer, 5)
+				_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString("\">")
 				if templ_7745c5c3_Err != nil {
 					return templ_7745c5c3_Err
 				}
@@ -100,12 +100,12 @@ func TicketSearch(currentUser models.Analyst, userType string, searchType string
 				if templ_7745c5c3_Err != nil {
 					return templ_7745c5c3_Err
 				}
-				templ_7745c5c3_Err = templ.WriteWatchModeString(templ_7745c5c3_Buffer, 6)
+				_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString("</option>")
 				if templ_7745c5c3_Err != nil {
 					return templ_7745c5c3_Err
 				}
 			}
-			templ_7745c5c3_Err = templ.WriteWatchModeString(templ_7745c5c3_Buffer, 7)
+			_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString("</select></div><div class=\"flex flex-col mt-3\"><label>Subcategory:</label> <select name=\"subcategory\" id=\"subcategories\" class=\"uk-select text-zinc-50\" disabled><option value=\"none\">Please select a category</option></select></div><div class=\"mt-3\"></div><div class=\"mt-3\"><button type=\"submit\" class=\"uk-button uk-width-1-1 bg-zinc-50 text-zinc-900 border border-zinc-50 hover:bg-zinc-900 hover:text-zinc-50\">Apply Filters</button></div><div class=\"mt-3\"><button type=\"reset\" class=\"uk-button uk-width-1-1 border border-zinc-50 hover:bg-zinc-50 hover:text-zinc-900\">Reset Filters</button></div></form><div class=\"uk-divider-vertical min-h-full\"></div></div><div class=\"col-span-4 flex flex-col\" id=\"tickets\">")
 			if templ_7745c5c3_Err != nil {
 				return templ_7745c5c3_Err
 			}
@@ -125,7 +125,7 @@ func TicketSearch(currentUser models.Analyst, userType string, searchType string
 					return templ_7745c5c3_Err
 				}
 			}
-			templ_7745c5c3_Err = templ.WriteWatchModeString(templ_7745c5c3_Buffer, 8)
+			_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString("</div></div></div>")
 			if templ_7745c5c3_Err != nil {
 				return templ_7745c5c3_Err
 			}

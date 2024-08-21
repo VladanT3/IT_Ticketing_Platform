@@ -1,2 +1,0 @@
-<div class=\"container mx-auto mt-5\"><div class=\"grid grid-rows-5\"><div></div><div></div><div class=\"grid grid-cols-3\"><div></div><div class=\"border border-2 border-red-600 rounded-lg p-10 bg-red-400 flex flex-col\"><span class=\"text-zinc-900 self-center font-bold\">
-</span></div><div></div></div><div class=\"flex flex-col mt-5\"><a href=\"/profile\" class=\"uk-button border border-zinc-50 self-center bg-zinc-50 text-zinc-900 hover:text-zinc-50 hover:bg-zinc-900\">Back to Profile</a></div><div></div></div></div>

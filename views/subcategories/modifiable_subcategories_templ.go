@@ -29,12 +29,12 @@ func ModifiableSubcategories(subcategories []models.Subcategory, category_id str
 		}
 		ctx = templ.ClearChildren(ctx)
 		if len(subcategories) == 0 {
-			templ_7745c5c3_Err = templ.WriteWatchModeString(templ_7745c5c3_Buffer, 1)
+			_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString("<h1 class=\"self-center text-2xl\">Subcategories</h1><div class=\"flex flex-col mt-3\" style=\"margin-bottom: 1rem;\"><input type=\"text\" class=\"uk-input text-zinc-50 text-base self-center\" style=\"width: 65%;\" placeholder=\"Search...\" disabled></div>")
 			if templ_7745c5c3_Err != nil {
 				return templ_7745c5c3_Err
 			}
 		} else {
-			templ_7745c5c3_Err = templ.WriteWatchModeString(templ_7745c5c3_Buffer, 2)
+			_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString("<h1 class=\"self-center text-2xl\">Subcategories</h1><form hx-get=\"/subcategories/search\" hx-trigger=\"keyup changed delay:500ms from:#subcategory_search\" hx-swap=\"innerHTML\" hx-target=\"#subcategory_list\" class=\"flex flex-col mt-3\" style=\"margin-bottom: 1rem;\"><input type=\"hidden\" name=\"category\" value=\"")
 			if templ_7745c5c3_Err != nil {
 				return templ_7745c5c3_Err
 			}
@@ -47,12 +47,12 @@ func ModifiableSubcategories(subcategories []models.Subcategory, category_id str
 			if templ_7745c5c3_Err != nil {
 				return templ_7745c5c3_Err
 			}
-			templ_7745c5c3_Err = templ.WriteWatchModeString(templ_7745c5c3_Buffer, 3)
+			_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString("\"> <input type=\"text\" id=\"subcategory_search\" name=\"subcategory_search\" class=\"uk-input text-zinc-50 text-base self-center\" style=\"width: 65%;\" placeholder=\"Search...\"></form><div class=\"flex flex-col self-center\" id=\"subcategory_list\" style=\"width: 75%;\">")
 			if templ_7745c5c3_Err != nil {
 				return templ_7745c5c3_Err
 			}
 			for _, subcategory := range subcategories {
-				templ_7745c5c3_Err = templ.WriteWatchModeString(templ_7745c5c3_Buffer, 4)
+				_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString("<div class=\"flex flex-row\" style=\"gap: 0.5rem; width: 100%; margin-top: 1rem;\"><div class=\"border border-zinc-50 rounded-lg p-3 hover:bg-zinc-50 hover:text-zinc-900\" style=\"width: 70%;\"><span class=\"\">")
 				if templ_7745c5c3_Err != nil {
 					return templ_7745c5c3_Err
 				}
@@ -65,7 +65,7 @@ func ModifiableSubcategories(subcategories []models.Subcategory, category_id str
 				if templ_7745c5c3_Err != nil {
 					return templ_7745c5c3_Err
 				}
-				templ_7745c5c3_Err = templ.WriteWatchModeString(templ_7745c5c3_Buffer, 5)
+				_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString("</span></div><form hx-get=\"/subcategory/popup\" hx-target=\"body\" hx-swap=\"beforeend\" style=\"width: 15%;\"><input type=\"hidden\" name=\"subcategory_id\" value=\"")
 				if templ_7745c5c3_Err != nil {
 					return templ_7745c5c3_Err
 				}
@@ -78,7 +78,7 @@ func ModifiableSubcategories(subcategories []models.Subcategory, category_id str
 				if templ_7745c5c3_Err != nil {
 					return templ_7745c5c3_Err
 				}
-				templ_7745c5c3_Err = templ.WriteWatchModeString(templ_7745c5c3_Buffer, 6)
+				_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString("\"> <input type=\"hidden\" name=\"category_id\" value=\"")
 				if templ_7745c5c3_Err != nil {
 					return templ_7745c5c3_Err
 				}
@@ -91,7 +91,7 @@ func ModifiableSubcategories(subcategories []models.Subcategory, category_id str
 				if templ_7745c5c3_Err != nil {
 					return templ_7745c5c3_Err
 				}
-				templ_7745c5c3_Err = templ.WriteWatchModeString(templ_7745c5c3_Buffer, 7)
+				_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString("\"> <input type=\"hidden\" name=\"name\" value=\"")
 				if templ_7745c5c3_Err != nil {
 					return templ_7745c5c3_Err
 				}
@@ -104,7 +104,7 @@ func ModifiableSubcategories(subcategories []models.Subcategory, category_id str
 				if templ_7745c5c3_Err != nil {
 					return templ_7745c5c3_Err
 				}
-				templ_7745c5c3_Err = templ.WriteWatchModeString(templ_7745c5c3_Buffer, 8)
+				_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString("\"> <button type=\"submit\" name=\"subcategory_operation\" value=\"update\" class=\"rounded-lg p-3 border border-zinc-50 bg-zinc-900 text-zinc-50 hover:bg-zinc-50 hover:text-zinc-900 hover:border-zinc-900\" style=\"width: 100%;\">Edit</button></form><form hx-get=\"/subcategory/popup\" hx-target=\"body\" hx-swap=\"beforeend\" style=\"width: 15%;\"><input type=\"hidden\" name=\"subcategory_id\" value=\"")
 				if templ_7745c5c3_Err != nil {
 					return templ_7745c5c3_Err
 				}
@@ -117,7 +117,7 @@ func ModifiableSubcategories(subcategories []models.Subcategory, category_id str
 				if templ_7745c5c3_Err != nil {
 					return templ_7745c5c3_Err
 				}
-				templ_7745c5c3_Err = templ.WriteWatchModeString(templ_7745c5c3_Buffer, 9)
+				_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString("\"> <input type=\"hidden\" name=\"category_id\" value=\"")
 				if templ_7745c5c3_Err != nil {
 					return templ_7745c5c3_Err
 				}
@@ -130,7 +130,7 @@ func ModifiableSubcategories(subcategories []models.Subcategory, category_id str
 				if templ_7745c5c3_Err != nil {
 					return templ_7745c5c3_Err
 				}
-				templ_7745c5c3_Err = templ.WriteWatchModeString(templ_7745c5c3_Buffer, 10)
+				_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString("\"> <input type=\"hidden\" name=\"name\" value=\"")
 				if templ_7745c5c3_Err != nil {
 					return templ_7745c5c3_Err
 				}
@@ -143,12 +143,12 @@ func ModifiableSubcategories(subcategories []models.Subcategory, category_id str
 				if templ_7745c5c3_Err != nil {
 					return templ_7745c5c3_Err
 				}
-				templ_7745c5c3_Err = templ.WriteWatchModeString(templ_7745c5c3_Buffer, 11)
+				_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString("\"> <button type=\"submit\" name=\"subcategory_operation\" value=\"delete\" class=\"rounded-lg p-3 border border-red-600 bg-zinc-900 text-red-600 hover:bg-red-600 hover:text-zinc-900\" style=\"width: 100%;\">Delete</button></form></div>")
 				if templ_7745c5c3_Err != nil {
 					return templ_7745c5c3_Err
 				}
 			}
-			templ_7745c5c3_Err = templ.WriteWatchModeString(templ_7745c5c3_Buffer, 12)
+			_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString("</div><form hx-get=\"/subcategory/popup\" hx-target=\"body\" hx-swap=\"beforeend\" class=\"self-center\" style=\"width: 75%; margin-top: 1rem;\"><input type=\"hidden\" name=\"category_id\" value=\"")
 			if templ_7745c5c3_Err != nil {
 				return templ_7745c5c3_Err
 			}
@@ -161,7 +161,7 @@ func ModifiableSubcategories(subcategories []models.Subcategory, category_id str
 			if templ_7745c5c3_Err != nil {
 				return templ_7745c5c3_Err
 			}
-			templ_7745c5c3_Err = templ.WriteWatchModeString(templ_7745c5c3_Buffer, 13)
+			_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString("\"> <button name=\"subcategory_operation\" value=\"create\" type=\"submit\" class=\"text-xl border border-green-600 rounded-lg p-3 text-green-600 hover:bg-green-600 hover:text-zinc-900\" style=\"width: 100%;\">+ Add a new Subcategory</button></form>")
 			if templ_7745c5c3_Err != nil {
 				return templ_7745c5c3_Err
 			}

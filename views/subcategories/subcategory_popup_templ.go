@@ -27,7 +27,7 @@ func SubcategoryPopup(operation string, category_id string, subcategory_id strin
 		}
 		ctx = templ.ClearChildren(ctx)
 		if operation == "create" {
-			templ_7745c5c3_Err = templ.WriteWatchModeString(templ_7745c5c3_Buffer, 1)
+			_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString("<div id=\"modal\" _=\"on closeModal add .closing then wait for animationend then remove me\"><div class=\"modal-underlay\" _=\"on click trigger closeModal\"></div><div class=\"modal-content bg-zinc-900 border border-zinc-50 rounded-lg p-5 max-w-md w-4/5 mt-24\"><h1 class=\"text-xl\">Add a new Subcategory</h1><form class=\"flex flex-col\" hx-post=\"/subcategory/create\" hx-swap=\"innerHTML\" hx-target=\"#subcategory_list\"><label class=\"mt-3\">Subcategory name:</label> <input type=\"hidden\" name=\"category_id\" value=\"")
 			if templ_7745c5c3_Err != nil {
 				return templ_7745c5c3_Err
 			}
@@ -40,12 +40,12 @@ func SubcategoryPopup(operation string, category_id string, subcategory_id strin
 			if templ_7745c5c3_Err != nil {
 				return templ_7745c5c3_Err
 			}
-			templ_7745c5c3_Err = templ.WriteWatchModeString(templ_7745c5c3_Buffer, 2)
+			_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString("\"> <input type=\"text\" name=\"subcategory_name\" autofocus class=\"uk-input text-base text-zinc-50\"> <button type=\"submit\" class=\"uk-button bg-zinc-50 text-zinc-900 border border-zinc-50 self-center mt-3 hover:bg-zinc-900 hover:text-zinc-50\" _=\"on click trigger closeModal\">Add</button></form></div></div>")
 			if templ_7745c5c3_Err != nil {
 				return templ_7745c5c3_Err
 			}
 		} else if operation == "update" {
-			templ_7745c5c3_Err = templ.WriteWatchModeString(templ_7745c5c3_Buffer, 3)
+			_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString("<div id=\"modal\" _=\"on closeModal add .closing then wait for animationend then remove me\"><div class=\"modal-underlay\" _=\"on click trigger closeModal\"></div><div class=\"modal-content bg-zinc-900 border border-zinc-50 rounded-lg p-5 max-w-md w-4/5 mt-24\"><h1 class=\"text-xl\">Edit Subcategory</h1><form class=\"flex flex-col\" hx-put=\"")
 			if templ_7745c5c3_Err != nil {
 				return templ_7745c5c3_Err
 			}
@@ -58,7 +58,7 @@ func SubcategoryPopup(operation string, category_id string, subcategory_id strin
 			if templ_7745c5c3_Err != nil {
 				return templ_7745c5c3_Err
 			}
-			templ_7745c5c3_Err = templ.WriteWatchModeString(templ_7745c5c3_Buffer, 4)
+			_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString("\" hx-swap=\"innerHTML\" hx-target=\"#subcategory_list\"><label class=\"mt-3\">Subcategory name:</label> <input type=\"hidden\" name=\"category_id\" value=\"")
 			if templ_7745c5c3_Err != nil {
 				return templ_7745c5c3_Err
 			}
@@ -71,7 +71,7 @@ func SubcategoryPopup(operation string, category_id string, subcategory_id strin
 			if templ_7745c5c3_Err != nil {
 				return templ_7745c5c3_Err
 			}
-			templ_7745c5c3_Err = templ.WriteWatchModeString(templ_7745c5c3_Buffer, 5)
+			_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString("\"> <input type=\"text\" name=\"subcategory_name\" value=\"")
 			if templ_7745c5c3_Err != nil {
 				return templ_7745c5c3_Err
 			}
@@ -84,12 +84,12 @@ func SubcategoryPopup(operation string, category_id string, subcategory_id strin
 			if templ_7745c5c3_Err != nil {
 				return templ_7745c5c3_Err
 			}
-			templ_7745c5c3_Err = templ.WriteWatchModeString(templ_7745c5c3_Buffer, 6)
+			_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString("\" autofocus class=\"uk-input text-base text-zinc-50\" id=\"update_field\" onfocus=\"document.getElementById(&#39;update_field&#39;).select()\"> <button type=\"submit\" class=\"uk-button bg-zinc-50 text-zinc-900 border border-zinc-50 self-center mt-3 hover:bg-zinc-900 hover:text-zinc-50\" _=\"on click trigger closeModal\">Edit</button></form></div></div>")
 			if templ_7745c5c3_Err != nil {
 				return templ_7745c5c3_Err
 			}
 		} else if operation == "delete" {
-			templ_7745c5c3_Err = templ.WriteWatchModeString(templ_7745c5c3_Buffer, 7)
+			_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString("<div id=\"modal\" _=\"on closeModal add .closing then wait for animationend then remove me\"><div class=\"modal-underlay\" _=\"on click trigger closeModal\"></div><div class=\"modal-content bg-zinc-900 border border-zinc-50 rounded-lg p-5 max-w-md w-4/5 mt-24\"><h1 class=\"text-xl\">Delete Subcategory</h1><form class=\"flex flex-col\" hx-delete=\"")
 			if templ_7745c5c3_Err != nil {
 				return templ_7745c5c3_Err
 			}
@@ -102,7 +102,7 @@ func SubcategoryPopup(operation string, category_id string, subcategory_id strin
 			if templ_7745c5c3_Err != nil {
 				return templ_7745c5c3_Err
 			}
-			templ_7745c5c3_Err = templ.WriteWatchModeString(templ_7745c5c3_Buffer, 8)
+			_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString("\" hx-swap=\"innerHTML\" hx-target=\"#subcategory_list\"><label>Are you sure you want to delete the following subcategory?</label> <label class=\"mt-3\">Subcategory name:</label> <input type=\"hidden\" name=\"category_id\" value=\"")
 			if templ_7745c5c3_Err != nil {
 				return templ_7745c5c3_Err
 			}
@@ -115,7 +115,7 @@ func SubcategoryPopup(operation string, category_id string, subcategory_id strin
 			if templ_7745c5c3_Err != nil {
 				return templ_7745c5c3_Err
 			}
-			templ_7745c5c3_Err = templ.WriteWatchModeString(templ_7745c5c3_Buffer, 9)
+			_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString("\"> <input type=\"text\" value=\"")
 			if templ_7745c5c3_Err != nil {
 				return templ_7745c5c3_Err
 			}
@@ -128,7 +128,7 @@ func SubcategoryPopup(operation string, category_id string, subcategory_id strin
 			if templ_7745c5c3_Err != nil {
 				return templ_7745c5c3_Err
 			}
-			templ_7745c5c3_Err = templ.WriteWatchModeString(templ_7745c5c3_Buffer, 10)
+			_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString("\" disabled class=\"uk-input text-base text-zinc-50\"> <button type=\"submit\" class=\"uk-button bg-zinc-50 text-zinc-900 border border-zinc-50 self-center mt-3 hover:bg-zinc-900 hover:text-zinc-50\" _=\"on click trigger closeModal\">Delete</button></form></div></div>")
 			if templ_7745c5c3_Err != nil {
 				return templ_7745c5c3_Err
 			}
