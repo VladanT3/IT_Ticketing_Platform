@@ -312,3 +312,12 @@ func FilterTickets(w http.ResponseWriter, r *http.Request) error {
 
 	return Render(w, r, tickets.Tickets(fileteredTickets))
 }
+
+func CloseTicket(w http.ResponseWriter, r *http.Request) error {
+	ticket_id := chi.URLParam(r, "ticketID")
+
+	ticket_to_show := models.CloseTicket(ticket_id, LoggedInUser.Analyst_ID.String())
+
+	w.Header().Add("HX-Redirect", "/ticket/"+ticket_id)
+	return Render(w, r, tickets.TicketForm(ticket_to_show, LoggedInUser, LoggedInUserType, "update", "", "", models.Ticket{}))
+}

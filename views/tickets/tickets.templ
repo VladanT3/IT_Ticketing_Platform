@@ -7,9 +7,10 @@ import (
 
 templ Tickets(tickets []models.Ticket) {
 	for _, ticket := range tickets {
-		<a href={ "/ticket/" + templ.SafeURL(ticket.Ticket_ID.String()) } style="margin-bottom: 0.5rem" class="border border-zinc-50 rounded-lg p-3 grid grid-rows-2 hover:border-zinc-900 hover:bg-zinc-50 hover:text-zinc-900 hover:cursor-pointer">
+		<a href={ "/ticket/" + templ.SafeURL(ticket.Ticket_ID.String()) } style="margin-bottom: 0.5rem" class="group border border-zinc-50 rounded-lg p-3 grid grid-rows-2 hover:border-zinc-900 hover:bg-zinc-50 hover:text-zinc-900 hover:cursor-pointer">
 			<div class="grid grid-cols-5">
 				<div class="col-span-4">
+					<span class="border border-zinc-50 rounded-full group-hover:border-zinc-900" style="padding-top: 0.25rem; padding-bottom: 0.25rem; padding-right: 1rem; padding-left: 1rem; user-select: none;">{ ticket.Status }</span>
 					if ticket.Type == "Request" {
 						<span class="text-xl">REQ/{ strconv.Itoa(ticket.Ticket_Number) }</span>
 					} else {

@@ -22,6 +22,8 @@ func main() {
 	router.Get("/", handlers.Make(handlers.Index))
 	router.Post("/login", handlers.Make(handlers.Login))
 	router.Post("/logout", handlers.Make(handlers.Logout))
+	//TODO: fix the border styling somehow for ticket status
+	//TODO: update and track the numbers of open/opened/closed tickets
 	router.Get("/profile", handlers.Make(handlers.Profile))
 
 	router.Post("/ticket", handlers.Make(handlers.TicketRedirection))
@@ -30,6 +32,8 @@ func main() {
 	router.Get("/ticket/update", handlers.Make(handlers.UpdateTicket))
 	router.Delete("/ticket/delete/{ticketID}", handlers.Make(handlers.DeleteTicket))
 	router.Get("/ticket/{ticketID}", handlers.Make(handlers.ShowTicket))
+	router.Put("/ticket/close/{ticketID}", handlers.Make(handlers.CloseTicket))
+	//TODO: implement ticket reopen
 
 	router.Get("/tickets/search", handlers.Make(handlers.ShowAllTicketSearch))
 	router.Get("/tickets/team", handlers.Make(handlers.ShowTeamTickets))

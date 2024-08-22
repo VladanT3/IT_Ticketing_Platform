@@ -9095,3 +9095,8 @@ th.uk-text-break, td.uk-text-break {
   --tw-text-opacity: 1;
   color: rgb(24 24 27 / var(--tw-text-opacity));
 }
+
+.group:hover .group-hover\:border-zinc-900 {
+  --tw-border-opacity: 1;
+  border-color: rgb(24 24 27 / var(--tw-border-opacity));
+}

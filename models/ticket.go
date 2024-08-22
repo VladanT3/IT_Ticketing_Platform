@@ -355,3 +355,33 @@ func TicketExists(ticketID string) bool {
 
 	return true
 }
+
+func CloseTicket(ticket_id string, analyst_id string) Ticket {
+	var db *sql.DB = database.DB_Connection
+	ticket := Ticket{}
+	query := `update ticket set status = 'Closed', closed_date = current_timestamp, closed_by = $1 where ticket_id = $2 returning *;`
+
+	err := db.QueryRow(query, analyst_id, ticket_id).Scan(
+		&ticket.Ticket_ID,
+		&ticket.Ticket_Number,
+		&ticket.Type,
+		&ticket.Status,
+		&ticket.Category,
+		&ticket.Subcategory,
+		&ticket.Title,
+		&ticket.Description,
+		&ticket.Customer_Contact,
+		&ticket.Opened_Date,
+		&ticket.Updated_at,
+		&ticket.Closed_Date,
+		&ticket.Assigned_Team,
+		&ticket.Assigned_Analyst,
+		&ticket.Opened_by,
+		&ticket.Closed_by,
+	)
+	if err != nil {
+		log.Fatal("error closing ticket: ", err)
+	}
+
+	return ticket
+}
