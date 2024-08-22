@@ -2,11 +2,11 @@ package categories
 
 import "github.com/VladanT3/IT_Ticketing_Platform/models"
 
-templ ShowCategories(categories []models.Category) {
+templ ShowCategories(categories []models.Category, already_exists_error bool) {
 	for _, category := range categories {
 		<div class="flex flex-row" style="gap: 0.5rem; width: 100%; margin-top: 1rem;">
 			<button type="button" hx-get="/subcategories/get/modifiable" hx-swap="innerHTML" hx-target="#subcategories" name="category" value={ category.Category_ID.String() } class="border border-zinc-50 rounded-lg p-3 hover:bg-zinc-50 hover:text-zinc-900 hover:cursor-pointer" style="width: 70%;">
-				<span class="">{ category.Category_Name }</span>
+				<span>{ category.Category_Name }</span>
 			</button>
 			<form hx-get="/category/popup" hx-target="body" hx-swap="beforeend" style="width: 15%;">
 				<input type="hidden" name="id" value={ category.Category_ID.String() }/>
@@ -19,5 +19,8 @@ templ ShowCategories(categories []models.Category) {
 				<button type="submit" name="category_operation" value="delete" class="rounded-lg p-3 border border-red-600 bg-zinc-900 text-red-600 hover:bg-red-600 hover:text-zinc-900" style="width: 100%;">Delete</button>
 			</form>
 		</div>
+	}
+	if already_exists_error {
+		<div hidden hx-get="category/error/name" hx-swap="beforeend" hx-target="body" hx-trigger="load"></div>
 	}
 }

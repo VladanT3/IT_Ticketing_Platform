@@ -42,7 +42,7 @@ func ShowModifiableSubcategories(w http.ResponseWriter, r *http.Request) error {
 	}
 	subcategoryOutput := models.GetSubcategories(category_id)
 
-	return Render(w, r, subcategories.ModifiableSubcategories(subcategoryOutput, category_id))
+	return Render(w, r, subcategories.ModifiableSubcategories(subcategoryOutput, category_id, false))
 }
 
 func ShowSubcategoryPopup(w http.ResponseWriter, r *http.Request) error {
@@ -60,26 +60,38 @@ func ShowSubcategoryPopup(w http.ResponseWriter, r *http.Request) error {
 }
 
 func CreateSubcategory(w http.ResponseWriter, r *http.Request) error {
-	//TODO: handle error if user inputs a name that already exists
-	name := r.FormValue("subcategory_name")
+	subcategory_name := r.FormValue("subcategory_name")
 	category_id := r.FormValue("category_id")
 
-	models.CreateSubcategory(name, category_id)
+	if models.DoesSubcategoryNameExist(subcategory_name, category_id) {
+		subcategoryOutput := models.GetSubcategories(category_id)
+		return Render(w, r, subcategories.ModifiableSubcategories(subcategoryOutput, category_id, true))
+	}
+	models.CreateSubcategory(subcategory_name, category_id)
 
 	subcategoryOutput := models.GetSubcategories(category_id)
-	return Render(w, r, subcategories.ModifiableSubcategories(subcategoryOutput, category_id))
+	return Render(w, r, subcategories.ModifiableSubcategories(subcategoryOutput, category_id, false))
 }
 
 func UpdateSubcategory(w http.ResponseWriter, r *http.Request) error {
-	//TODO: same as above
 	subcategory_id := chi.URLParam(r, "subcategoryID")
 	subcategory_name := r.FormValue("subcategory_name")
 	category_id := r.FormValue("category_id")
 
-	models.UpdateSubcategory(subcategory_id, subcategory_name, category_id)
+	if models.IsSubcategoryNameNew(subcategory_id, category_id, subcategory_name) {
+		if models.DoesSubcategoryNameExist(subcategory_name, category_id) {
+			subcategoryOutput := models.GetSubcategories(category_id)
+			return Render(w, r, subcategories.ModifiableSubcategories(subcategoryOutput, category_id, true))
+		} else {
+			models.UpdateSubcategory(subcategory_id, subcategory_name, category_id)
 
-	subcategoryOutput := models.GetSubcategories(category_id)
-	return Render(w, r, subcategories.ModifiableSubcategories(subcategoryOutput, category_id))
+			subcategoryOutput := models.GetSubcategories(category_id)
+			return Render(w, r, subcategories.ModifiableSubcategories(subcategoryOutput, category_id, false))
+		}
+	} else {
+		subcategoryOutput := models.GetSubcategories(category_id)
+		return Render(w, r, subcategories.ModifiableSubcategories(subcategoryOutput, category_id, false))
+	}
 }
 
 func DeleteSubcategory(w http.ResponseWriter, r *http.Request) error {
@@ -89,5 +101,9 @@ func DeleteSubcategory(w http.ResponseWriter, r *http.Request) error {
 	models.DeleteSubcategory(subcategory_id, category_id)
 
 	subcategoryOutput := models.GetSubcategories(category_id)
-	return Render(w, r, subcategories.ModifiableSubcategories(subcategoryOutput, category_id))
+	return Render(w, r, subcategories.ModifiableSubcategories(subcategoryOutput, category_id, false))
+}
+
+func ShowSubcategoryAlreadyExistsError(w http.ResponseWriter, r *http.Request) error {
+	return Render(w, r, subcategories.SubcategoryExistsError())
 }

@@ -4,11 +4,22 @@ import "github.com/VladanT3/IT_Ticketing_Platform/models"
 
 templ SearchSubcategories(subcategories []models.Subcategory) {
 	for _, subcategory := range subcategories {
-		<a href={ "/subcategory/edit/" + templ.SafeURL(subcategory.Subcategory_ID.String()) } class="border border-zinc-50 rounded-lg p-3 self-center hover:bg-zinc-50 hover:text-zinc-900 hover:cursor-pointer" style="width: 75%; margin-top: 1rem;">
-			<span class="text-xl">{ subcategory.Subcategory_Name }</span>
-		</a>
+		<div class="flex flex-row" style="gap: 0.5rem; width: 100%; margin-top: 1rem;">
+			<div class="border border-zinc-50 rounded-lg p-3 hover:bg-zinc-50 hover:text-zinc-900" style="width: 70%;">
+				<span class="self-center" style="user-select: none;">{ subcategory.Subcategory_Name }</span>
+			</div>
+			<form hx-get="/subcategory/popup" hx-target="body" hx-swap="beforeend" style="width: 15%;">
+				<input type="hidden" name="subcategory_id" value={ subcategory.Subcategory_ID.String() }/>
+				<input type="hidden" name="category_id" value={ subcategory.Category_ID.String() }/>
+				<input type="hidden" name="name" value={ subcategory.Subcategory_Name }/>
+				<button type="submit" name="subcategory_operation" value="update" class="rounded-lg p-3 border border-zinc-50 bg-zinc-900 text-zinc-50 hover:bg-zinc-50 hover:text-zinc-900 hover:border-zinc-900" style="width: 100%;">Edit</button>
+			</form>
+			<form hx-get="/subcategory/popup" hx-target="body" hx-swap="beforeend" style="width: 15%;">
+				<input type="hidden" name="subcategory_id" value={ subcategory.Subcategory_ID.String() }/>
+				<input type="hidden" name="category_id" value={ subcategory.Category_ID.String() }/>
+				<input type="hidden" name="name" value={ subcategory.Subcategory_Name }/>
+				<button type="submit" name="subcategory_operation" value="delete" class="rounded-lg p-3 border border-red-600 bg-zinc-900 text-red-600 hover:bg-red-600 hover:text-zinc-900" style="width: 100%;">Delete</button>
+			</form>
+		</div>
 	}
-	<a href="/subcategory/create" class="border border-green-600 rounded-lg p-3 self-center text-green-600 hover:bg-green-600 hover:text-zinc-900 hover:cursor-pointer" style="width: 75%; margin-top: 1rem;">
-		<span class="text-xl">+ Add a new Subcategory</span>
-	</a>
 }

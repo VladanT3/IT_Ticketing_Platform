@@ -17,7 +17,7 @@ func SearchCategories(w http.ResponseWriter, r *http.Request) error {
 
 	searchedCategories := models.CategorySearchByName(search)
 
-	return Render(w, r, categories.ShowCategories(searchedCategories, false))
+	return Render(w, r, categories.ShowCategories(searchedCategories))
 }
 
 func ShowCategoryPopup(w http.ResponseWriter, r *http.Request) error {
@@ -37,12 +37,12 @@ func CreateCategory(w http.ResponseWriter, r *http.Request) error {
 	category_name := r.FormValue("category_name")
 
 	if models.DoesCategoryNameExist(category_name) {
-		return Render(w, r, categories.ShowCategories(models.GetAllCategories(), true))
+		return Render(w, r, categories.CategoryExistsError())
 	}
 
 	models.CreateCategory(category_name)
 
-	return Render(w, r, categories.ShowCategories(models.GetAllCategories(), false))
+	return Render(w, r, categories.ShowCategories(models.GetAllCategories()))
 }
 
 func UpdateCategory(w http.ResponseWriter, r *http.Request) error {
@@ -51,14 +51,13 @@ func UpdateCategory(w http.ResponseWriter, r *http.Request) error {
 
 	if models.IsCategoryNameNew(category_id, category_name) {
 		if models.DoesCategoryNameExist(category_name) {
-			return Render(w, r, categories.ShowCategories(models.GetAllCategories(), true))
-		} else {
-			models.UpdateCategory(category_id, category_name)
-			return Render(w, r, categories.ShowCategories(models.GetAllCategories(), false))
+			return Render(w, r, categories.CategoryExistsError())
 		}
-	} else {
-		return Render(w, r, categories.ShowCategories(models.GetAllCategories(), false))
 	}
+
+	models.UpdateCategory(category_id, category_name)
+
+	return Render(w, r, categories.ShowCategories(models.GetAllCategories()))
 }
 
 func DeleteCategory(w http.ResponseWriter, r *http.Request) error {
@@ -66,9 +65,5 @@ func DeleteCategory(w http.ResponseWriter, r *http.Request) error {
 
 	models.DeleteCategory(category_id)
 
-	return Render(w, r, categories.ShowCategories(models.GetAllCategories(), false))
-}
-
-func ShowCategoryAlreadyExistsError(w http.ResponseWriter, r *http.Request) error {
-	return Render(w, r, categories.CategoryExistsError())
+	return Render(w, r, categories.ShowCategories(models.GetAllCategories()))
 }

@@ -10,7 +10,7 @@ import templruntime "github.com/a-h/templ/runtime"
 
 import "github.com/VladanT3/IT_Ticketing_Platform/models"
 
-func ShowCategories(categories []models.Category) templ.Component {
+func ShowCategories(categories []models.Category, already_exists_error bool) templ.Component {
 	return templruntime.GeneratedTemplate(func(templ_7745c5c3_Input templruntime.GeneratedComponentInput) (templ_7745c5c3_Err error) {
 		templ_7745c5c3_W, ctx := templ_7745c5c3_Input.Writer, templ_7745c5c3_Input.Context
 		templ_7745c5c3_Buffer, templ_7745c5c3_IsBuffer := templruntime.GetBuffer(templ_7745c5c3_W)
@@ -42,14 +42,14 @@ func ShowCategories(categories []models.Category) templ.Component {
 			if templ_7745c5c3_Err != nil {
 				return templ_7745c5c3_Err
 			}
-			_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString("\" class=\"border border-zinc-50 rounded-lg p-3 hover:bg-zinc-50 hover:text-zinc-900 hover:cursor-pointer\" style=\"width: 70%;\"><span class=\"\">")
+			_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString("\" class=\"border border-zinc-50 rounded-lg p-3 hover:bg-zinc-50 hover:text-zinc-900 hover:cursor-pointer\" style=\"width: 70%;\"><span>")
 			if templ_7745c5c3_Err != nil {
 				return templ_7745c5c3_Err
 			}
 			var templ_7745c5c3_Var3 string
 			templ_7745c5c3_Var3, templ_7745c5c3_Err = templ.JoinStringErrs(category.Category_Name)
 			if templ_7745c5c3_Err != nil {
-				return templ.Error{Err: templ_7745c5c3_Err, FileName: `views/categories/show_categories.templ`, Line: 9, Col: 43}
+				return templ.Error{Err: templ_7745c5c3_Err, FileName: `views/categories/show_categories.templ`, Line: 9, Col: 34}
 			}
 			_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString(templ.EscapeString(templ_7745c5c3_Var3))
 			if templ_7745c5c3_Err != nil {
@@ -108,6 +108,12 @@ func ShowCategories(categories []models.Category) templ.Component {
 				return templ_7745c5c3_Err
 			}
 			_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString("\"> <button type=\"submit\" name=\"category_operation\" value=\"delete\" class=\"rounded-lg p-3 border border-red-600 bg-zinc-900 text-red-600 hover:bg-red-600 hover:text-zinc-900\" style=\"width: 100%;\">Delete</button></form></div>")
+			if templ_7745c5c3_Err != nil {
+				return templ_7745c5c3_Err
+			}
+		}
+		if already_exists_error {
+			_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString("<div hidden hx-get=\"category/error/name\" hx-swap=\"beforeend\" hx-target=\"body\" hx-trigger=\"load\"></div>")
 			if templ_7745c5c3_Err != nil {
 				return templ_7745c5c3_Err
 			}

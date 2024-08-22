@@ -2,7 +2,7 @@ package subcategories
 
 import "github.com/VladanT3/IT_Ticketing_Platform/models"
 
-templ ModifiableSubcategories(subcategories []models.Subcategory, category_id string) {
+templ ModifiableSubcategories(subcategories []models.Subcategory, category_id string, already_exists_error bool) {
 	if len(subcategories) == 0 {
 		<h1 class="self-center text-2xl">Subcategories</h1>
 		<div class="flex flex-col mt-3" style="margin-bottom: 1rem;">
@@ -17,8 +17,8 @@ templ ModifiableSubcategories(subcategories []models.Subcategory, category_id st
 		<div class="flex flex-col self-center" id="subcategory_list" style="width: 75%;">
 			for _, subcategory := range subcategories {
 				<div class="flex flex-row" style="gap: 0.5rem; width: 100%; margin-top: 1rem;">
-					<div class="border border-zinc-50 rounded-lg p-3 hover:bg-zinc-50 hover:text-zinc-900" style="width: 70%;">
-						<span class="">{ subcategory.Subcategory_Name }</span>
+					<div class="flex flex-col border border-zinc-50 rounded-lg p-3 hover:bg-zinc-50 hover:text-zinc-900" style="width: 70%;">
+						<span class="self-center" style="user-select: none;">{ subcategory.Subcategory_Name }</span>
 					</div>
 					<form hx-get="/subcategory/popup" hx-target="body" hx-swap="beforeend" style="width: 15%;">
 						<input type="hidden" name="subcategory_id" value={ subcategory.Subcategory_ID.String() }/>
@@ -33,6 +33,9 @@ templ ModifiableSubcategories(subcategories []models.Subcategory, category_id st
 						<button type="submit" name="subcategory_operation" value="delete" class="rounded-lg p-3 border border-red-600 bg-zinc-900 text-red-600 hover:bg-red-600 hover:text-zinc-900" style="width: 100%;">Delete</button>
 					</form>
 				</div>
+			}
+			if already_exists_error {
+				<div hidden hx-get="subcategory/error/name" hx-swap="beforeend" hx-target="body" hx-trigger="load"></div>
 			}
 		</div>
 		<form hx-get="/subcategory/popup" hx-target="body" hx-swap="beforeend" class="self-center" style="width: 75%; margin-top: 1rem;">

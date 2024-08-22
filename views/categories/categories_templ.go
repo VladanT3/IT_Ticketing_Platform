@@ -61,14 +61,14 @@ func Categories(userType string) templ.Component {
 				if templ_7745c5c3_Err != nil {
 					return templ_7745c5c3_Err
 				}
-				_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString("\" class=\"border border-zinc-50 rounded-lg p-3 hover:bg-zinc-50 hover:text-zinc-900 hover:cursor-pointer\" style=\"width: 70%;\"><span class=\"\">")
+				_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString("\" class=\"border border-zinc-50 rounded-lg p-3 hover:bg-zinc-50 hover:text-zinc-900 hover:cursor-pointer\" style=\"width: 70%;\"><span>")
 				if templ_7745c5c3_Err != nil {
 					return templ_7745c5c3_Err
 				}
 				var templ_7745c5c3_Var4 string
 				templ_7745c5c3_Var4, templ_7745c5c3_Err = templ.JoinStringErrs(category.Category_Name)
 				if templ_7745c5c3_Err != nil {
-					return templ.Error{Err: templ_7745c5c3_Err, FileName: `views/categories/categories.templ`, Line: 21, Col: 48}
+					return templ.Error{Err: templ_7745c5c3_Err, FileName: `views/categories/categories.templ`, Line: 21, Col: 39}
 				}
 				_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString(templ.EscapeString(templ_7745c5c3_Var4))
 				if templ_7745c5c3_Err != nil {

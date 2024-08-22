@@ -109,3 +109,37 @@ func DeleteCategory(id string) {
 		log.Fatal("error deleting category: ", err)
 	}
 }
+
+func DoesCategoryNameExist(name string) bool {
+	var db *sql.DB = database.DB_Connection
+	var count int
+	name = strings.ToLower(name)
+	query := `select count(*) from category where lower(category_name) = $1;`
+
+	err := db.QueryRow(query, name).Scan(&count)
+	if err != nil {
+		log.Fatal("error checking if category name exists: ", err)
+	}
+	if count > 0 {
+		return true
+	}
+
+	return false
+}
+
+func IsCategoryNameNew(id string, name string) bool {
+	var db *sql.DB = database.DB_Connection
+	var count int
+	name = strings.ToLower(name)
+	query := `select count(*) from category where category_id = $1 and lower(category_name) = $2;`
+
+	err := db.QueryRow(query, id, name).Scan(&count)
+	if err != nil {
+		log.Fatal("error checking if category name is different: ", err)
+	}
+	if count > 0 {
+		return false
+	}
+
+	return true
+}

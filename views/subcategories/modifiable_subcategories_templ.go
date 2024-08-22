@@ -10,7 +10,7 @@ import templruntime "github.com/a-h/templ/runtime"
 
 import "github.com/VladanT3/IT_Ticketing_Platform/models"
 
-func ModifiableSubcategories(subcategories []models.Subcategory, category_id string) templ.Component {
+func ModifiableSubcategories(subcategories []models.Subcategory, category_id string, already_exists_error bool) templ.Component {
 	return templruntime.GeneratedTemplate(func(templ_7745c5c3_Input templruntime.GeneratedComponentInput) (templ_7745c5c3_Err error) {
 		templ_7745c5c3_W, ctx := templ_7745c5c3_Input.Writer, templ_7745c5c3_Input.Context
 		templ_7745c5c3_Buffer, templ_7745c5c3_IsBuffer := templruntime.GetBuffer(templ_7745c5c3_W)
@@ -52,14 +52,14 @@ func ModifiableSubcategories(subcategories []models.Subcategory, category_id str
 				return templ_7745c5c3_Err
 			}
 			for _, subcategory := range subcategories {
-				_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString("<div class=\"flex flex-row\" style=\"gap: 0.5rem; width: 100%; margin-top: 1rem;\"><div class=\"border border-zinc-50 rounded-lg p-3 hover:bg-zinc-50 hover:text-zinc-900\" style=\"width: 70%;\"><span class=\"\">")
+				_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString("<div class=\"flex flex-row\" style=\"gap: 0.5rem; width: 100%; margin-top: 1rem;\"><div class=\"flex flex-col border border-zinc-50 rounded-lg p-3 hover:bg-zinc-50 hover:text-zinc-900\" style=\"width: 70%;\"><span class=\"self-center\" style=\"user-select: none;\">")
 				if templ_7745c5c3_Err != nil {
 					return templ_7745c5c3_Err
 				}
 				var templ_7745c5c3_Var3 string
 				templ_7745c5c3_Var3, templ_7745c5c3_Err = templ.JoinStringErrs(subcategory.Subcategory_Name)
 				if templ_7745c5c3_Err != nil {
-					return templ.Error{Err: templ_7745c5c3_Err, FileName: `views/subcategories/modifiable_subcategories.templ`, Line: 21, Col: 51}
+					return templ.Error{Err: templ_7745c5c3_Err, FileName: `views/subcategories/modifiable_subcategories.templ`, Line: 21, Col: 89}
 				}
 				_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString(templ.EscapeString(templ_7745c5c3_Var3))
 				if templ_7745c5c3_Err != nil {
@@ -148,6 +148,12 @@ func ModifiableSubcategories(subcategories []models.Subcategory, category_id str
 					return templ_7745c5c3_Err
 				}
 			}
+			if already_exists_error {
+				_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString("<div hidden hx-get=\"subcategory/error/name\" hx-swap=\"beforeend\" hx-target=\"body\" hx-trigger=\"load\"></div>")
+				if templ_7745c5c3_Err != nil {
+					return templ_7745c5c3_Err
+				}
+			}
 			_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString("</div><form hx-get=\"/subcategory/popup\" hx-target=\"body\" hx-swap=\"beforeend\" class=\"self-center\" style=\"width: 75%; margin-top: 1rem;\"><input type=\"hidden\" name=\"category_id\" value=\"")
 			if templ_7745c5c3_Err != nil {
 				return templ_7745c5c3_Err
@@ -155,7 +161,7 @@ func ModifiableSubcategories(subcategories []models.Subcategory, category_id str
 			var templ_7745c5c3_Var10 string
 			templ_7745c5c3_Var10, templ_7745c5c3_Err = templ.JoinStringErrs(category_id)
 			if templ_7745c5c3_Err != nil {
-				return templ.Error{Err: templ_7745c5c3_Err, FileName: `views/subcategories/modifiable_subcategories.templ`, Line: 39, Col: 62}
+				return templ.Error{Err: templ_7745c5c3_Err, FileName: `views/subcategories/modifiable_subcategories.templ`, Line: 42, Col: 62}
 			}
 			_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString(templ.EscapeString(templ_7745c5c3_Var10))
 			if templ_7745c5c3_Err != nil {

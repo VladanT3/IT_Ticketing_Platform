@@ -1,0 +1,14 @@
+package categories
+
+templ CategoryExistsError() {
+	<div id="modal" _="on closeModal add .closing then wait for animationend then remove me">
+		<div class="modal-underlay" _="on click trigger closeModal"></div>
+		<div class="modal-content bg-zinc-900 border border-red-600 rounded-lg p-5 max-w-md w-4/5 mt-24">
+			<h1 class="text-xl text-red-600">Category already exists!</h1>
+			<div class="flex flex-col">
+				<label class="mt-3">Please input a category name that doesn't exist.</label>
+				<button type="button" class="uk-button bg-zinc-50 text-zinc-900 border border-zinc-50 self-center mt-3 hover:bg-zinc-900 hover:text-zinc-50" _="on click trigger closeModal">Close</button>
+			</div>
+		</div>
+	</div>
+}

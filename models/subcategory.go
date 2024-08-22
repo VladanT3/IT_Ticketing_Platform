@@ -135,3 +135,37 @@ func DeleteSubcategory(subcategory_id string, category_id string) {
 		log.Fatal("error deleting subcategory: ", err)
 	}
 }
+
+func DoesSubcategoryNameExist(name string, category_id string) bool {
+	var db *sql.DB = database.DB_Connection
+	var count int
+	name = strings.ToLower(name)
+	query := `select count(*) from subcategory where category_id = $1 and lower(subcategory_name) = $2;`
+
+	err := db.QueryRow(query, category_id, name).Scan(&count)
+	if err != nil {
+		log.Fatal("error checking if subcategory name exists: ", err)
+	}
+	if count > 0 {
+		return true
+	}
+
+	return false
+}
+
+func IsSubcategoryNameNew(subcategory_id string, category_id string, subcategory_name string) bool {
+	var db *sql.DB = database.DB_Connection
+	var count int
+	subcategory_name = strings.ToLower(subcategory_name)
+	query := `select count(*) from subcategory where category_id = $1 and subcategory_id = $2 and lower(subcategory_name) = $3;`
+
+	err := db.QueryRow(query, category_id, subcategory_id, subcategory_name).Scan(&count)
+	if err != nil {
+		log.Fatal("error checking if subcategory name is different: ", err)
+	}
+	if count > 0 {
+		return false
+	}
+
+	return true
+}
