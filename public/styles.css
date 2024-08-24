@@ -8888,6 +8888,10 @@ th.uk-text-break, td.uk-text-break {
   flex-direction: column;
 }
 
+.items-center {
+  align-items: center;
+}
+
 .self-center {
   align-self: center;
 }
@@ -8898,6 +8902,10 @@ th.uk-text-break, td.uk-text-break {
 
 .rounded-lg {
   border-radius: 0.5rem;
+}
+
+.rounded-xl {
+  border-radius: 0.75rem;
 }
 
 .border {

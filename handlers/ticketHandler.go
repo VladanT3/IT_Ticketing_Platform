@@ -331,3 +331,30 @@ func CloseTicket(w http.ResponseWriter, r *http.Request) error {
 	w.Header().Add("HX-Redirect", "/ticket/"+ticket_id)
 	return Render(w, r, tickets.TicketForm(ticket_to_show, LoggedInUser, LoggedInUserType, "update", "", "", models.Ticket{}))
 }
+
+func ShowTicketReopenForm(w http.ResponseWriter, r *http.Request) error {
+	ticket_id := chi.URLParam(r, "ticketID")
+
+	ticket := models.GetTicket(ticket_id)
+
+	return Render(w, r, tickets.ReopenForm(LoggedInUserType, ticket))
+}
+
+func ReopenTicket(w http.ResponseWriter, r *http.Request) error {
+	reason := r.FormValue("reason")
+	ticket_id := chi.URLParam(r, "ticketID")
+
+	models.ReopenTicket(ticket_id, reason, LoggedInUser.Analyst_ID.String())
+	LoggedInUser = models.UpdateLoggedInUser(LoggedInUser)
+
+	ticket := models.GetTicket(ticket_id)
+	return Render(w, r, tickets.TicketForm(ticket, LoggedInUser, LoggedInUserType, "update", "", "", models.Ticket{}))
+}
+
+func ShowTicketReopenHistory(w http.ResponseWriter, r *http.Request) error {
+	ticket_id := chi.URLParam(r, "ticketID")
+
+	reopens := models.GetTicketReopens(ticket_id)
+
+	return Render(w, r, tickets.ReopenHistory(LoggedInUserType, reopens))
+}

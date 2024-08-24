@@ -429,3 +429,42 @@ func CloseTicket(ticket_id string, analyst_id string) Ticket {
 
 	return ticket
 }
+
+func ReopenTicket(ticket_id string, reason string, analyst_id string) {
+	var db *sql.DB = database.DB_Connection
+	query := `insert into ticket_reopen values(gen_random_uuid(), $1, $2, $3, current_timestamp);`
+
+	_, err := db.Exec(query, ticket_id, analyst_id, reason)
+	if err != nil {
+		log.Fatal("error reopening ticket: ", err)
+	}
+
+	old_ticket := GetTicket(ticket_id)
+
+	query = `update ticket set status = 'Open', updated_at = current_timestamp, closed_date = null, closed_by = null where ticket_id = $1;`
+	_, err = db.Exec(query, ticket_id)
+	if err != nil {
+		log.Fatal("error updating ticket after reopen: ", err)
+	}
+
+	if old_ticket.Assigned_Analyst.UUID == old_ticket.Closed_by.UUID {
+		query = `update analyst set number_of_closed_tickets = number_of_closed_tickets - 1, number_of_open_tickets = number_of_open_tickets + 1 where analyst_id = $1;`
+		_, err = db.Exec(query, old_ticket.Assigned_Analyst.UUID)
+		if err != nil {
+			log.Fatal("error decrementing closed and incrementing open tickets when reopening ticket: ", err)
+		}
+
+	} else {
+		query = `update analyst set number_of_closed_tickets = number_of_closed_tickets - 1 where analyst_id = $1;`
+		_, err = db.Exec(query, old_ticket.Closed_by.UUID)
+		if err != nil {
+			log.Fatal("error decrementing closed tickets when reopening ticket: ", err)
+		}
+
+		query = `update analyst set number_of_oepn_tickets = number_of_open_tickets + 1 where analyst_id = $1;`
+		_, err = db.Exec(query, old_ticket.Assigned_Analyst.UUID)
+		if err != nil {
+			log.Fatal("error incrementing open tickets when reopening ticket: ", err)
+		}
+	}
+}

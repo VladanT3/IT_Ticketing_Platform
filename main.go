@@ -31,7 +31,10 @@ func main() {
 	router.Delete("/ticket/delete/{ticketID}", handlers.Make(handlers.DeleteTicket))
 	router.Get("/ticket/{ticketID}", handlers.Make(handlers.ShowTicket))
 	router.Put("/ticket/close/{ticketID}", handlers.Make(handlers.CloseTicket))
-	//TODO: implement ticket reopen
+	router.Get("/ticket/{ticketID}/reopen/form", handlers.Make(handlers.ShowTicketReopenForm))
+	router.Post("/ticket/{ticketID}/reopen", handlers.Make(handlers.ReopenTicket))
+	//TODO: implement this
+	router.Get("/ticket/{ticketID}/reopen/history", handlers.Make(handlers.ShowTicketReopenHistory))
 
 	router.Get("/tickets/search", handlers.Make(handlers.ShowAllTicketSearch))
 	router.Get("/tickets/team", handlers.Make(handlers.ShowTeamTickets))

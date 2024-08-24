@@ -1,0 +1,10 @@
+package tickets
+
+import "github.com/VladanT3/IT_Ticketing_Platform/models"
+import "github.com/VladanT3/IT_Ticketing_Platform/views/layouts"
+
+templ ReopenHistory(user_type string, ticket_reopen []models.TicketReopen) {
+	@layouts.Navbar(user_type) {
+		<div class="container mx-auto mt-5"></div>
+	}
+}
