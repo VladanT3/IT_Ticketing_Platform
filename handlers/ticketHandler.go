@@ -141,6 +141,15 @@ func CreateTicket(w http.ResponseWriter, r *http.Request) error {
 		http.Error(w, errMsg, http.StatusInternalServerError)
 	}
 
+	query = `update analyst set number_of_open_tickets = number_of_open_tickets + 1, number_of_opened_tickets = number_of_opened_tickets + 1 where analyst_id = $1;`
+	_, err = db.Exec(query, LoggedInUser.Analyst_ID)
+	if err != nil {
+		errMsg := "error updating ticket number trackers: " + err.Error()
+		http.Error(w, errMsg, http.StatusInternalServerError)
+	}
+
+	LoggedInUser = models.UpdateLoggedInUser(LoggedInUser)
+
 	if saveType == "Save" {
 		http.Redirect(w, r, "/ticket/"+newTicketID, http.StatusSeeOther)
 		return nil
@@ -263,9 +272,9 @@ func DeleteTicket(w http.ResponseWriter, r *http.Request) error {
 	ticketID := chi.URLParam(r, "ticketID")
 
 	models.DeleteTicket(ticketID)
+	LoggedInUser = models.UpdateLoggedInUser(LoggedInUser)
 
 	return Render(w, r, tickets.DeletedTicket())
-
 }
 
 func ShowNewTicketForm(w http.ResponseWriter, r *http.Request) error {
@@ -317,6 +326,7 @@ func CloseTicket(w http.ResponseWriter, r *http.Request) error {
 	ticket_id := chi.URLParam(r, "ticketID")
 
 	ticket_to_show := models.CloseTicket(ticket_id, LoggedInUser.Analyst_ID.String())
+	LoggedInUser = models.UpdateLoggedInUser(LoggedInUser)
 
 	w.Header().Add("HX-Redirect", "/ticket/"+ticket_id)
 	return Render(w, r, tickets.TicketForm(ticket_to_show, LoggedInUser, LoggedInUserType, "update", "", "", models.Ticket{}))

@@ -22,8 +22,6 @@ func main() {
 	router.Get("/", handlers.Make(handlers.Index))
 	router.Post("/login", handlers.Make(handlers.Login))
 	router.Post("/logout", handlers.Make(handlers.Logout))
-	//TODO: fix the border styling somehow for ticket status
-	//TODO: update and track the numbers of open/opened/closed tickets
 	router.Get("/profile", handlers.Make(handlers.Profile))
 
 	router.Post("/ticket", handlers.Make(handlers.TicketRedirection))

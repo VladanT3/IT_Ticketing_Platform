@@ -333,11 +333,49 @@ func GetTeamTickets(teamID string) []Ticket {
 
 func DeleteTicket(ticketID string) {
 	var db *sql.DB = database.DB_Connection
-	query := `delete from ticket where ticket_id = $1;`
+	query := `delete from ticket where ticket_id = $1 returning assigned_analyst, opened_by, status;`
+	var assigned_analyst uuid.UUID
+	var ticket_status string
+	var opened_by uuid.UUID
 
-	_, err := db.Exec(query, ticketID)
+	err := db.QueryRow(query, ticketID).Scan(&assigned_analyst, &opened_by, &ticket_status)
 	if err != nil {
 		log.Fatal("error deleting ticket: ", err)
+	}
+
+	if assigned_analyst == opened_by {
+		if ticket_status == "Open" {
+			query = `update analyst set number_of_open_tickets = number_of_open_tickets - 1, number_of_opened_tickets = number_of_opened_tickets - 1 where analyst_id = $1;`
+			_, err = db.Exec(query, assigned_analyst)
+			if err != nil {
+				log.Fatal("error decrementing open and opened ticket values: ", err)
+			}
+		} else {
+			query = `update analyst set number_of_closed_tickets = number_of_closed_tickets - 1, number_of_opened_tickets = number_of_opened_tickets - 1 where analyst_id = $1;`
+			_, err = db.Exec(query, assigned_analyst)
+			if err != nil {
+				log.Fatal("error decrementing closed and opened ticket values: ", err)
+			}
+		}
+	} else {
+		if ticket_status == "Open" {
+			query = `update analyst set number_of_open_tickets = number_of_open_tickets - 1 where analyst_id = $1;`
+			_, err = db.Exec(query, assigned_analyst)
+			if err != nil {
+				log.Fatal("error decrementing open ticket value: ", err)
+			}
+		} else {
+			query = `update analyst set number_of_closed_tickets = number_of_closed_tickets - 1 where analyst_id = $1;`
+			_, err = db.Exec(query, assigned_analyst)
+			if err != nil {
+				log.Fatal("error decrementing closed ticket value: ", err)
+			}
+		}
+		query = `update analyst set number_of_opened_tickets = number_of_opened_tickets - 1 where analyst_id = $1;`
+		_, err = db.Exec(query, opened_by)
+		if err != nil {
+			log.Fatal("error decrementing opened ticket value: ", err)
+		}
 	}
 }
 
@@ -381,6 +419,12 @@ func CloseTicket(ticket_id string, analyst_id string) Ticket {
 	)
 	if err != nil {
 		log.Fatal("error closing ticket: ", err)
+	}
+
+	query = `update analyst set number_of_open_tickets = number_of_open_tickets - 1, number_of_closed_tickets = number_of_closed_tickets + 1 where analyst_id = $1;`
+	_, err = db.Exec(query, analyst_id)
+	if err != nil {
+		log.Fatal("error decrementing open and closed ticket values: ", err)
 	}
 
 	return ticket

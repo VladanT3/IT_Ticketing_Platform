@@ -47,3 +47,27 @@ func GetAnalyst(analystID string) Analyst {
 
 	return analyst
 }
+
+func UpdateLoggedInUser(loggedInUser Analyst) Analyst {
+	var db *sql.DB = database.DB_Connection
+	analyst := Analyst{}
+	query := `select * from analyst where analyst_id = $1;`
+
+	err := db.QueryRow(query, loggedInUser.Analyst_ID).Scan(
+		&analyst.Analyst_ID,
+		&analyst.First_Name,
+		&analyst.Last_Name,
+		&analyst.Email,
+		&analyst.Password,
+		&analyst.Phone_Number,
+		&analyst.Team_ID,
+		&analyst.Number_of_Open_Tickets,
+		&analyst.Number_of_Opened_Tickets,
+		&analyst.Number_of_Closed_Tickets,
+	)
+	if err != nil {
+		log.Fatal("error updating logged in user: ", err)
+	}
+
+	return analyst
+}
