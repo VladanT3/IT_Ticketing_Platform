@@ -66,7 +66,7 @@ templ TicketSearch(currentUser models.Analyst, userType string, searchType strin
 						@Tickets(models.GetAllTickets())
 					} else if searchType == "Unassigned Tickets" {
 						@Tickets(models.GetTeamsUnassignedTickets(currentUser.Team_ID.UUID.String()))
-					} else if searchType == "Team Tickets" && models.IsUserManager(currentUser.Analyst_ID.String()) {
+					} else if searchType == "Team Tickets" && userType == "manager" {
 						@Tickets(models.GetTeamTickets(currentUser.Team_ID.UUID.String()))
 					}
 				</div>

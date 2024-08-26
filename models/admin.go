@@ -7,16 +7,16 @@ import (
 	"github.com/google/uuid"
 )
 
-type Manager struct {
-	Manager_ID uuid.UUID
+type Admin struct {
+	Admin_ID uuid.UUID
 }
 
-func IsUserManager(analyst_id string) (bool, error) {
+func IsUserAdmin(analyst_id string) (bool, error) {
 	var db *sql.DB = database.DB_Connection
-	manager := Manager{}
+	admin := Admin{}
 
-	query := `select * from manager where manager_id = $1;`
-	err := db.QueryRow(query, analyst_id).Scan(&manager.Manager_ID)
+	query := `select * from administrator where administrator_id = $1;`
+	err := db.QueryRow(query, analyst_id).Scan(&admin.Admin_ID)
 	if err != nil {
 		if err == sql.ErrNoRows {
 			return false, nil

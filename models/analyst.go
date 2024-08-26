@@ -21,6 +21,48 @@ type Analyst struct {
 	Number_of_Closed_Tickets int
 }
 
+func CheckEmail(email string) (Analyst, bool, error) {
+	var db *sql.DB = database.DB_Connection
+	analyst := Analyst{}
+	query := `select * from analyst where email = $1;`
+
+	err := db.QueryRow(query, email).Scan(
+		&analyst.Analyst_ID,
+		&analyst.First_Name,
+		&analyst.Last_Name,
+		&analyst.Email,
+		&analyst.Password,
+		&analyst.Phone_Number,
+		&analyst.Team_ID,
+		&analyst.Number_of_Open_Tickets,
+		&analyst.Number_of_Opened_Tickets,
+		&analyst.Number_of_Closed_Tickets,
+	)
+	if err != nil {
+		if err == sql.ErrNoRows {
+			return Analyst{}, false, nil
+		}
+		return Analyst{}, false, err
+	}
+
+	return analyst, true, nil
+}
+
+func CheckPassword(password string, email string) (bool, error) {
+	var db *sql.DB = database.DB_Connection
+	var correctPassword bool
+	query := `select (password = crypt($1, password)) as password from analyst where email = $2;`
+	err := db.QueryRow(query, password, email).Scan(&correctPassword)
+	if err != nil {
+		return false, err
+	}
+	if !correctPassword {
+		return false, nil
+	} else {
+		return true, nil
+	}
+}
+
 func GetAnalyst(analystID string) Analyst {
 	var db *sql.DB = database.DB_Connection
 	analyst := Analyst{}
@@ -48,7 +90,7 @@ func GetAnalyst(analystID string) Analyst {
 	return analyst
 }
 
-func UpdateLoggedInUser(loggedInUser Analyst) Analyst {
+func UpdateLoggedInUser(loggedInUser Analyst) (Analyst, error) {
 	var db *sql.DB = database.DB_Connection
 	analyst := Analyst{}
 	query := `select * from analyst where analyst_id = $1;`
@@ -66,8 +108,8 @@ func UpdateLoggedInUser(loggedInUser Analyst) Analyst {
 		&analyst.Number_of_Closed_Tickets,
 	)
 	if err != nil {
-		log.Fatal("error updating logged in user: ", err)
+		return Analyst{}, err
 	}
 
-	return analyst
+	return analyst, nil
 }

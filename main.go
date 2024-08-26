@@ -27,6 +27,7 @@ func main() {
 	router.Post("/ticket", handlers.Make(handlers.TicketRedirection))
 	router.Get("/ticket/new", handlers.Make(handlers.ShowNewTicketForm))
 	router.Get("/ticket/create", handlers.Make(handlers.CreateTicket))
+	//TODO: cleanup
 	router.Get("/ticket/update", handlers.Make(handlers.UpdateTicket))
 	router.Delete("/ticket/delete/{ticketID}", handlers.Make(handlers.DeleteTicket))
 	router.Get("/ticket/{ticketID}", handlers.Make(handlers.ShowTicket))

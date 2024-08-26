@@ -2,7 +2,6 @@ package handlers
 
 import (
 	"database/sql"
-	"log"
 	"net/http"
 	"time"
 
@@ -16,7 +15,7 @@ import (
 
 func TicketRedirection(w http.ResponseWriter, r *http.Request) error {
 	http.SetCookie(w, &http.Cookie{
-		Name:    "ticketType",
+		Name:    "ticket_type",
 		Value:   r.FormValue("ticketType"),
 		Expires: time.Time.Add(time.Now(), time.Second*10),
 	})
@@ -41,17 +40,17 @@ func TicketRedirection(w http.ResponseWriter, r *http.Request) error {
 		Expires: time.Time.Add(time.Now(), time.Second*10),
 	})
 	http.SetCookie(w, &http.Cookie{
-		Name:    "customerContact",
+		Name:    "customer_contact",
 		Value:   r.FormValue("customerContact"),
 		Expires: time.Time.Add(time.Now(), time.Second*10),
 	})
 	http.SetCookie(w, &http.Cookie{
-		Name:    "saveType",
+		Name:    "save_type",
 		Value:   r.FormValue("saveType"),
 		Expires: time.Time.Add(time.Now(), time.Second*10),
 	})
 	http.SetCookie(w, &http.Cookie{
-		Name:    "ticketID",
+		Name:    "ticket_id",
 		Value:   r.FormValue("ticketID"),
 		Expires: time.Time.Add(time.Now(), time.Second*10),
 	})
@@ -69,53 +68,60 @@ func TicketRedirection(w http.ResponseWriter, r *http.Request) error {
 }
 
 func CreateTicket(w http.ResponseWriter, r *http.Request) error {
-	typeCookie, err := r.Cookie("ticketType")
+	type_cookie, err := r.Cookie("ticket_type")
 	if err != nil {
-		log.Fatal("No cookie with name 'ticketType': ", err)
+		errMsg := "Internal server error:\nno cookie with name 'ticket_type': " + err.Error()
+		return Render(w, r, layouts.ErrorMessage(LoggedInUserType, errMsg))
 	}
-	ticketType := typeCookie.Value
+	ticket_type := type_cookie.Value
 
-	categoryCookie, err := r.Cookie("category")
+	category_cookie, err := r.Cookie("category")
 	if err != nil {
-		log.Fatal("No cookie with name 'category': ", err)
+		errMsg := "Internal server error:\nno cookie with name 'category': " + err.Error()
+		return Render(w, r, layouts.ErrorMessage(LoggedInUserType, errMsg))
 	}
-	category := categoryCookie.Value
+	category := category_cookie.Value
 
-	subcategoryCookie, err := r.Cookie("subcategory")
+	subcategory_cookie, err := r.Cookie("subcategory")
 	if err != nil {
-		log.Fatal("No cookie with name 'subcategory': ", err)
+		errMsg := "Internal server error:\nno cookie with name 'subcategory': " + err.Error()
+		return Render(w, r, layouts.ErrorMessage(LoggedInUserType, errMsg))
 	}
-	subcategory := subcategoryCookie.Value
+	subcategory := subcategory_cookie.Value
 
-	titleCookie, err := r.Cookie("title")
+	title_cookie, err := r.Cookie("title")
 	if err != nil {
-		log.Fatal("No cookie with name 'title': ", err)
+		errMsg := "Internal server error:\nno cookie with name 'title': " + err.Error()
+		return Render(w, r, layouts.ErrorMessage(LoggedInUserType, errMsg))
 	}
-	title := titleCookie.Value
+	title := title_cookie.Value
 
-	descCookie, err := r.Cookie("desc")
+	desc_cookie, err := r.Cookie("desc")
 	if err != nil {
-		log.Fatal("No cookie with name 'desc': ", err)
+		errMsg := "Internal server error:\nno cookie with name 'desc': " + err.Error()
+		return Render(w, r, layouts.ErrorMessage(LoggedInUserType, errMsg))
 	}
-	desc := descCookie.Value
+	desc := desc_cookie.Value
 
-	customerContactCookie, err := r.Cookie("customerContact")
+	customer_contact_cookie, err := r.Cookie("customer_contact")
 	if err != nil {
-		log.Fatal("No cookie with name 'customerContact': ", err)
+		errMsg := "Internal server error:\nno cookie with name 'customer_contact': " + err.Error()
+		return Render(w, r, layouts.ErrorMessage(LoggedInUserType, errMsg))
 	}
-	customerContact := customerContactCookie.Value
+	customer_contact := customer_contact_cookie.Value
 
-	saveTypeCookie, err := r.Cookie("saveType")
+	save_type_cookie, err := r.Cookie("save_type")
 	if err != nil {
-		log.Fatal("No cookie with name 'saveType': ", err)
+		errMsg := "Internal server error:\nno cookie with name 'save_type': " + err.Error()
+		return Render(w, r, layouts.ErrorMessage(LoggedInUserType, errMsg))
 	}
-	saveType := saveTypeCookie.Value
+	save_type := save_type_cookie.Value
 
-	teamID := models.GetAnalystsTeam(LoggedInUser.Analyst_ID.String()).Team_ID
+	team_id := models.GetAnalystsTeam(LoggedInUser.Analyst_ID.String()).Team_ID
 
 	if category == "none" || category == "" {
-		newTicket := models.Ticket{
-			Type: ticketType,
+		new_ticket := models.Ticket{
+			Type: ticket_type,
 			Category: uuid.NullUUID{
 				UUID:  uuid.Nil,
 				Valid: false,
@@ -126,34 +132,43 @@ func CreateTicket(w http.ResponseWriter, r *http.Request) error {
 			},
 			Title:            title,
 			Description:      desc,
-			Customer_Contact: customerContact,
+			Customer_Contact: customer_contact,
 		}
 
-		return Render(w, r, tickets.TicketForm(models.Ticket{}, LoggedInUser, LoggedInUserType, "create", "Please select a valid category!", "Please select a valid subcategory!", newTicket))
+		return Render(w, r, tickets.TicketForm(models.Ticket{}, LoggedInUser, LoggedInUserType, "create", "Please select a valid category!", "Please select a valid subcategory!", new_ticket))
 	}
 
-	var db *sql.DB = database.DB_Connection
-	query := `insert into ticket values(gen_random_uuid(), default, $1, 'Open', $2, $3, $4, $5, $6, default, default, null, $7, $8, $9, null) returning ticket_id;`
-	newTicketID := ""
-	err = db.QueryRow(query, ticketType, category, subcategory, title, desc, customerContact, teamID, LoggedInUser.Analyst_ID, LoggedInUser.Analyst_ID).Scan(&newTicketID)
+	new_ticket := models.Ticket{
+		Type: ticket_type,
+		Category: uuid.NullUUID{
+			UUID:  uuid.MustParse(category),
+			Valid: true,
+		},
+		Subcategory: uuid.NullUUID{
+			UUID:  uuid.MustParse(subcategory),
+			Valid: true,
+		},
+		Title:            title,
+		Description:      desc,
+		Customer_Contact: customer_contact,
+	}
+
+	new_ticket_id, err := models.CreateTicket(new_ticket, team_id, LoggedInUser.Analyst_ID)
 	if err != nil {
-		errMsg := "error inserting ticket: " + err.Error()
-		http.Error(w, errMsg, http.StatusInternalServerError)
+		errMsg := "Internal server error:\nerror creating ticket: " + err.Error()
+		return Render(w, r, layouts.ErrorMessage(LoggedInUserType, errMsg))
 	}
 
-	query = `update analyst set number_of_open_tickets = number_of_open_tickets + 1, number_of_opened_tickets = number_of_opened_tickets + 1 where analyst_id = $1;`
-	_, err = db.Exec(query, LoggedInUser.Analyst_ID)
+	LoggedInUser, err = models.UpdateLoggedInUser(LoggedInUser)
 	if err != nil {
-		errMsg := "error updating ticket number trackers: " + err.Error()
-		http.Error(w, errMsg, http.StatusInternalServerError)
+		errMsg := "Internal server error:\nerror updating user statistics after creating ticket: " + err.Error()
+		return Render(w, r, layouts.ErrorMessage("", errMsg))
 	}
 
-	LoggedInUser = models.UpdateLoggedInUser(LoggedInUser)
-
-	if saveType == "Save" {
-		http.Redirect(w, r, "/ticket/"+newTicketID, http.StatusSeeOther)
+	if save_type == "Save" {
+		http.Redirect(w, r, "/ticket/"+new_ticket_id, http.StatusSeeOther)
 		return nil
-	} else if saveType == "Save and Exit" {
+	} else if save_type == "Save and Exit" {
 		http.Redirect(w, r, "/profile", http.StatusSeeOther)
 		return nil
 	}
@@ -162,65 +177,65 @@ func CreateTicket(w http.ResponseWriter, r *http.Request) error {
 }
 
 func UpdateTicket(w http.ResponseWriter, r *http.Request) error {
-	typeCookie, err := r.Cookie("ticketType")
+	type_cookie, err := r.Cookie("ticket_type")
 	if err != nil {
-		errMsg := "No cookie with name 'ticketType': " + err.Error()
-		http.Error(w, errMsg, http.StatusInternalServerError)
+		errMsg := "Internal server errpr:\nno cookie with name 'ticket_type': " + err.Error()
+		return Render(w, r, layouts.ErrorMessage(LoggedInUserType, errMsg))
 	}
-	ticketType := typeCookie.Value
+	ticket_type := type_cookie.Value
 
-	categoryCookie, err := r.Cookie("category")
+	category_cookie, err := r.Cookie("category")
 	if err != nil {
-		errMsg := "No cookie with name 'category': " + err.Error()
-		http.Error(w, errMsg, http.StatusInternalServerError)
+		errMsg := "Internal server error: \nno cookie with name 'category': " + err.Error()
+		return Render(w, r, layouts.ErrorMessage(LoggedInUserType, errMsg))
 	}
-	category := categoryCookie.Value
+	category := category_cookie.Value
 
-	subcategoryCookie, err := r.Cookie("subcategory")
+	subcategory_cookie, err := r.Cookie("subcategory")
 	if err != nil {
-		errMsg := "No cookie with name 'subcategory': " + err.Error()
-		http.Error(w, errMsg, http.StatusInternalServerError)
+		errMsg := "Internal server error: \nno cookie with name 'subcategory': " + err.Error()
+		return Render(w, r, layouts.ErrorMessage(LoggedInUserType, errMsg))
 	}
-	subcategory := subcategoryCookie.Value
+	subcategory := subcategory_cookie.Value
 
-	titleCookie, err := r.Cookie("title")
+	title_cookie, err := r.Cookie("title")
 	if err != nil {
-		errMsg := "No cookie with name 'title': " + err.Error()
-		http.Error(w, errMsg, http.StatusInternalServerError)
+		errMsg := "Internal server error:\nno cookie with name 'title': " + err.Error()
+		return Render(w, r, layouts.ErrorMessage(LoggedInUserType, errMsg))
 	}
-	title := titleCookie.Value
+	title := title_cookie.Value
 
-	descCookie, err := r.Cookie("desc")
+	desc_cookie, err := r.Cookie("desc")
 	if err != nil {
-		errMsg := "No cookie with name 'desc': " + err.Error()
-		http.Error(w, errMsg, http.StatusInternalServerError)
+		errMsg := "Internal server error: \nno cookie with name 'desc': " + err.Error()
+		return Render(w, r, layouts.ErrorMessage(LoggedInUserType, errMsg))
 	}
-	desc := descCookie.Value
+	desc := desc_cookie.Value
 
-	customerContactCookie, err := r.Cookie("customerContact")
+	customer_contact_cookie, err := r.Cookie("customer_contact")
 	if err != nil {
-		errMsg := "No cookie with name 'customerContact': " + err.Error()
-		http.Error(w, errMsg, http.StatusInternalServerError)
+		errMsg := "Internal server error: \nno cookie with name 'customer_contact': " + err.Error()
+		return Render(w, r, layouts.ErrorMessage(LoggedInUserType, errMsg))
 	}
-	customerContact := customerContactCookie.Value
+	customer_contact := customer_contact_cookie.Value
 
-	saveTypeCookie, err := r.Cookie("saveType")
+	save_type_cookie, err := r.Cookie("save_type")
 	if err != nil {
-		errMsg := "No cookie with name 'saveType': " + err.Error()
-		http.Error(w, errMsg, http.StatusInternalServerError)
+		errMsg := "Internal server error:\nno cookie with name 'save_type': " + err.Error()
+		return Render(w, r, layouts.ErrorMessage(LoggedInUserType, errMsg))
 	}
-	saveType := saveTypeCookie.Value
+	save_type := save_type_cookie.Value
 
-	ticketIDCookie, err := r.Cookie("ticketID")
+	ticket_id_cookie, err := r.Cookie("ticket_id")
 	if err != nil {
-		errMsg := "No cookie with name 'ticketID': " + err.Error()
-		http.Error(w, errMsg, http.StatusInternalServerError)
+		errMsg := "Internal server error:\nno cookie with name 'ticket_id': " + err.Error()
+		return Render(w, r, layouts.ErrorMessage(LoggedInUserType, errMsg))
 	}
-	ticketID := ticketIDCookie.Value
+	ticket_id := ticket_id_cookie.Value
 
 	if category == "none" || category == "" {
 		newTicket := models.Ticket{
-			Type: ticketType,
+			Type: ticket_type,
 			Category: uuid.NullUUID{
 				UUID:  uuid.Nil,
 				Valid: false,
@@ -231,10 +246,10 @@ func UpdateTicket(w http.ResponseWriter, r *http.Request) error {
 			},
 			Title:            title,
 			Description:      desc,
-			Customer_Contact: customerContact,
+			Customer_Contact: customer_contact,
 		}
 
-		return Render(w, r, tickets.TicketForm(models.GetTicket(ticketID), LoggedInUser, LoggedInUserType, "update", "Please select a valid category!", "Please select a valid subcategory!", newTicket))
+		return Render(w, r, tickets.TicketForm(models.GetTicket(ticket_id), LoggedInUser, LoggedInUserType, "update", "Please select a valid category!", "Please select a valid subcategory!", newTicket))
 	}
 
 	var db *sql.DB = database.DB_Connection
@@ -251,16 +266,16 @@ func UpdateTicket(w http.ResponseWriter, r *http.Request) error {
 		returning ticket_id;
 	`
 	newTicketID := ""
-	err = db.QueryRow(query, ticketType, category, subcategory, title, desc, customerContact, ticketID).Scan(&newTicketID)
+	err = db.QueryRow(query, ticket_type, category, subcategory, title, desc, customer_contact, ticket_id).Scan(&newTicketID)
 	if err != nil {
 		errMsg := "error updating ticket: " + err.Error()
 		http.Error(w, errMsg, http.StatusInternalServerError)
 	}
 
-	if saveType == "Save" {
+	if save_type == "Save" {
 		http.Redirect(w, r, "/ticket/"+newTicketID, http.StatusSeeOther)
 		return nil
-	} else if saveType == "Save and Exit" {
+	} else if save_type == "Save and Exit" {
 		http.Redirect(w, r, "/profile", http.StatusSeeOther)
 		return nil
 	}

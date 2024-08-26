@@ -71,6 +71,34 @@ func GetAnalystsTickets(analystID string) []Ticket {
 	return tickets
 }
 
+func CreateTicket(ticket Ticket, team_id uuid.UUID, analyst_id uuid.UUID) (string, error) {
+	var db *sql.DB = database.DB_Connection
+	query := `insert into ticket values(gen_random_uuid(), default, $1, 'Open', $2, $3, $4, $5, $6, default, default, null, $7, $8, $9, null) returning ticket_id;`
+	new_ticket_id := ""
+	err := db.QueryRow(query,
+		ticket.Type,
+		ticket.Category,
+		ticket.Subcategory,
+		ticket.Title,
+		ticket.Description,
+		ticket.Customer_Contact,
+		team_id,
+		analyst_id,
+		analyst_id,
+	).Scan(&new_ticket_id)
+	if err != nil {
+		return "", err
+	}
+
+	query = `update analyst set number_of_open_tickets = number_of_open_tickets + 1, number_of_opened_tickets = number_of_opened_tickets + 1 where analyst_id = $1;`
+	_, err = db.Exec(query, analyst_id)
+	if err != nil {
+		return "", err
+	}
+
+	return new_ticket_id, nil
+}
+
 func GetTicket(ticketID string) Ticket {
 	var db *sql.DB = database.DB_Connection
 	ticket := Ticket{}
