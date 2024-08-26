@@ -33,7 +33,6 @@ func main() {
 	router.Put("/ticket/close/{ticketID}", handlers.Make(handlers.CloseTicket))
 	router.Get("/ticket/{ticketID}/reopen/form", handlers.Make(handlers.ShowTicketReopenForm))
 	router.Post("/ticket/{ticketID}/reopen", handlers.Make(handlers.ReopenTicket))
-	//TODO: implement this
 	router.Get("/ticket/{ticketID}/reopen/history", handlers.Make(handlers.ShowTicketReopenHistory))
 
 	router.Get("/tickets/search", handlers.Make(handlers.ShowAllTicketSearch))

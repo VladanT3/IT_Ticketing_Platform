@@ -356,5 +356,5 @@ func ShowTicketReopenHistory(w http.ResponseWriter, r *http.Request) error {
 
 	reopens := models.GetTicketReopens(ticket_id)
 
-	return Render(w, r, tickets.ReopenHistory(LoggedInUserType, reopens))
+	return Render(w, r, tickets.ReopenHistory(LoggedInUserType, reopens, ticket_id))
 }

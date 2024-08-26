@@ -397,7 +397,7 @@ func TicketExists(ticketID string) bool {
 func CloseTicket(ticket_id string, analyst_id string) Ticket {
 	var db *sql.DB = database.DB_Connection
 	ticket := Ticket{}
-	query := `update ticket set status = 'Closed', closed_date = current_timestamp, closed_by = $1 where ticket_id = $2 returning *;`
+	query := `update ticket set status = 'Closed', closed_date = current_timestamp, closed_by = $1, updated_at = current_timestamp where ticket_id = $2 returning *;`
 
 	err := db.QueryRow(query, analyst_id, ticket_id).Scan(
 		&ticket.Ticket_ID,
