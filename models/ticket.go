@@ -99,7 +99,7 @@ func CreateTicket(ticket Ticket, team_id uuid.UUID, analyst_id uuid.UUID) (strin
 	return new_ticket_id, nil
 }
 
-func GetTicket(ticketID string) Ticket {
+func GetTicket(ticketID string) (Ticket, error) {
 	var db *sql.DB = database.DB_Connection
 	ticket := Ticket{}
 
@@ -124,12 +124,35 @@ func GetTicket(ticketID string) Ticket {
 	)
 	if err != nil {
 		if err == sql.ErrNoRows {
-			return Ticket{}
+			return Ticket{}, nil
 		}
-		log.Fatal("error getting ticket: ", err)
+		return Ticket{}, err
 	}
 
-	return ticket
+	return ticket, nil
+}
+
+func UpdateTicket(ticket Ticket) (string, error) {
+	var db *sql.DB = database.DB_Connection
+	query := `
+		update ticket set
+		type = $1,
+		category_id = $2,
+		subcategory_id = $3,
+		title = $4,
+		description = $5,
+		customer_contact = $6,
+		updated_at = current_timestamp
+		where ticket_id = $7
+		returning ticket_id;
+	`
+	new_ticket_id := ""
+	err := db.QueryRow(query, ticket.Type, ticket.Category, ticket.Subcategory, ticket.Title, ticket.Description, ticket.Customer_Contact, ticket.Ticket_ID).Scan(&new_ticket_id)
+	if err != nil {
+		return "", err
+	}
+
+	return new_ticket_id, nil
 }
 
 func FilterTickets(search string, customer string, ticketType string, status string, category string, subcategory string, searchType string, teamID string) []Ticket {
@@ -359,7 +382,7 @@ func GetTeamTickets(teamID string) []Ticket {
 	return tickets
 }
 
-func DeleteTicket(ticketID string) {
+func DeleteTicket(ticketID string) error {
 	var db *sql.DB = database.DB_Connection
 	query := `delete from ticket where ticket_id = $1 returning assigned_analyst, opened_by, status;`
 	var assigned_analyst uuid.UUID
@@ -368,7 +391,7 @@ func DeleteTicket(ticketID string) {
 
 	err := db.QueryRow(query, ticketID).Scan(&assigned_analyst, &opened_by, &ticket_status)
 	if err != nil {
-		log.Fatal("error deleting ticket: ", err)
+		return err
 	}
 
 	if assigned_analyst == opened_by {
@@ -376,13 +399,13 @@ func DeleteTicket(ticketID string) {
 			query = `update analyst set number_of_open_tickets = number_of_open_tickets - 1, number_of_opened_tickets = number_of_opened_tickets - 1 where analyst_id = $1;`
 			_, err = db.Exec(query, assigned_analyst)
 			if err != nil {
-				log.Fatal("error decrementing open and opened ticket values: ", err)
+				return err
 			}
 		} else {
 			query = `update analyst set number_of_closed_tickets = number_of_closed_tickets - 1, number_of_opened_tickets = number_of_opened_tickets - 1 where analyst_id = $1;`
 			_, err = db.Exec(query, assigned_analyst)
 			if err != nil {
-				log.Fatal("error decrementing closed and opened ticket values: ", err)
+				return err
 			}
 		}
 	} else {
@@ -390,36 +413,38 @@ func DeleteTicket(ticketID string) {
 			query = `update analyst set number_of_open_tickets = number_of_open_tickets - 1 where analyst_id = $1;`
 			_, err = db.Exec(query, assigned_analyst)
 			if err != nil {
-				log.Fatal("error decrementing open ticket value: ", err)
+				return err
 			}
 		} else {
 			query = `update analyst set number_of_closed_tickets = number_of_closed_tickets - 1 where analyst_id = $1;`
 			_, err = db.Exec(query, assigned_analyst)
 			if err != nil {
-				log.Fatal("error decrementing closed ticket value: ", err)
+				return err
 			}
 		}
 		query = `update analyst set number_of_opened_tickets = number_of_opened_tickets - 1 where analyst_id = $1;`
 		_, err = db.Exec(query, opened_by)
 		if err != nil {
-			log.Fatal("error decrementing opened ticket value: ", err)
+			return err
 		}
 	}
+
+	return nil
 }
 
-func TicketExists(ticketID string) bool {
+func TicketExists(ticketID string) (bool, error) {
 	var db *sql.DB = database.DB_Connection
 	query := `select ticket_id from ticket where ticket_id = $1;`
 	var returnedTicketID uuid.UUID
 	err := db.QueryRow(query, ticketID).Scan(&returnedTicketID)
 	if err != nil {
 		if err == sql.ErrNoRows {
-			return false
+			return false, nil
 		}
-		log.Fatal("error checking if ticket exists: ", err)
+		return false, err
 	}
 
-	return true
+	return true, nil
 }
 
 func CloseTicket(ticket_id string, analyst_id string) Ticket {
@@ -467,6 +492,7 @@ func ReopenTicket(ticket_id string, reason string, analyst_id string) {
 		log.Fatal("error reopening ticket: ", err)
 	}
 
+	//Handle error
 	old_ticket := GetTicket(ticket_id)
 
 	query = `update ticket set status = 'Open', updated_at = current_timestamp, closed_date = null, closed_by = null where ticket_id = $1;`
