@@ -2,7 +2,7 @@ package models
 
 import (
 	"database/sql"
-	"log"
+	"log/slog"
 	"strings"
 
 	"github.com/VladanT3/IT_Ticketing_Platform/internal/database"
@@ -15,46 +15,6 @@ type Subcategory struct {
 	Subcategory_Name string
 }
 
-func GetSubcategoryName(subcategory_id uuid.UUID) string {
-	var db *sql.DB = database.DB_Connection
-	var subcategory_name string
-
-	query := `select subcategory_name from subcategory where subcategory_id = $1;`
-	err := db.QueryRow(query, subcategory_id).Scan(&subcategory_name)
-	if err != nil {
-		if err == sql.ErrNoRows {
-			return ""
-		}
-		log.Fatal("error getting subcategory name: ", err)
-	}
-
-	return subcategory_name
-}
-
-func GetAllSubcategories() []Subcategory {
-	var db *sql.DB = database.DB_Connection
-	var subcategories []Subcategory
-
-	query := `select * from subcategory;`
-	rows, err := db.Query(query)
-	if err != nil {
-		log.Fatal("error getting subcategories: ", err)
-	}
-	defer rows.Close()
-
-	subcategory := Subcategory{}
-	for rows.Next() {
-		err = rows.Scan(&subcategory.Subcategory_ID, &subcategory.Category_ID, &subcategory.Subcategory_Name)
-		if err != nil {
-			log.Fatal("error scanning subcategory: ", err)
-		}
-
-		subcategories = append(subcategories, subcategory)
-	}
-
-	return subcategories
-}
-
 func GetSubcategories(category_id string) []Subcategory {
 	var db *sql.DB = database.DB_Connection
 	var subcategories []Subcategory
@@ -62,7 +22,8 @@ func GetSubcategories(category_id string) []Subcategory {
 	query := `select * from subcategory where category_id = $1 order by lower(subcategory_name);`
 	rows, err := db.Query(query, category_id)
 	if err != nil {
-		log.Fatal("error getting categories subcategories: ", err)
+		slog.Error("error getting a categories subcategories", "error message", err)
+		return []Subcategory{}
 	}
 	defer rows.Close()
 
@@ -70,7 +31,8 @@ func GetSubcategories(category_id string) []Subcategory {
 	for rows.Next() {
 		err = rows.Scan(&subcategory.Subcategory_ID, &subcategory.Category_ID, &subcategory.Subcategory_Name)
 		if err != nil {
-			log.Fatal("error scanning categories subcategories: ", err)
+			slog.Error("error scanning a categories subcategories", "error message", err)
+			return []Subcategory{}
 		}
 
 		subcategories = append(subcategories, subcategory)
@@ -79,7 +41,7 @@ func GetSubcategories(category_id string) []Subcategory {
 	return subcategories
 }
 
-func SubcategorySearchByName(search_term string, categoryID string) []Subcategory {
+func SubcategorySearchByName(search_term string, categoryID string) ([]Subcategory, error) {
 	var db *sql.DB = database.DB_Connection
 	var subcategories []Subcategory
 	subcategory := Subcategory{}
@@ -90,53 +52,59 @@ func SubcategorySearchByName(search_term string, categoryID string) []Subcategor
 	query := `select * from subcategory where category_id = $1 and lower(subcategory_name) like $2;`
 	rows, err := db.Query(query, categoryID, search_term)
 	if err != nil {
-		log.Fatal("Error getting subcategories by name: ", err)
+		return nil, err
 	}
 	defer rows.Close()
 
 	for rows.Next() {
 		err = rows.Scan(&subcategory.Subcategory_ID, &subcategory.Category_ID, &subcategory.Subcategory_Name)
 		if err != nil {
-			log.Fatal("error scanning subcategories by name: ", err)
+			return nil, err
 		}
 		subcategories = append(subcategories, subcategory)
 	}
 
-	return subcategories
+	return subcategories, nil
 
 }
 
-func CreateSubcategory(name string, category_id string) {
+func CreateSubcategory(name string, category_id string) error {
 	var db *sql.DB = database.DB_Connection
 	query := `insert into subcategory values(gen_random_uuid(), $1, $2);`
 
 	_, err := db.Exec(query, category_id, name)
 	if err != nil {
-		log.Fatal("error inserting subcategory: ", err)
+		return err
 	}
+
+	return nil
 }
 
-func UpdateSubcategory(subcategory_id string, name string, category_id string) {
+func UpdateSubcategory(subcategory_id string, name string, category_id string) error {
 	var db *sql.DB = database.DB_Connection
 	query := `update subcategory set subcategory_name = $1 where subcategory_id = $2 and category_id = $3;`
 
 	_, err := db.Exec(query, name, subcategory_id, category_id)
 	if err != nil {
-		log.Fatal("error updating subcategory: ", err)
+		return err
 	}
+
+	return nil
 }
 
-func DeleteSubcategory(subcategory_id string, category_id string) {
+func DeleteSubcategory(subcategory_id string, category_id string) error {
 	var db *sql.DB = database.DB_Connection
 	query := `delete from subcategory where subcategory_id = $1 and category_id = $2;`
 
 	_, err := db.Exec(query, subcategory_id, category_id)
 	if err != nil {
-		log.Fatal("error deleting subcategory: ", err)
+		return err
 	}
+
+	return nil
 }
 
-func DoesSubcategoryNameExist(name string, category_id string) bool {
+func DoesSubcategoryNameExist(name string, category_id string) (bool, error) {
 	var db *sql.DB = database.DB_Connection
 	var count int
 	name = strings.ToLower(name)
@@ -144,28 +112,11 @@ func DoesSubcategoryNameExist(name string, category_id string) bool {
 
 	err := db.QueryRow(query, category_id, name).Scan(&count)
 	if err != nil {
-		log.Fatal("error checking if subcategory name exists: ", err)
+		return false, err
 	}
 	if count > 0 {
-		return true
+		return true, nil
 	}
 
-	return false
-}
-
-func IsSubcategoryNameNew(subcategory_id string, category_id string, subcategory_name string) bool {
-	var db *sql.DB = database.DB_Connection
-	var count int
-	subcategory_name = strings.ToLower(subcategory_name)
-	query := `select count(*) from subcategory where category_id = $1 and subcategory_id = $2 and lower(subcategory_name) = $3;`
-
-	err := db.QueryRow(query, category_id, subcategory_id, subcategory_name).Scan(&count)
-	if err != nil {
-		log.Fatal("error checking if subcategory name is different: ", err)
-	}
-	if count > 0 {
-		return false
-	}
-
-	return true
+	return false, nil
 }

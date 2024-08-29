@@ -24,7 +24,13 @@ func SearchSubcategories(w http.ResponseWriter, r *http.Request) error {
 	search := r.FormValue("subcategory_search")
 	category := r.FormValue("category")
 
-	searchedSubcategories := models.SubcategorySearchByName(search, category)
+	searchedSubcategories, err := models.SubcategorySearchByName(search, category)
+	if err != nil {
+		err_msg := "Internal server error:\nerror searching subcategories: " + err.Error()
+		w.Header().Add("ErrorMessage", err_msg)
+		w.Header().Add("HX-Redirect", "/error")
+		return Render(w, r, layouts.ErrorMessage(LoggedInUserType, err_msg))
+	}
 
 	return Render(w, r, subcategories.SearchSubcategories(searchedSubcategories))
 }
@@ -63,42 +69,71 @@ func CreateSubcategory(w http.ResponseWriter, r *http.Request) error {
 	subcategory_name := r.FormValue("subcategory_name")
 	category_id := r.FormValue("category_id")
 
-	if models.DoesSubcategoryNameExist(subcategory_name, category_id) {
+	subcategory_name_exists, err := models.DoesSubcategoryNameExist(subcategory_name, category_id)
+	if err != nil {
+		err_msg := "Internal server error:\nerror checking whether subcategory name exists: " + err.Error()
+		w.Header().Add("ErrorMessage", err_msg)
+		w.Header().Add("HX-Redirect", "/error")
+		return Render(w, r, layouts.ErrorMessage(LoggedInUserType, err_msg))
+	}
+
+	if subcategory_name_exists {
 		subcategoryOutput := models.GetSubcategories(category_id)
 		return Render(w, r, subcategories.ModifiableSubcategories(subcategoryOutput, category_id, true))
 	}
-	models.CreateSubcategory(subcategory_name, category_id)
+	err = models.CreateSubcategory(subcategory_name, category_id)
+	if err != nil {
+		err_msg := "Internal server error:\nerror creating subcategory: " + err.Error()
+		w.Header().Add("ErrorMessage", err_msg)
+		w.Header().Add("HX-Redirect", "/error")
+		return Render(w, r, layouts.ErrorMessage(LoggedInUserType, err_msg))
+	}
 
 	subcategoryOutput := models.GetSubcategories(category_id)
 	return Render(w, r, subcategories.ModifiableSubcategories(subcategoryOutput, category_id, false))
 }
 
 func UpdateSubcategory(w http.ResponseWriter, r *http.Request) error {
-	subcategory_id := chi.URLParam(r, "subcategoryID")
+	subcategory_id := chi.URLParam(r, "subcategory_id")
 	subcategory_name := r.FormValue("subcategory_name")
 	category_id := r.FormValue("category_id")
 
-	if models.IsSubcategoryNameNew(subcategory_id, category_id, subcategory_name) {
-		if models.DoesSubcategoryNameExist(subcategory_name, category_id) {
-			subcategoryOutput := models.GetSubcategories(category_id)
-			return Render(w, r, subcategories.ModifiableSubcategories(subcategoryOutput, category_id, true))
-		} else {
-			models.UpdateSubcategory(subcategory_id, subcategory_name, category_id)
+	subcategory_name_exists, err := models.DoesSubcategoryNameExist(subcategory_name, category_id)
+	if err != nil {
+		err_msg := "Internal server error:\nerror checking whether subcategory name exists: " + err.Error()
+		w.Header().Add("ErrorMessage", err_msg)
+		w.Header().Add("HX-Redirect", "/error")
+		return Render(w, r, layouts.ErrorMessage(LoggedInUserType, err_msg))
+	}
 
-			subcategoryOutput := models.GetSubcategories(category_id)
-			return Render(w, r, subcategories.ModifiableSubcategories(subcategoryOutput, category_id, false))
-		}
+	if subcategory_name_exists {
+		subcategoryOutput := models.GetSubcategories(category_id)
+		return Render(w, r, subcategories.ModifiableSubcategories(subcategoryOutput, category_id, true))
 	} else {
+		err = models.UpdateSubcategory(subcategory_id, subcategory_name, category_id)
+		if err != nil {
+			err_msg := "Internal server error:\nerror updating subcategory: " + err.Error()
+			w.Header().Add("ErrorMessage", err_msg)
+			w.Header().Add("HX-Redirect", "/error")
+			return Render(w, r, layouts.ErrorMessage(LoggedInUserType, err_msg))
+		}
+
 		subcategoryOutput := models.GetSubcategories(category_id)
 		return Render(w, r, subcategories.ModifiableSubcategories(subcategoryOutput, category_id, false))
 	}
 }
 
 func DeleteSubcategory(w http.ResponseWriter, r *http.Request) error {
-	subcategory_id := chi.URLParam(r, "subcategoryID")
+	subcategory_id := chi.URLParam(r, "subcategory_id")
 	category_id := r.FormValue("category_id")
 
-	models.DeleteSubcategory(subcategory_id, category_id)
+	err := models.DeleteSubcategory(subcategory_id, category_id)
+	if err != nil {
+		err_msg := "Internal server error:\nerror deleting subcategory: " + err.Error()
+		w.Header().Add("ErrorMessage", err_msg)
+		w.Header().Add("HX-Redirect", "/error")
+		return Render(w, r, layouts.ErrorMessage(LoggedInUserType, err_msg))
+	}
 
 	subcategoryOutput := models.GetSubcategories(category_id)
 	return Render(w, r, subcategories.ModifiableSubcategories(subcategoryOutput, category_id, false))

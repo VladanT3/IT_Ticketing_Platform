@@ -2,7 +2,7 @@ package models
 
 import (
 	"database/sql"
-	"log"
+	"log/slog"
 	"strconv"
 	"strings"
 	"time"
@@ -37,7 +37,8 @@ func GetAnalystsTickets(analystID string) []Ticket {
 	query := `select t.* from ticket t join analyst a on t.assigned_analyst = a.analyst_id where a.analyst_id = $1 order by t.opened_date;`
 	rows, err := db.Query(query, analystID)
 	if err != nil {
-		log.Fatal("error getting tickets: ", err)
+		slog.Error("error getting analysts tickets", "error message", err)
+		return []Ticket{}
 	}
 	defer rows.Close()
 
@@ -62,7 +63,8 @@ func GetAnalystsTickets(analystID string) []Ticket {
 			&ticket.Closed_by,
 		)
 		if err != nil {
-			log.Fatal("error scaning ticket: ", err)
+			slog.Error("error scanning analysts tickets", "error message", err)
+			return []Ticket{}
 		}
 
 		tickets = append(tickets, ticket)
@@ -155,7 +157,7 @@ func UpdateTicket(ticket Ticket) (string, error) {
 	return new_ticket_id, nil
 }
 
-func FilterTickets(search string, customer string, ticketType string, status string, category string, subcategory string, searchType string, teamID string) []Ticket {
+func FilterTickets(search string, customer string, ticketType string, status string, category string, subcategory string, searchType string, teamID string) ([]Ticket, error) {
 	var db *sql.DB = database.DB_Connection
 	tickets := []Ticket{}
 	ticket := Ticket{}
@@ -230,7 +232,7 @@ func FilterTickets(search string, customer string, ticketType string, status str
 
 	rows, err := db.Query(query, queryArgs...)
 	if err != nil {
-		log.Fatal("error getting filtered tickets: ", err)
+		return nil, err
 	}
 	defer rows.Close()
 
@@ -254,12 +256,12 @@ func FilterTickets(search string, customer string, ticketType string, status str
 			&ticket.Closed_by,
 		)
 		if err != nil {
-			log.Fatal("error scanning filtered tickets: ", err)
+			return nil, err
 		}
 		tickets = append(tickets, ticket)
 	}
 
-	return tickets
+	return tickets, nil
 }
 
 func GetAllTickets() []Ticket {
@@ -270,7 +272,8 @@ func GetAllTickets() []Ticket {
 	query := `select * from ticket order by opened_date;`
 	rows, err := db.Query(query)
 	if err != nil {
-		log.Fatal("error getting all tickets: ", err)
+		slog.Error("error getting all tickets", "error message", err)
+		return []Ticket{}
 	}
 	defer rows.Close()
 
@@ -294,7 +297,8 @@ func GetAllTickets() []Ticket {
 			&ticket.Closed_by,
 		)
 		if err != nil {
-			log.Fatal("error scanning all tickets: ", err)
+			slog.Error("error scanning all tickets", "error message", err)
+			return []Ticket{}
 		}
 		tickets = append(tickets, ticket)
 	}
@@ -310,7 +314,8 @@ func GetTeamsUnassignedTickets(teamID string) []Ticket {
 	query := `select * from ticket where assigned_analyst is null and assigned_team = $1 order by opened_date;`
 	rows, err := db.Query(query, teamID)
 	if err != nil {
-		log.Fatal("error getting unassigned tickets: ", err)
+		slog.Error("error getting a team's unassigned tickets", "error message", err)
+		return []Ticket{}
 	}
 	defer rows.Close()
 
@@ -334,7 +339,8 @@ func GetTeamsUnassignedTickets(teamID string) []Ticket {
 			&ticket.Closed_by,
 		)
 		if err != nil {
-			log.Fatal("error scanning unassigned tickets: ", err)
+			slog.Error("error scanning a team's unassigned tickets", "error message", err)
+			return []Ticket{}
 		}
 		tickets = append(tickets, ticket)
 	}
@@ -350,7 +356,8 @@ func GetTeamTickets(teamID string) []Ticket {
 	query := `select * from ticket where assigned_team = $1 order by opened_date;`
 	rows, err := db.Query(query, teamID)
 	if err != nil {
-		log.Fatal("error getting team tickets: ", err)
+		slog.Error("error getting team's tickets", "error message", err)
+		return []Ticket{}
 	}
 	defer rows.Close()
 
@@ -374,7 +381,8 @@ func GetTeamTickets(teamID string) []Ticket {
 			&ticket.Closed_by,
 		)
 		if err != nil {
-			log.Fatal("error scanning team tickets: ", err)
+			slog.Error("error scanning team's tickets", "error message", err)
+			return []Ticket{}
 		}
 		tickets = append(tickets, ticket)
 	}
@@ -447,7 +455,7 @@ func TicketExists(ticketID string) (bool, error) {
 	return true, nil
 }
 
-func CloseTicket(ticket_id string, analyst_id string) Ticket {
+func CloseTicket(ticket_id string, analyst_id string) (Ticket, error) {
 	var db *sql.DB = database.DB_Connection
 	ticket := Ticket{}
 	query := `update ticket set status = 'Closed', closed_date = current_timestamp, closed_by = $1, updated_at = current_timestamp where ticket_id = $2 returning *;`
@@ -471,54 +479,72 @@ func CloseTicket(ticket_id string, analyst_id string) Ticket {
 		&ticket.Closed_by,
 	)
 	if err != nil {
-		log.Fatal("error closing ticket: ", err)
+		return Ticket{}, err
 	}
 
-	query = `update analyst set number_of_open_tickets = number_of_open_tickets - 1, number_of_closed_tickets = number_of_closed_tickets + 1 where analyst_id = $1;`
-	_, err = db.Exec(query, analyst_id)
-	if err != nil {
-		log.Fatal("error decrementing open and closed ticket values: ", err)
+	if ticket.Assigned_Analyst.UUID.String() == analyst_id {
+		query = `update analyst set number_of_open_tickets = number_of_open_tickets - 1, number_of_closed_tickets = number_of_closed_tickets + 1 where analyst_id = $1;`
+		_, err = db.Exec(query, analyst_id)
+		if err != nil {
+			return Ticket{}, err
+		}
+	} else {
+		query = `update analyst set number_of_open_tickets = number_of_open_tickets - 1 where analyst_id = $1;`
+		_, err = db.Exec(query, ticket.Assigned_Analyst.UUID)
+		if err != nil {
+			return Ticket{}, err
+		}
+
+		query = `update analyst set number_of_closed_tickets = number_of_closed_tickets + 1 where analyst_id = $1;`
+		_, err = db.Exec(query, analyst_id)
+		if err != nil {
+			return Ticket{}, err
+		}
 	}
 
-	return ticket
+	return ticket, nil
 }
 
-func ReopenTicket(ticket_id string, reason string, analyst_id string) {
+func ReopenTicket(ticket_id string, reason string, analyst_id string) error {
 	var db *sql.DB = database.DB_Connection
 	query := `insert into ticket_reopen values(gen_random_uuid(), $1, $2, $3, current_timestamp);`
 
 	_, err := db.Exec(query, ticket_id, analyst_id, reason)
 	if err != nil {
-		log.Fatal("error reopening ticket: ", err)
+		return err
 	}
 
-	//Handle error
-	old_ticket := GetTicket(ticket_id)
+	old_ticket, err := GetTicket(ticket_id)
+	if err != nil {
+		return err
+	}
 
 	query = `update ticket set status = 'Open', updated_at = current_timestamp, closed_date = null, closed_by = null where ticket_id = $1;`
 	_, err = db.Exec(query, ticket_id)
 	if err != nil {
-		log.Fatal("error updating ticket after reopen: ", err)
+		return err
 	}
 
 	if old_ticket.Assigned_Analyst.UUID == old_ticket.Closed_by.UUID {
 		query = `update analyst set number_of_closed_tickets = number_of_closed_tickets - 1, number_of_open_tickets = number_of_open_tickets + 1 where analyst_id = $1;`
 		_, err = db.Exec(query, old_ticket.Assigned_Analyst.UUID)
 		if err != nil {
-			log.Fatal("error decrementing closed and incrementing open tickets when reopening ticket: ", err)
+			return err
 		}
 
 	} else {
 		query = `update analyst set number_of_closed_tickets = number_of_closed_tickets - 1 where analyst_id = $1;`
 		_, err = db.Exec(query, old_ticket.Closed_by.UUID)
 		if err != nil {
-			log.Fatal("error decrementing closed tickets when reopening ticket: ", err)
+			return err
 		}
 
-		query = `update analyst set number_of_oepn_tickets = number_of_open_tickets + 1 where analyst_id = $1;`
+		query = `update analyst set number_of_open_tickets = number_of_open_tickets + 1 where analyst_id = $1;`
 		_, err = db.Exec(query, old_ticket.Assigned_Analyst.UUID)
 		if err != nil {
-			log.Fatal("error incrementing open tickets when reopening ticket: ", err)
+			return err
 		}
 	}
+
+	return nil
 }

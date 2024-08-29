@@ -2,7 +2,7 @@ package models
 
 import (
 	"database/sql"
-	"log"
+	"log/slog"
 
 	"github.com/VladanT3/IT_Ticketing_Platform/internal/database"
 	"github.com/google/uuid"
@@ -23,7 +23,8 @@ func GetAnalystsTeam(analystID string) Team {
 		if err == sql.ErrNoRows {
 			return Team{}
 		}
-		log.Fatal("error getting analysts team: ", err)
+		slog.Error("error getting analysts team", "error message", err)
+		return Team{}
 	}
 
 	return team
@@ -36,7 +37,8 @@ func GetTeam(teamID string) Team {
 	query := `select * from team where team_id = $1;`
 	err := db.QueryRow(query, teamID).Scan(&team.Team_ID, &team.Team_Name, &team.Manager_ID)
 	if err != nil {
-		log.Fatal("error getting team: ", err)
+		slog.Error("error getting team", "error message", err)
+		return Team{}
 	}
 
 	return team

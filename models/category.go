@@ -2,7 +2,7 @@ package models
 
 import (
 	"database/sql"
-	"log"
+	"log/slog"
 	"strings"
 
 	"github.com/VladanT3/IT_Ticketing_Platform/internal/database"
@@ -14,22 +14,6 @@ type Category struct {
 	Category_Name string
 }
 
-func GetCategoryName(category_id uuid.UUID) string {
-	var db *sql.DB = database.DB_Connection
-	var category_name string
-
-	query := `select category_name from category where category_id = $1;`
-	err := db.QueryRow(query, category_id).Scan(&category_name)
-	if err != nil {
-		if err == sql.ErrNoRows {
-			return ""
-		}
-		log.Fatal("error getting category name: ", err)
-	}
-
-	return category_name
-}
-
 func GetAllCategories() []Category {
 	var db *sql.DB = database.DB_Connection
 	var categories []Category
@@ -37,7 +21,8 @@ func GetAllCategories() []Category {
 	query := `select * from category order by lower(category_name);`
 	rows, err := db.Query(query)
 	if err != nil {
-		log.Fatal("error getting categories: ", err)
+		slog.Error("error getting all categories", "error message", err)
+		return []Category{}
 	}
 	defer rows.Close()
 
@@ -45,7 +30,8 @@ func GetAllCategories() []Category {
 	for rows.Next() {
 		err = rows.Scan(&category.Category_ID, &category.Category_Name)
 		if err != nil {
-			log.Fatal("error scanning category: ", err)
+			slog.Error("error scanning all categories", "error message", err)
+			return []Category{}
 		}
 
 		categories = append(categories, category)
@@ -54,7 +40,7 @@ func GetAllCategories() []Category {
 	return categories
 }
 
-func CategorySearchByName(search_term string) []Category {
+func CategorySearchByName(search_term string) ([]Category, error) {
 	var db *sql.DB = database.DB_Connection
 	var categories []Category
 	category := Category{}
@@ -65,52 +51,58 @@ func CategorySearchByName(search_term string) []Category {
 	query := `select * from category where lower(category_name) like $1 order by lower(category_name);`
 	rows, err := db.Query(query, search_term)
 	if err != nil {
-		log.Fatal("Error getting categories by name: ", err)
+		return nil, err
 	}
 	defer rows.Close()
 
 	for rows.Next() {
 		err = rows.Scan(&category.Category_ID, &category.Category_Name)
 		if err != nil {
-			log.Fatal("error scanning categories by name: ", err)
+			return nil, err
 		}
 		categories = append(categories, category)
 	}
 
-	return categories
+	return categories, nil
 }
 
-func CreateCategory(name string) {
+func CreateCategory(name string) error {
 	var db *sql.DB = database.DB_Connection
 	query := `insert into category values(gen_random_uuid(), $1);`
 
 	_, err := db.Exec(query, name)
 	if err != nil {
-		log.Fatal("error inserting category: ", err)
+		return err
 	}
+
+	return nil
 }
 
-func UpdateCategory(id string, name string) {
+func UpdateCategory(id string, name string) error {
 	var db *sql.DB = database.DB_Connection
 	query := `update category set category_name = $1 where category_id = $2;`
 
 	_, err := db.Exec(query, name, id)
 	if err != nil {
-		log.Fatal("error updating category: ", err)
+		return err
 	}
+
+	return nil
 }
 
-func DeleteCategory(id string) {
+func DeleteCategory(id string) error {
 	var db *sql.DB = database.DB_Connection
 	query := `delete from category where category_id = $1`
 
 	_, err := db.Exec(query, id)
 	if err != nil {
-		log.Fatal("error deleting category: ", err)
+		return err
 	}
+
+	return nil
 }
 
-func DoesCategoryNameExist(name string) bool {
+func DoesCategoryNameExist(name string) (bool, error) {
 	var db *sql.DB = database.DB_Connection
 	var count int
 	name = strings.ToLower(name)
@@ -118,28 +110,11 @@ func DoesCategoryNameExist(name string) bool {
 
 	err := db.QueryRow(query, name).Scan(&count)
 	if err != nil {
-		log.Fatal("error checking if category name exists: ", err)
+		return false, err
 	}
 	if count > 0 {
-		return true
+		return true, nil
 	}
 
-	return false
-}
-
-func IsCategoryNameNew(id string, name string) bool {
-	var db *sql.DB = database.DB_Connection
-	var count int
-	name = strings.ToLower(name)
-	query := `select count(*) from category where category_id = $1 and lower(category_name) = $2;`
-
-	err := db.QueryRow(query, id, name).Scan(&count)
-	if err != nil {
-		log.Fatal("error checking if category name is different: ", err)
-	}
-	if count > 0 {
-		return false
-	}
-
-	return true
+	return false, nil
 }

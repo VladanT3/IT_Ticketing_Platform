@@ -2,7 +2,6 @@ package models
 
 import (
 	"database/sql"
-	"log"
 	"time"
 
 	"github.com/VladanT3/IT_Ticketing_Platform/internal/database"
@@ -17,7 +16,7 @@ type TicketReopen struct {
 	Reopened_Date time.Time
 }
 
-func GetTicketReopens(ticket_id string) []TicketReopen {
+func GetTicketReopens(ticket_id string) ([]TicketReopen, error) {
 	var db *sql.DB = database.DB_Connection
 	query := `select * from ticket_reopen where ticket_id = $1 order by reopened_date desc;`
 	reopens := []TicketReopen{}
@@ -25,7 +24,7 @@ func GetTicketReopens(ticket_id string) []TicketReopen {
 
 	rows, err := db.Query(query, ticket_id)
 	if err != nil {
-		log.Fatal("error getting ticket reopens: ", err)
+		return nil, err
 	}
 	defer rows.Close()
 
@@ -38,11 +37,10 @@ func GetTicketReopens(ticket_id string) []TicketReopen {
 			&reopen.Reopened_Date,
 		)
 		if err != nil {
-			log.Fatal("error scanning ticket reopens: ", err)
+			return nil, err
 		}
-
 		reopens = append(reopens, reopen)
 	}
 
-	return reopens
+	return reopens, nil
 }

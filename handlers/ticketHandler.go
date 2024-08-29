@@ -11,10 +11,34 @@ import (
 	"github.com/google/uuid"
 )
 
+func ShowNewTicketForm(w http.ResponseWriter, r *http.Request) error {
+	return Render(w, r, tickets.TicketForm(models.Ticket{}, LoggedInUser, LoggedInUserType, "create", "", "", models.Ticket{}))
+}
+
+func ShowTicket(w http.ResponseWriter, r *http.Request) error {
+	ticket_id := chi.URLParam(r, "ticket_id")
+	exists, err := models.TicketExists(ticket_id)
+	if err != nil {
+		err_msg := "Internal server error:\nerror checking if ticket exists: " + err.Error()
+		return Render(w, r, layouts.ErrorMessage(LoggedInUserType, err_msg))
+	}
+
+	if exists {
+		ticket_to_show, err := models.GetTicket(ticket_id)
+		if err != nil {
+			err_msg := "Internal server error:\nerror getting ticket to show: " + err.Error()
+			return Render(w, r, layouts.ErrorMessage(LoggedInUserType, err_msg))
+		}
+		return Render(w, r, tickets.TicketForm(ticket_to_show, LoggedInUser, LoggedInUserType, "update", "", "", models.Ticket{}))
+	} else {
+		return Render(w, r, layouts.ErrorMessage(LoggedInUserType, "No ticket found: ticket doesn't exist or it was removed!"))
+	}
+}
+
 func TicketRedirection(w http.ResponseWriter, r *http.Request) error {
 	http.SetCookie(w, &http.Cookie{
 		Name:    "ticket_type",
-		Value:   r.FormValue("ticketType"),
+		Value:   r.FormValue("ticket_type"),
 		Expires: time.Time.Add(time.Now(), time.Second*10),
 	})
 	http.SetCookie(w, &http.Cookie{
@@ -39,17 +63,17 @@ func TicketRedirection(w http.ResponseWriter, r *http.Request) error {
 	})
 	http.SetCookie(w, &http.Cookie{
 		Name:    "customer_contact",
-		Value:   r.FormValue("customerContact"),
+		Value:   r.FormValue("customer_contact"),
 		Expires: time.Time.Add(time.Now(), time.Second*10),
 	})
 	http.SetCookie(w, &http.Cookie{
 		Name:    "save_type",
-		Value:   r.FormValue("saveType"),
+		Value:   r.FormValue("save_type"),
 		Expires: time.Time.Add(time.Now(), time.Second*10),
 	})
 	http.SetCookie(w, &http.Cookie{
 		Name:    "ticket_id",
-		Value:   r.FormValue("ticketID"),
+		Value:   r.FormValue("ticket_id"),
 		Expires: time.Time.Add(time.Now(), time.Second*10),
 	})
 
@@ -289,46 +313,25 @@ func UpdateTicket(w http.ResponseWriter, r *http.Request) error {
 }
 
 func DeleteTicket(w http.ResponseWriter, r *http.Request) error {
-	ticketID := chi.URLParam(r, "ticketID")
+	ticket_id := chi.URLParam(r, "ticket_id")
 
-	err := models.DeleteTicket(ticketID)
+	err := models.DeleteTicket(ticket_id)
 	if err != nil {
 		err_msg := "Internal server error:\nerror deleting ticket: " + err.Error()
+		w.Header().Add("ErrorMessage", err_msg)
+		w.Header().Add("HX-Redirect", "/error")
 		return Render(w, r, layouts.ErrorMessage(LoggedInUserType, err_msg))
 	}
 
-	LoggedInUser, err := models.UpdateLoggedInUser(LoggedInUser)
+	LoggedInUser, err = models.UpdateLoggedInUser(LoggedInUser)
 	if err != nil {
 		err_msg := "Internal server error:\nerror updating user statistics after deleting ticket: " + err.Error()
+		w.Header().Add("ErrorMessage", err_msg)
+		w.Header().Add("HX-Redirect", "/error")
 		return Render(w, r, layouts.ErrorMessage(LoggedInUserType, err_msg))
 	}
-	LoggedInUser = LoggedInUser
 
 	return Render(w, r, tickets.DeletedTicket())
-}
-
-func ShowNewTicketForm(w http.ResponseWriter, r *http.Request) error {
-	return Render(w, r, tickets.TicketForm(models.Ticket{}, LoggedInUser, LoggedInUserType, "create", "", "", models.Ticket{}))
-}
-
-func ShowTicket(w http.ResponseWriter, r *http.Request) error {
-	ticket_id := chi.URLParam(r, "ticketID")
-	exists, err := models.TicketExists(ticket_id)
-	if err != nil {
-		err_msg := "Internal server error:\nerror checking if ticket exists: " + err.Error()
-		return Render(w, r, layouts.ErrorMessage(LoggedInUserType, err_msg))
-	}
-
-	if exists {
-		ticket_to_show, err := models.GetTicket(ticket_id)
-		if err != nil {
-			err_msg := "Internal server error:\nerror getting ticket to show: " + err.Error()
-			return Render(w, r, layouts.ErrorMessage(LoggedInUserType, err_msg))
-		}
-		return Render(w, r, tickets.TicketForm(ticket_to_show, LoggedInUser, LoggedInUserType, "update", "", "", models.Ticket{}))
-	} else {
-		return Render(w, r, layouts.ErrorMessage(LoggedInUserType, "No ticket found: ticket doesn't exist or it was removed!"))
-	}
 }
 
 func ShowAllTicketSearch(w http.ResponseWriter, r *http.Request) error {
@@ -354,20 +357,35 @@ func FilterTickets(w http.ResponseWriter, r *http.Request) error {
 	status := r.FormValue("status")
 	category := r.FormValue("category")
 	subcategory := r.FormValue("subcategory")
-	searchType := r.FormValue("searchType")
+	searchType := r.FormValue("search_type")
 
-	fileteredTickets := models.FilterTickets(search, customer, ticketType, status, category, subcategory, searchType, LoggedInUser.Team_ID.UUID.String())
+	fileteredTickets, err := models.FilterTickets(search, customer, ticketType, status, category, subcategory, searchType, LoggedInUser.Team_ID.UUID.String())
+	if err != nil {
+		err_msg := "Internal server error:\nerror filtering tickets: " + err.Error()
+		w.Header().Add("ErrorMessage", err_msg)
+		w.Header().Add("HX-Redirect", "/error")
+		return Render(w, r, layouts.ErrorMessage(LoggedInUserType, err_msg))
+	}
 
 	return Render(w, r, tickets.Tickets(fileteredTickets))
 }
 
 func CloseTicket(w http.ResponseWriter, r *http.Request) error {
-	ticket_id := chi.URLParam(r, "ticketID")
+	ticket_id := chi.URLParam(r, "ticket_id")
 
-	ticket_to_show := models.CloseTicket(ticket_id, LoggedInUser.Analyst_ID.String())
-	LoggedInUser, err := models.UpdateLoggedInUser(LoggedInUser)
+	ticket_to_show, err := models.CloseTicket(ticket_id, LoggedInUser.Analyst_ID.String())
+	if err != nil {
+		err_msg := "Internal server error:\nerror closing ticket: " + err.Error()
+		w.Header().Add("ErrorMessage", err_msg)
+		w.Header().Add("HX-Redirect", "/error")
+		return Render(w, r, layouts.ErrorMessage(LoggedInUserType, err_msg))
+	}
+
+	LoggedInUser, err = models.UpdateLoggedInUser(LoggedInUser)
 	if err != nil {
 		err_msg := "Internal server error:\nerror updating user statistics after closing ticket: " + err.Error()
+		w.Header().Add("ErrorMessage", err_msg)
+		w.Header().Add("HX-Redirect", "/error")
 		return Render(w, r, layouts.ErrorMessage(LoggedInUserType, err_msg))
 	}
 
@@ -376,7 +394,7 @@ func CloseTicket(w http.ResponseWriter, r *http.Request) error {
 }
 
 func ShowTicketReopenForm(w http.ResponseWriter, r *http.Request) error {
-	ticket_id := chi.URLParam(r, "ticketID")
+	ticket_id := chi.URLParam(r, "ticket_id")
 
 	ticket, err := models.GetTicket(ticket_id)
 	if err != nil {
@@ -389,10 +407,15 @@ func ShowTicketReopenForm(w http.ResponseWriter, r *http.Request) error {
 
 func ReopenTicket(w http.ResponseWriter, r *http.Request) error {
 	reason := r.FormValue("reason")
-	ticket_id := chi.URLParam(r, "ticketID")
+	ticket_id := chi.URLParam(r, "ticket_id")
 
-	models.ReopenTicket(ticket_id, reason, LoggedInUser.Analyst_ID.String())
-	LoggedInUser, err := models.UpdateLoggedInUser(LoggedInUser)
+	err := models.ReopenTicket(ticket_id, reason, LoggedInUser.Analyst_ID.String())
+	if err != nil {
+		err_msg := "Internal server error:\nerror reopening ticket: " + err.Error()
+		return Render(w, r, layouts.ErrorMessage(LoggedInUserType, err_msg))
+	}
+
+	LoggedInUser, err = models.UpdateLoggedInUser(LoggedInUser)
 	if err != nil {
 		err_msg := "Internal server error:\nerror updating user statistics after reopening ticket: " + err.Error()
 		return Render(w, r, layouts.ErrorMessage(LoggedInUserType, err_msg))
@@ -400,7 +423,7 @@ func ReopenTicket(w http.ResponseWriter, r *http.Request) error {
 
 	ticket, err := models.GetTicket(ticket_id)
 	if err != nil {
-		err_msg := "Internal server error:\nerror getting ticket to reopen: " + err.Error()
+		err_msg := "Internal server error:\nerror getting ticket after reopening: " + err.Error()
 		return Render(w, r, layouts.ErrorMessage(LoggedInUserType, err_msg))
 	}
 
@@ -408,9 +431,13 @@ func ReopenTicket(w http.ResponseWriter, r *http.Request) error {
 }
 
 func ShowTicketReopenHistory(w http.ResponseWriter, r *http.Request) error {
-	ticket_id := chi.URLParam(r, "ticketID")
+	ticket_id := chi.URLParam(r, "ticket_id")
 
-	reopens := models.GetTicketReopens(ticket_id)
+	reopens, err := models.GetTicketReopens(ticket_id)
+	if err != nil {
+		err_msg := "Internal server error:\nerror getting all ticket reopens: " + err.Error()
+		return Render(w, r, layouts.ErrorMessage(LoggedInUserType, err_msg))
+	}
 
 	return Render(w, r, tickets.ReopenHistory(LoggedInUserType, reopens, ticket_id))
 }

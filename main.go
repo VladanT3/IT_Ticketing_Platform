@@ -20,6 +20,7 @@ func main() {
 
 	router.Handle("/*", http.StripPrefix("/public/", http.FileServer(http.Dir("./public"))))
 	router.Get("/", handlers.Make(handlers.Index))
+	//TODO: at the end add authorization for all get methods so they cant be accessed through the url without logging in
 	router.Post("/login", handlers.Make(handlers.Login))
 	router.Post("/logout", handlers.Make(handlers.Logout))
 	router.Get("/profile", handlers.Make(handlers.Profile))
@@ -27,14 +28,13 @@ func main() {
 	router.Post("/ticket", handlers.Make(handlers.TicketRedirection))
 	router.Get("/ticket/new", handlers.Make(handlers.ShowNewTicketForm))
 	router.Get("/ticket/create", handlers.Make(handlers.CreateTicket))
-	//TODO: cleanup
 	router.Get("/ticket/update", handlers.Make(handlers.UpdateTicket))
-	router.Delete("/ticket/delete/{ticketID}", handlers.Make(handlers.DeleteTicket))
-	router.Get("/ticket/{ticketID}", handlers.Make(handlers.ShowTicket))
-	router.Put("/ticket/close/{ticketID}", handlers.Make(handlers.CloseTicket))
-	router.Get("/ticket/{ticketID}/reopen/form", handlers.Make(handlers.ShowTicketReopenForm))
-	router.Post("/ticket/{ticketID}/reopen", handlers.Make(handlers.ReopenTicket))
-	router.Get("/ticket/{ticketID}/reopen/history", handlers.Make(handlers.ShowTicketReopenHistory))
+	router.Delete("/ticket/delete/{ticket_id}", handlers.Make(handlers.DeleteTicket))
+	router.Get("/ticket/{ticket_id}", handlers.Make(handlers.ShowTicket))
+	router.Put("/ticket/close/{ticket_id}", handlers.Make(handlers.CloseTicket))
+	router.Get("/ticket/{ticket_id}/reopen/form", handlers.Make(handlers.ShowTicketReopenForm))
+	router.Post("/ticket/{ticket_id}/reopen", handlers.Make(handlers.ReopenTicket))
+	router.Get("/ticket/{ticket_id}/reopen/history", handlers.Make(handlers.ShowTicketReopenHistory))
 
 	router.Get("/tickets/search", handlers.Make(handlers.ShowAllTicketSearch))
 	router.Get("/tickets/team", handlers.Make(handlers.ShowTeamTickets))
@@ -46,8 +46,8 @@ func main() {
 	router.Get("/category/popup", handlers.Make(handlers.ShowCategoryPopup))
 	router.Get("/category/error/name", handlers.Make(handlers.ShowCategoryAlreadyExistsError))
 	router.Post("/category/create", handlers.Make(handlers.CreateCategory))
-	router.Put("/category/update/{categoryID}", handlers.Make(handlers.UpdateCategory))
-	router.Delete("/category/delete/{categoryID}", handlers.Make(handlers.DeleteCategory))
+	router.Put("/category/update/{category_id}", handlers.Make(handlers.UpdateCategory))
+	router.Delete("/category/delete/{category_id}", handlers.Make(handlers.DeleteCategory))
 
 	router.Get("/subcategories/get/select", handlers.Make(handlers.SelectSubcategories))
 	router.Get("/subcategories/get/modifiable", handlers.Make(handlers.ShowModifiableSubcategories))
@@ -55,8 +55,10 @@ func main() {
 	router.Get("/subcategory/popup", handlers.Make(handlers.ShowSubcategoryPopup))
 	router.Get("/subcategory/error/name", handlers.Make(handlers.ShowSubcategoryAlreadyExistsError))
 	router.Post("/subcategory/create", handlers.Make(handlers.CreateSubcategory))
-	router.Put("/subcategory/update/{subcategoryID}", handlers.Make(handlers.UpdateSubcategory))
-	router.Delete("/subcategory/delete/{subcategoryID}", handlers.Make(handlers.DeleteSubcategory))
+	router.Put("/subcategory/update/{subcategory_id}", handlers.Make(handlers.UpdateSubcategory))
+	router.Delete("/subcategory/delete/{subcategory_id}", handlers.Make(handlers.DeleteSubcategory))
+
+	router.Get("/error", handlers.Make(handlers.ShowError))
 
 	port := os.Getenv("PORT")
 	fmt.Println("Server started on: http://localhost" + port)

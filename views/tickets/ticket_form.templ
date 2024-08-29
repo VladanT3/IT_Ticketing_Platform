@@ -12,17 +12,17 @@ templ TicketForm(ticket models.Ticket, currentUser models.Analyst, userType stri
 		<div class="container mx-auto mt-5">
 			<form action="/ticket" method="POST" class="grid grid-cols-5">
 				<input type="hidden" value={ mode } name="mode"/>
-				<input type="hidden" value={ ticket.Ticket_ID.String() } name="ticketID"/>
+				<input type="hidden" value={ ticket.Ticket_ID.String() } name="ticket_id"/>
 				<div class="col-span-1 grid grid-cols-5">
 					<div class="flex flex-col col-span-4">
 						if mode == "create" {
-							<button type="submit" name="saveType" class="uk-button uk-width-1-1 bg-zinc-50 text-zinc-900 border border-zinc-50 hover:bg-zinc-900 hover:text-zinc-50" value="Save">Save</button>
-							<button type="submit" name="saveType" class="uk-button uk-width-1-1 bg-zinc-50 text-zinc-900 border border-zinc-50 hover:bg-zinc-900 hover:text-zinc-50 mt-3" value="Save and Exit">Save and Exit</button>
+							<button type="submit" name="save_type" class="uk-button uk-width-1-1 bg-zinc-50 text-zinc-900 border border-zinc-50 hover:bg-zinc-900 hover:text-zinc-50" value="Save">Save</button>
+							<button type="submit" name="save_type" class="uk-button uk-width-1-1 bg-zinc-50 text-zinc-900 border border-zinc-50 hover:bg-zinc-900 hover:text-zinc-50 mt-3" value="Save and Exit">Save and Exit</button>
 						} else if mode == "update" {
 							if ticket.Assigned_Analyst.UUID != currentUser.Analyst_ID {
 								if currentUser.Analyst_ID == models.GetTeam(ticket.Assigned_Team.UUID.String()).Manager_ID.UUID {
-									<button type="submit" name="saveType" class="uk-button uk-width-1-1 bg-zinc-50 text-zinc-900 border border-zinc-50 hover:bg-zinc-900 hover:text-zinc-50" value="Save">Save</button>
-									<button type="submit" name="saveType" class="uk-button uk-width-1-1 bg-zinc-50 text-zinc-900 border border-zinc-50 hover:bg-zinc-900 hover:text-zinc-50 mt-3" value="Save and Exit">Save and Exit</button>
+									<button type="submit" name="save_type" class="uk-button uk-width-1-1 bg-zinc-50 text-zinc-900 border border-zinc-50 hover:bg-zinc-900 hover:text-zinc-50" value="Save">Save</button>
+									<button type="submit" name="save_type" class="uk-button uk-width-1-1 bg-zinc-50 text-zinc-900 border border-zinc-50 hover:bg-zinc-900 hover:text-zinc-50 mt-3" value="Save and Exit">Save and Exit</button>
 									if ticket.Status == "Open" {
 										<button hx-put={ "/ticket/close/" + ticket.Ticket_ID.String() } type="button" class="uk-button uk-width-1-1 bg-zinc-50 text-zinc-900 border border-zinc-50 hover:bg-zinc-900 hover:text-zinc-50 mt-3">Close Ticket</button>
 									}
@@ -30,8 +30,8 @@ templ TicketForm(ticket models.Ticket, currentUser models.Analyst, userType stri
 									<a href="/tickets/search" class="uk-button uk-width-1-1 bg-zinc-50 text-zinc-900 border border-zinc-50 hover:bg-zinc-900 hover:text-zinc-50">Exit</a>
 								}
 							} else {
-								<button type="submit" name="saveType" class="uk-button uk-width-1-1 bg-zinc-50 text-zinc-900 border border-zinc-50 hover:bg-zinc-900 hover:text-zinc-50" value="Save">Save</button>
-								<button type="submit" name="saveType" class="uk-button uk-width-1-1 bg-zinc-50 text-zinc-900 border border-zinc-50 hover:bg-zinc-900 hover:text-zinc-50 mt-3" value="Save and Exit">Save and Exit</button>
+								<button type="submit" name="save_type" class="uk-button uk-width-1-1 bg-zinc-50 text-zinc-900 border border-zinc-50 hover:bg-zinc-900 hover:text-zinc-50" value="Save">Save</button>
+								<button type="submit" name="save_type" class="uk-button uk-width-1-1 bg-zinc-50 text-zinc-900 border border-zinc-50 hover:bg-zinc-900 hover:text-zinc-50 mt-3" value="Save and Exit">Save and Exit</button>
 								if ticket.Status == "Open" {
 									<button hx-put={ "/ticket/close/" + ticket.Ticket_ID.String() } type="button" class="uk-button uk-width-1-1 bg-zinc-50 text-zinc-900 border border-zinc-50 hover:bg-zinc-900 hover:text-zinc-50 mt-3">Close Ticket</button>
 								}
@@ -87,7 +87,7 @@ templ TicketForm(ticket models.Ticket, currentUser models.Analyst, userType stri
 							<div>
 								<label>Ticket type:</label>
 								if ticket.Status == "Closed" {
-									<select disabled name="ticketType" class="uk-select text-zinc-50">
+									<select disabled name="ticket_type" class="uk-select text-zinc-50">
 										if ticket.Type == "Request" {
 											<option value="Request" selected>Request</option>
 											<option value="Incident">Incident</option>
@@ -98,7 +98,7 @@ templ TicketForm(ticket models.Ticket, currentUser models.Analyst, userType stri
 									</select>
 								} else {
 									if mode == "create" {
-										<select name="ticketType" class="uk-select text-zinc-50">
+										<select name="ticket_type" class="uk-select text-zinc-50">
 											if newTicket.Type == "Request" {
 												<option value="Request" selected>Request</option>
 												<option value="Incident">Incident</option>
@@ -113,7 +113,7 @@ templ TicketForm(ticket models.Ticket, currentUser models.Analyst, userType stri
 									} else if mode == "update" {
 										if ticket.Assigned_Analyst.UUID != currentUser.Analyst_ID {
 											if currentUser.Analyst_ID == models.GetTeam(ticket.Assigned_Team.UUID.String()).Manager_ID.UUID {
-												<select name="ticketType" class="uk-select text-zinc-50">
+												<select name="ticket_type" class="uk-select text-zinc-50">
 													if newTicket.Type == "Request" {
 														<option value="Request" selected>Request</option>
 														<option value="Incident">Incident</option>
@@ -131,7 +131,7 @@ templ TicketForm(ticket models.Ticket, currentUser models.Analyst, userType stri
 													}
 												</select>
 											} else {
-												<select name="ticketType" class="uk-select text-zinc-50" disabled>
+												<select name="ticket_type" class="uk-select text-zinc-50" disabled>
 													if ticket.Type == "Request" {
 														<option value="Request" selected>Request</option>
 														<option value="Incident">Incident</option>
@@ -142,7 +142,7 @@ templ TicketForm(ticket models.Ticket, currentUser models.Analyst, userType stri
 												</select>
 											}
 										} else {
-											<select name="ticketType" class="uk-select text-zinc-50">
+											<select name="ticket_type" class="uk-select text-zinc-50">
 												if newTicket.Type == "Request" {
 													<option value="Request" selected>Request</option>
 													<option value="Incident">Incident</option>
@@ -167,26 +167,26 @@ templ TicketForm(ticket models.Ticket, currentUser models.Analyst, userType stri
 							<div>
 								<label>Customer contact:</label>
 								if ticket.Status == "Closed" {
-									<input disabled name="customerContact" class="uk-input text-zinc-50 text-base" type="text" value={ ticket.Customer_Contact } required/>
+									<input disabled name="customer_contact" class="uk-input text-zinc-50 text-base" type="text" value={ ticket.Customer_Contact } required/>
 								} else {
 									if mode == "create" {
-										<input name="customerContact" class="uk-input text-zinc-50 text-base" type="text" value={ newTicket.Customer_Contact } required/>
+										<input name="customer_contact" class="uk-input text-zinc-50 text-base" type="text" value={ newTicket.Customer_Contact } required/>
 									} else if mode == "update" {
 										if ticket.Assigned_Analyst.UUID != currentUser.Analyst_ID {
 											if currentUser.Analyst_ID == models.GetTeam(ticket.Assigned_Team.UUID.String()).Manager_ID.UUID {
 												if newTicket.Customer_Contact != "" {
-													<input name="customerContact" class="uk-input text-zinc-50 text-base" type="text" value={ newTicket.Customer_Contact } required/>
+													<input name="customer_contact" class="uk-input text-zinc-50 text-base" type="text" value={ newTicket.Customer_Contact } required/>
 												} else {
-													<input name="customerContact" class="uk-input text-zinc-50 text-base" type="text" value={ ticket.Customer_Contact } required/>
+													<input name="customer_contact" class="uk-input text-zinc-50 text-base" type="text" value={ ticket.Customer_Contact } required/>
 												}
 											} else {
-												<input disabled name="customerContact" class="uk-input text-zinc-50 text-base" type="text" value={ ticket.Customer_Contact } required/>
+												<input disabled name="customer_contact" class="uk-input text-zinc-50 text-base" type="text" value={ ticket.Customer_Contact } required/>
 											}
 										} else {
 											if newTicket.Customer_Contact != "" {
-												<input name="customerContact" class="uk-input text-zinc-50 text-base" type="text" value={ newTicket.Customer_Contact } required/>
+												<input name="customer_contact" class="uk-input text-zinc-50 text-base" type="text" value={ newTicket.Customer_Contact } required/>
 											} else {
-												<input name="customerContact" class="uk-input text-zinc-50 text-base" type="text" value={ ticket.Customer_Contact } required/>
+												<input name="customer_contact" class="uk-input text-zinc-50 text-base" type="text" value={ ticket.Customer_Contact } required/>
 											}
 										}
 									}

@@ -56,14 +56,14 @@ func TicketSearch(currentUser models.Analyst, userType string, searchType string
 			if templ_7745c5c3_Err != nil {
 				return templ_7745c5c3_Err
 			}
-			_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString("</h1><hr></div><div class=\"grid grid-cols-5 mt-3\"><div class=\"col-span-1 grid grid-cols-5\"><form hx-post=\"/tickets/filter\" hx-trigger=\"submit\" hx-swap=\"innerHTML\" hx-target=\"#tickets\" class=\"col-span-4 flex flex-col\"><input type=\"hidden\" name=\"searchType\" value=\"")
+			_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString("</h1><hr></div><div class=\"grid grid-cols-5 mt-3\"><div class=\"col-span-1 grid grid-cols-5\"><form hx-post=\"/tickets/filter\" hx-trigger=\"submit\" hx-swap=\"innerHTML\" hx-target=\"#tickets\" class=\"col-span-4 flex flex-col\"><input type=\"hidden\" name=\"search_type\" value=\"")
 			if templ_7745c5c3_Err != nil {
 				return templ_7745c5c3_Err
 			}
 			var templ_7745c5c3_Var4 string
 			templ_7745c5c3_Var4, templ_7745c5c3_Err = templ.JoinStringErrs(searchType)
 			if templ_7745c5c3_Err != nil {
-				return templ.Error{Err: templ_7745c5c3_Err, FileName: `views/tickets/ticket_search.templ`, Line: 18, Col: 63}
+				return templ.Error{Err: templ_7745c5c3_Err, FileName: `views/tickets/ticket_search.templ`, Line: 18, Col: 64}
 			}
 			_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString(templ.EscapeString(templ_7745c5c3_Var4))
 			if templ_7745c5c3_Err != nil {
@@ -119,7 +119,7 @@ func TicketSearch(currentUser models.Analyst, userType string, searchType string
 				if templ_7745c5c3_Err != nil {
 					return templ_7745c5c3_Err
 				}
-			} else if searchType == "Team Tickets" && models.IsUserManager(currentUser.Analyst_ID.String()) {
+			} else if searchType == "Team Tickets" && userType == "manager" {
 				templ_7745c5c3_Err = Tickets(models.GetTeamTickets(currentUser.Team_ID.UUID.String())).Render(ctx, templ_7745c5c3_Buffer)
 				if templ_7745c5c3_Err != nil {
 					return templ_7745c5c3_Err

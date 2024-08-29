@@ -15,7 +15,7 @@ templ TicketSearch(currentUser models.Analyst, userType string, searchType strin
 			<div class="grid grid-cols-5 mt-3">
 				<div class="col-span-1 grid grid-cols-5">
 					<form hx-post="/tickets/filter" hx-trigger="submit" hx-swap="innerHTML" hx-target="#tickets" class="col-span-4 flex flex-col">
-						<input type="hidden" name="searchType" value={ searchType }/>
+						<input type="hidden" name="search_type" value={ searchType }/>
 						<div class="flex flex-col mt-3">
 							<label>Search:</label>
 							<input type="text" name="search" class="uk-input text-zinc-50 text-base"/>

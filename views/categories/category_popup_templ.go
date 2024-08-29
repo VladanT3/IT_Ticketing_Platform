@@ -27,7 +27,7 @@ func CategoryPopup(operation string, category_id string, category_name string) t
 		}
 		ctx = templ.ClearChildren(ctx)
 		if operation == "create" {
-			_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString("<div id=\"modal\" _=\"on closeModal add .closing then wait for animationend then remove me\"><div class=\"modal-underlay\" _=\"on click trigger closeModal\"></div><div class=\"modal-content bg-zinc-900 border border-zinc-50 rounded-lg p-5 max-w-md w-4/5 mt-24\"><h1 class=\"text-xl\">Add a new Category</h1><form class=\"flex flex-col\" hx-post=\"/category/create\" hx-swap=\"innerHTML\" hx-target=\"#category_list\"><label class=\"mt-3\">Category name:</label> <input type=\"text\" name=\"category_name\" autofocus class=\"uk-input text-base text-zinc-50\"> <button type=\"submit\" class=\"uk-button bg-zinc-50 text-zinc-900 border border-zinc-50 self-center mt-3 hover:bg-zinc-900 hover:text-zinc-50\" _=\"on click trigger closeModal\">Add</button></form></div></div>")
+			_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString("<div id=\"modal\" _=\"on closeModal add .closing then wait for animationend then remove me\"><div class=\"modal-underlay\" _=\"on click trigger closeModal\"></div><div class=\"modal-content bg-zinc-900 border border-zinc-50 rounded-lg p-5 max-w-md w-4/5 mt-24\"><h1 class=\"text-xl\">Add a new Category</h1><form class=\"flex flex-col\" hx-post=\"/category/create\" hx-swap=\"innerHTML\" hx-target=\"#category_list\"><label class=\"mt-3\">Category name:</label> <input required type=\"text\" name=\"category_name\" autofocus class=\"uk-input text-base text-zinc-50\"> <button type=\"submit\" class=\"uk-button bg-zinc-50 text-zinc-900 border border-zinc-50 self-center mt-3 hover:bg-zinc-900 hover:text-zinc-50\" _=\"on click trigger closeModal\">Add</button></form></div></div>")
 			if templ_7745c5c3_Err != nil {
 				return templ_7745c5c3_Err
 			}
@@ -45,14 +45,14 @@ func CategoryPopup(operation string, category_id string, category_name string) t
 			if templ_7745c5c3_Err != nil {
 				return templ_7745c5c3_Err
 			}
-			_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString("\" hx-swap=\"innerHTML\" hx-target=\"#category_list\"><label class=\"mt-3\">Category name:</label> <input type=\"text\" name=\"category_name\" value=\"")
+			_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString("\" hx-swap=\"innerHTML\" hx-target=\"#category_list\"><label class=\"mt-3\">Category name:</label> <input required type=\"text\" name=\"category_name\" value=\"")
 			if templ_7745c5c3_Err != nil {
 				return templ_7745c5c3_Err
 			}
 			var templ_7745c5c3_Var3 string
 			templ_7745c5c3_Var3, templ_7745c5c3_Err = templ.JoinStringErrs(category_name)
 			if templ_7745c5c3_Err != nil {
-				return templ.Error{Err: templ_7745c5c3_Err, FileName: `views/categories/category_popup.templ`, Line: 23, Col: 66}
+				return templ.Error{Err: templ_7745c5c3_Err, FileName: `views/categories/category_popup.templ`, Line: 23, Col: 75}
 			}
 			_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString(templ.EscapeString(templ_7745c5c3_Var3))
 			if templ_7745c5c3_Err != nil {

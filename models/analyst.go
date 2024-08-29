@@ -2,7 +2,7 @@ package models
 
 import (
 	"database/sql"
-	"log"
+	"log/slog"
 
 	"github.com/VladanT3/IT_Ticketing_Platform/internal/database"
 	"github.com/google/uuid"
@@ -84,7 +84,8 @@ func GetAnalyst(analystID string) Analyst {
 		if err == sql.ErrNoRows {
 			return Analyst{}
 		}
-		log.Fatal("error getting analyst: ", err)
+		slog.Error("error getting analyst", "error message", err)
+		return Analyst{}
 	}
 
 	return analyst
