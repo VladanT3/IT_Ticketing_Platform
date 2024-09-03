@@ -1,0 +1,32 @@
+package tickets
+
+import "github.com/VladanT3/IT_Ticketing_Platform/views/layouts"
+import "github.com/VladanT3/IT_Ticketing_Platform/models"
+import "strconv"
+
+templ AssignmentForm(user_type string, ticket models.Ticket) {
+	@layouts.Navbar(user_type) {
+		<div class="container mx-auto mt-5 flex flex-col items-center">
+			<form method="post" action={ "/ticket/" + templ.SafeURL(ticket.Ticket_ID.String()) + "/assign" } class="flex flex-col border border-zinc-50 border-dashed rounded-xl p-5" style="width: 60%">
+				<h1 class="text-2xl">Assign { ticket.Type + "/" + strconv.Itoa(ticket.Ticket_Number) }</h1>
+				<div class="flex flex-row justify-between">
+					<select id="teams" name="team" class="uk-select text-zinc-50" hx-get="/team/analysts" hx-target="#analysts" hx-swap="innerHTML" hx-trigger="change">
+						<option value="none">Select...</option>
+						for _, team := range models.GetAllTeams() {
+							<option value={ team.Team_ID.String() }>{ team.Team_Name }</option>
+						}
+					</select>
+					<select id="analysts" name="analyst" class="uk-select text-zinc-50" hx-get="/analyst/team" hx-target="#teams" hx-swap="innerHTML" hx-trigger="change">
+						<option value="none"></option>
+						for _, analyst := range models.GetAllAnalysts() {
+							<option value={ analyst.Analyst_ID.String() }>{ analyst.First_Name + " " + analyst.Last_Name }</option>
+						}
+					</select>
+				</div>
+				<label class="mt-3">Assignment Message:</label>
+				<textarea name="message" class="uk-textarea font-mono text-zinc-50 text-base" rows="8"></textarea>
+				<button type="submit" class="uk-button border border-zinc-50 text-zinc-50 mt-3 self-center hover:bg-zinc-50 hover:text-zinc-900">Assign</button>
+			</form>
+		</div>
+	}
+}

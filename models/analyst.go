@@ -5,6 +5,7 @@ import (
 	"log/slog"
 
 	"github.com/VladanT3/IT_Ticketing_Platform/internal/database"
+	"github.com/VladanT3/IT_Ticketing_Platform/views/analyst"
 	"github.com/google/uuid"
 )
 
@@ -113,4 +114,78 @@ func UpdateLoggedInUser(loggedInUser Analyst) (Analyst, error) {
 	}
 
 	return analyst, nil
+}
+
+func GetAllAnalysts() []Analyst {
+	var db *sql.DB = database.DB_Connection
+	analysts := []Analyst{}
+
+	query := `select * from analyst;`
+	rows, err := db.Query(query)
+	if err != nil {
+		slog.Error("error getting all analysts", "error message", err)
+		return []Analyst{}
+	}
+	defer rows.Close()
+
+	analyst := Analyst{}
+	for rows.Next() {
+		err = rows.Scan(
+			&analyst.Analyst_ID,
+			&analyst.First_Name,
+			&analyst.Last_Name,
+			&analyst.Email,
+			&analyst.Password,
+			&analyst.Phone_Number,
+			&analyst.Team_ID,
+			&analyst.Number_of_Open_Tickets,
+			&analyst.Number_of_Opened_Tickets,
+			&analyst.Number_of_Closed_Tickets,
+		)
+		if err != nil {
+			slog.Error("error scanning all analysts", "error message", err)
+			return []Analyst{}
+		}
+
+		analysts = append(analysts, analyst)
+	}
+
+	return analysts
+}
+
+func GetTeamsAnalysts(team_id string) []Analyst {
+	var db *sql.DB = database.DB_Connection
+	analysts := []Analyst{}
+
+	query := `select * from analyst where team_id = $1;`
+	rows, err := db.Query(query, team_id)
+	if err != nil {
+		slog.Error("error getting a teams analysts", "error message", err)
+		return []Analyst{}
+	}
+	defer rows.Close()
+
+	analyst := Analyst{}
+	for rows.Next() {
+		err = rows.Scan(
+			&analyst.Analyst_ID,
+			&analyst.First_Name,
+			&analyst.Last_Name,
+			&analyst.Email,
+			&analyst.Password,
+			&analyst.Phone_Number,
+			&analyst.Team_ID,
+			&analyst.Number_of_Open_Tickets,
+			&analyst.Number_of_Opened_Tickets,
+			&analyst.Number_of_Closed_Tickets,
+		)
+		if err != nil {
+			slog.Error("error scanning a teams analysts", "error message", err)
+			return []Analyst{}
+		}
+
+		analysts = append(analysts, analyst)
+	}
+
+	return analysts
 }

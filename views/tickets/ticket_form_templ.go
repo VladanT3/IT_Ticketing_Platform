@@ -15,7 +15,7 @@ import (
 	"strconv"
 )
 
-func TicketForm(ticket models.Ticket, currentUser models.Analyst, userType string, mode string, categoryError string, subcategoryError string, newTicket models.Ticket) templ.Component {
+func TicketForm(ticket models.Ticket, current_user models.Analyst, user_type string, mode string, category_error string, subcategory_error string, new_ticket models.Ticket) templ.Component {
 	return templruntime.GeneratedTemplate(func(templ_7745c5c3_Input templruntime.GeneratedComponentInput) (templ_7745c5c3_Err error) {
 		templ_7745c5c3_W, ctx := templ_7745c5c3_Input.Writer, templ_7745c5c3_Input.Context
 		templ_7745c5c3_Buffer, templ_7745c5c3_IsBuffer := templruntime.GetBuffer(templ_7745c5c3_W)
@@ -81,8 +81,8 @@ func TicketForm(ticket models.Ticket, currentUser models.Analyst, userType strin
 					return templ_7745c5c3_Err
 				}
 			} else if mode == "update" {
-				if ticket.Assigned_Analyst.UUID != currentUser.Analyst_ID {
-					if currentUser.Analyst_ID == models.GetTeam(ticket.Assigned_Team.UUID.String()).Manager_ID.UUID {
+				if ticket.Assigned_Analyst.UUID != current_user.Analyst_ID {
+					if current_user.Analyst_ID == models.GetTeam(ticket.Assigned_Team.UUID.String()).Manager_ID.UUID {
 						_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString("<button type=\"submit\" name=\"save_type\" class=\"uk-button uk-width-1-1 bg-zinc-50 text-zinc-900 border border-zinc-50 hover:bg-zinc-900 hover:text-zinc-50\" value=\"Save\">Save</button> <button type=\"submit\" name=\"save_type\" class=\"uk-button uk-width-1-1 bg-zinc-50 text-zinc-900 border border-zinc-50 hover:bg-zinc-900 hover:text-zinc-50 mt-3\" value=\"Save and Exit\">Save and Exit</button> ")
 						if templ_7745c5c3_Err != nil {
 							return templ_7745c5c3_Err
@@ -142,7 +142,7 @@ func TicketForm(ticket models.Ticket, currentUser models.Analyst, userType strin
 					return templ_7745c5c3_Err
 				}
 				if ticket.Status == "Closed" {
-					if ticket.Assigned_Analyst.UUID == currentUser.Analyst_ID {
+					if ticket.Assigned_Analyst.UUID == current_user.Analyst_ID {
 						_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString("<a href=\"")
 						if templ_7745c5c3_Err != nil {
 							return templ_7745c5c3_Err
@@ -156,7 +156,7 @@ func TicketForm(ticket models.Ticket, currentUser models.Analyst, userType strin
 						if templ_7745c5c3_Err != nil {
 							return templ_7745c5c3_Err
 						}
-					} else if currentUser.Analyst_ID == models.GetTeam(ticket.Assigned_Team.UUID.String()).Manager_ID.UUID {
+					} else if current_user.Analyst_ID == models.GetTeam(ticket.Assigned_Team.UUID.String()).Manager_ID.UUID {
 						_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString("<a href=\"")
 						if templ_7745c5c3_Err != nil {
 							return templ_7745c5c3_Err
@@ -176,13 +176,13 @@ func TicketForm(ticket models.Ticket, currentUser models.Analyst, userType strin
 				if templ_7745c5c3_Err != nil {
 					return templ_7745c5c3_Err
 				}
-				if ticket.Assigned_Analyst.UUID != currentUser.Analyst_ID {
+				if ticket.Assigned_Analyst.UUID != current_user.Analyst_ID {
 					if !ticket.Assigned_Analyst.Valid {
 						_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString("<button type=\"button\" class=\"uk-button uk-width-1-1 bg-zinc-50 text-zinc-900 border border-zinc-50 hover:bg-zinc-900 hover:text-zinc-50 mt-3\">Assign to Me</button>")
 						if templ_7745c5c3_Err != nil {
 							return templ_7745c5c3_Err
 						}
-					} else if currentUser.Analyst_ID == models.GetTeam(ticket.Assigned_Team.UUID.String()).Manager_ID.UUID {
+					} else if current_user.Analyst_ID == models.GetTeam(ticket.Assigned_Team.UUID.String()).Manager_ID.UUID {
 						_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString("<button type=\"button\" class=\"uk-button uk-width-1-1 bg-zinc-50 text-zinc-900 border border-zinc-50 hover:bg-zinc-900 hover:text-zinc-50 mt-3\">Assign to Me</button>")
 						if templ_7745c5c3_Err != nil {
 							return templ_7745c5c3_Err
@@ -193,7 +193,7 @@ func TicketForm(ticket models.Ticket, currentUser models.Analyst, userType strin
 				if templ_7745c5c3_Err != nil {
 					return templ_7745c5c3_Err
 				}
-				if ticket.Assigned_Analyst.UUID == currentUser.Analyst_ID {
+				if ticket.Assigned_Analyst.UUID == current_user.Analyst_ID {
 					_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString("<button type=\"button\" class=\"uk-button uk-width-1-1 bg-zinc-50 text-zinc-900 border border-zinc-50 hover:bg-zinc-900 hover:text-zinc-50 mt-3\">Assign Ticket</button>")
 					if templ_7745c5c3_Err != nil {
 						return templ_7745c5c3_Err
@@ -203,7 +203,7 @@ func TicketForm(ticket models.Ticket, currentUser models.Analyst, userType strin
 					if templ_7745c5c3_Err != nil {
 						return templ_7745c5c3_Err
 					}
-				} else if currentUser.Analyst_ID == models.GetTeam(ticket.Assigned_Team.UUID.String()).Manager_ID.UUID {
+				} else if current_user.Analyst_ID == models.GetTeam(ticket.Assigned_Team.UUID.String()).Manager_ID.UUID {
 					_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString("<button type=\"button\" class=\"uk-button uk-width-1-1 bg-zinc-50 text-zinc-900 border border-zinc-50 hover:bg-zinc-900 hover:text-zinc-50 mt-3\">Assign Ticket</button>")
 					if templ_7745c5c3_Err != nil {
 						return templ_7745c5c3_Err
@@ -213,7 +213,7 @@ func TicketForm(ticket models.Ticket, currentUser models.Analyst, userType strin
 				if templ_7745c5c3_Err != nil {
 					return templ_7745c5c3_Err
 				}
-				if currentUser.Analyst_ID == models.GetTeam(ticket.Assigned_Team.UUID.String()).Manager_ID.UUID {
+				if current_user.Analyst_ID == models.GetTeam(ticket.Assigned_Team.UUID.String()).Manager_ID.UUID {
 					_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString("<button type=\"button\" hx-delete=\"")
 					if templ_7745c5c3_Err != nil {
 						return templ_7745c5c3_Err
@@ -340,12 +340,12 @@ func TicketForm(ticket models.Ticket, currentUser models.Analyst, userType strin
 					if templ_7745c5c3_Err != nil {
 						return templ_7745c5c3_Err
 					}
-					if newTicket.Type == "Request" {
+					if new_ticket.Type == "Request" {
 						_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString("<option value=\"Request\" selected>Request</option> <option value=\"Incident\">Incident</option>")
 						if templ_7745c5c3_Err != nil {
 							return templ_7745c5c3_Err
 						}
-					} else if newTicket.Type == "Incident" {
+					} else if new_ticket.Type == "Incident" {
 						_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString("<option value=\"Request\">Request</option> <option value=\"Incident\" selected>Incident</option>")
 						if templ_7745c5c3_Err != nil {
 							return templ_7745c5c3_Err
@@ -361,18 +361,18 @@ func TicketForm(ticket models.Ticket, currentUser models.Analyst, userType strin
 						return templ_7745c5c3_Err
 					}
 				} else if mode == "update" {
-					if ticket.Assigned_Analyst.UUID != currentUser.Analyst_ID {
-						if currentUser.Analyst_ID == models.GetTeam(ticket.Assigned_Team.UUID.String()).Manager_ID.UUID {
+					if ticket.Assigned_Analyst.UUID != current_user.Analyst_ID {
+						if current_user.Analyst_ID == models.GetTeam(ticket.Assigned_Team.UUID.String()).Manager_ID.UUID {
 							_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString("<select name=\"ticket_type\" class=\"uk-select text-zinc-50\">")
 							if templ_7745c5c3_Err != nil {
 								return templ_7745c5c3_Err
 							}
-							if newTicket.Type == "Request" {
+							if new_ticket.Type == "Request" {
 								_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString("<option value=\"Request\" selected>Request</option> <option value=\"Incident\">Incident</option>")
 								if templ_7745c5c3_Err != nil {
 									return templ_7745c5c3_Err
 								}
-							} else if newTicket.Type == "Incident" {
+							} else if new_ticket.Type == "Incident" {
 								_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString("<option value=\"Request\">Request</option> <option value=\"Incident\" selected>Incident</option>")
 								if templ_7745c5c3_Err != nil {
 									return templ_7745c5c3_Err
@@ -420,12 +420,12 @@ func TicketForm(ticket models.Ticket, currentUser models.Analyst, userType strin
 						if templ_7745c5c3_Err != nil {
 							return templ_7745c5c3_Err
 						}
-						if newTicket.Type == "Request" {
+						if new_ticket.Type == "Request" {
 							_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString("<option value=\"Request\" selected>Request</option> <option value=\"Incident\">Incident</option>")
 							if templ_7745c5c3_Err != nil {
 								return templ_7745c5c3_Err
 							}
-						} else if newTicket.Type == "Incident" {
+						} else if new_ticket.Type == "Incident" {
 							_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString("<option value=\"Request\">Request</option> <option value=\"Incident\" selected>Incident</option>")
 							if templ_7745c5c3_Err != nil {
 								return templ_7745c5c3_Err
@@ -479,9 +479,9 @@ func TicketForm(ticket models.Ticket, currentUser models.Analyst, userType strin
 						return templ_7745c5c3_Err
 					}
 					var templ_7745c5c3_Var15 string
-					templ_7745c5c3_Var15, templ_7745c5c3_Err = templ.JoinStringErrs(newTicket.Customer_Contact)
+					templ_7745c5c3_Var15, templ_7745c5c3_Err = templ.JoinStringErrs(new_ticket.Customer_Contact)
 					if templ_7745c5c3_Err != nil {
-						return templ.Error{Err: templ_7745c5c3_Err, FileName: `views/tickets/ticket_form.templ`, Line: 173, Col: 127}
+						return templ.Error{Err: templ_7745c5c3_Err, FileName: `views/tickets/ticket_form.templ`, Line: 173, Col: 128}
 					}
 					_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString(templ.EscapeString(templ_7745c5c3_Var15))
 					if templ_7745c5c3_Err != nil {
@@ -492,17 +492,17 @@ func TicketForm(ticket models.Ticket, currentUser models.Analyst, userType strin
 						return templ_7745c5c3_Err
 					}
 				} else if mode == "update" {
-					if ticket.Assigned_Analyst.UUID != currentUser.Analyst_ID {
-						if currentUser.Analyst_ID == models.GetTeam(ticket.Assigned_Team.UUID.String()).Manager_ID.UUID {
-							if newTicket.Customer_Contact != "" {
+					if ticket.Assigned_Analyst.UUID != current_user.Analyst_ID {
+						if current_user.Analyst_ID == models.GetTeam(ticket.Assigned_Team.UUID.String()).Manager_ID.UUID {
+							if new_ticket.Customer_Contact != "" {
 								_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString("<input name=\"customer_contact\" class=\"uk-input text-zinc-50 text-base\" type=\"text\" value=\"")
 								if templ_7745c5c3_Err != nil {
 									return templ_7745c5c3_Err
 								}
 								var templ_7745c5c3_Var16 string
-								templ_7745c5c3_Var16, templ_7745c5c3_Err = templ.JoinStringErrs(newTicket.Customer_Contact)
+								templ_7745c5c3_Var16, templ_7745c5c3_Err = templ.JoinStringErrs(new_ticket.Customer_Contact)
 								if templ_7745c5c3_Err != nil {
-									return templ.Error{Err: templ_7745c5c3_Err, FileName: `views/tickets/ticket_form.templ`, Line: 178, Col: 130}
+									return templ.Error{Err: templ_7745c5c3_Err, FileName: `views/tickets/ticket_form.templ`, Line: 178, Col: 131}
 								}
 								_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString(templ.EscapeString(templ_7745c5c3_Var16))
 								if templ_7745c5c3_Err != nil {
@@ -551,15 +551,15 @@ func TicketForm(ticket models.Ticket, currentUser models.Analyst, userType strin
 							}
 						}
 					} else {
-						if newTicket.Customer_Contact != "" {
+						if new_ticket.Customer_Contact != "" {
 							_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString("<input name=\"customer_contact\" class=\"uk-input text-zinc-50 text-base\" type=\"text\" value=\"")
 							if templ_7745c5c3_Err != nil {
 								return templ_7745c5c3_Err
 							}
 							var templ_7745c5c3_Var19 string
-							templ_7745c5c3_Var19, templ_7745c5c3_Err = templ.JoinStringErrs(newTicket.Customer_Contact)
+							templ_7745c5c3_Var19, templ_7745c5c3_Err = templ.JoinStringErrs(new_ticket.Customer_Contact)
 							if templ_7745c5c3_Err != nil {
-								return templ.Error{Err: templ_7745c5c3_Err, FileName: `views/tickets/ticket_form.templ`, Line: 187, Col: 129}
+								return templ.Error{Err: templ_7745c5c3_Err, FileName: `views/tickets/ticket_form.templ`, Line: 187, Col: 130}
 							}
 							_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString(templ.EscapeString(templ_7745c5c3_Var19))
 							if templ_7745c5c3_Err != nil {
@@ -601,7 +601,7 @@ func TicketForm(ticket models.Ticket, currentUser models.Analyst, userType strin
 					return templ_7745c5c3_Err
 				}
 				for _, category := range models.GetAllCategories() {
-					if newTicket.Category.UUID == category.Category_ID {
+					if new_ticket.Category.UUID == category.Category_ID {
 						_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString("<option value=\"")
 						if templ_7745c5c3_Err != nil {
 							return templ_7745c5c3_Err
@@ -671,13 +671,13 @@ func TicketForm(ticket models.Ticket, currentUser models.Analyst, userType strin
 				}
 			} else {
 				if mode == "create" {
-					if categoryError == "" {
+					if category_error == "" {
 						_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString("<select name=\"category\" class=\"uk-select text-zinc-50\" hx-get=\"/subcategories/get/select\" hx-target=\"#subcategories\" hx-swap=\"outerHTML\" hx-trigger=\"change\"><option value=\"none\">Select...</option> ")
 						if templ_7745c5c3_Err != nil {
 							return templ_7745c5c3_Err
 						}
 						for _, category := range models.GetAllCategories() {
-							if newTicket.Category.UUID == category.Category_ID {
+							if new_ticket.Category.UUID == category.Category_ID {
 								_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString("<option value=\"")
 								if templ_7745c5c3_Err != nil {
 									return templ_7745c5c3_Err
@@ -751,7 +751,7 @@ func TicketForm(ticket models.Ticket, currentUser models.Analyst, userType strin
 							return templ_7745c5c3_Err
 						}
 						for _, category := range models.GetAllCategories() {
-							if newTicket.Category.UUID == category.Category_ID {
+							if new_ticket.Category.UUID == category.Category_ID {
 								_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString("<option value=\"")
 								if templ_7745c5c3_Err != nil {
 									return templ_7745c5c3_Err
@@ -820,9 +820,9 @@ func TicketForm(ticket models.Ticket, currentUser models.Analyst, userType strin
 							return templ_7745c5c3_Err
 						}
 						var templ_7745c5c3_Var33 string
-						templ_7745c5c3_Var33, templ_7745c5c3_Err = templ.JoinStringErrs(categoryError)
+						templ_7745c5c3_Var33, templ_7745c5c3_Err = templ.JoinStringErrs(category_error)
 						if templ_7745c5c3_Err != nil {
-							return templ.Error{Err: templ_7745c5c3_Err, FileName: `views/tickets/ticket_form.templ`, Line: 233, Col: 54}
+							return templ.Error{Err: templ_7745c5c3_Err, FileName: `views/tickets/ticket_form.templ`, Line: 233, Col: 55}
 						}
 						_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString(templ.EscapeString(templ_7745c5c3_Var33))
 						if templ_7745c5c3_Err != nil {
@@ -834,15 +834,15 @@ func TicketForm(ticket models.Ticket, currentUser models.Analyst, userType strin
 						}
 					}
 				} else if mode == "update" {
-					if ticket.Assigned_Analyst.UUID != currentUser.Analyst_ID {
-						if currentUser.Analyst_ID == models.GetTeam(ticket.Assigned_Team.UUID.String()).Manager_ID.UUID {
-							if categoryError == "" {
+					if ticket.Assigned_Analyst.UUID != current_user.Analyst_ID {
+						if current_user.Analyst_ID == models.GetTeam(ticket.Assigned_Team.UUID.String()).Manager_ID.UUID {
+							if category_error == "" {
 								_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString("<select name=\"category\" class=\"uk-select text-zinc-50\" hx-get=\"/subcategories/get/select\" hx-target=\"#subcategories\" hx-swap=\"outerHTML\" hx-trigger=\"change\"><option value=\"none\">Select...</option> ")
 								if templ_7745c5c3_Err != nil {
 									return templ_7745c5c3_Err
 								}
 								for _, category := range models.GetAllCategories() {
-									if newTicket.Category.UUID == category.Category_ID {
+									if new_ticket.Category.UUID == category.Category_ID {
 										_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString("<option value=\"")
 										if templ_7745c5c3_Err != nil {
 											return templ_7745c5c3_Err
@@ -949,7 +949,7 @@ func TicketForm(ticket models.Ticket, currentUser models.Analyst, userType strin
 									return templ_7745c5c3_Err
 								}
 								for _, category := range models.GetAllCategories() {
-									if newTicket.Category.UUID == category.Category_ID {
+									if new_ticket.Category.UUID == category.Category_ID {
 										_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString("<option value=\"")
 										if templ_7745c5c3_Err != nil {
 											return templ_7745c5c3_Err
@@ -1051,9 +1051,9 @@ func TicketForm(ticket models.Ticket, currentUser models.Analyst, userType strin
 									return templ_7745c5c3_Err
 								}
 								var templ_7745c5c3_Var46 string
-								templ_7745c5c3_Var46, templ_7745c5c3_Err = templ.JoinStringErrs(categoryError)
+								templ_7745c5c3_Var46, templ_7745c5c3_Err = templ.JoinStringErrs(category_error)
 								if templ_7745c5c3_Err != nil {
-									return templ.Error{Err: templ_7745c5c3_Err, FileName: `views/tickets/ticket_form.templ`, Line: 268, Col: 56}
+									return templ.Error{Err: templ_7745c5c3_Err, FileName: `views/tickets/ticket_form.templ`, Line: 268, Col: 57}
 								}
 								_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString(templ.EscapeString(templ_7745c5c3_Var46))
 								if templ_7745c5c3_Err != nil {
@@ -1070,7 +1070,7 @@ func TicketForm(ticket models.Ticket, currentUser models.Analyst, userType strin
 								return templ_7745c5c3_Err
 							}
 							for _, category := range models.GetAllCategories() {
-								if newTicket.Category.UUID == category.Category_ID {
+								if new_ticket.Category.UUID == category.Category_ID {
 									_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString("<option value=\"")
 									if templ_7745c5c3_Err != nil {
 										return templ_7745c5c3_Err
@@ -1173,13 +1173,13 @@ func TicketForm(ticket models.Ticket, currentUser models.Analyst, userType strin
 							}
 						}
 					} else {
-						if categoryError == "" {
+						if category_error == "" {
 							_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString("<select name=\"category\" class=\"uk-select text-zinc-50\" hx-get=\"/subcategories/get/select\" hx-target=\"#subcategories\" hx-swap=\"outerHTML\" hx-trigger=\"change\"><option value=\"none\">Select...</option> ")
 							if templ_7745c5c3_Err != nil {
 								return templ_7745c5c3_Err
 							}
 							for _, category := range models.GetAllCategories() {
-								if newTicket.Category.UUID == category.Category_ID {
+								if new_ticket.Category.UUID == category.Category_ID {
 									_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString("<option value=\"")
 									if templ_7745c5c3_Err != nil {
 										return templ_7745c5c3_Err
@@ -1286,7 +1286,7 @@ func TicketForm(ticket models.Ticket, currentUser models.Analyst, userType strin
 								return templ_7745c5c3_Err
 							}
 							for _, category := range models.GetAllCategories() {
-								if newTicket.Category.UUID == category.Category_ID {
+								if new_ticket.Category.UUID == category.Category_ID {
 									_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString("<option value=\"")
 									if templ_7745c5c3_Err != nil {
 										return templ_7745c5c3_Err
@@ -1388,9 +1388,9 @@ func TicketForm(ticket models.Ticket, currentUser models.Analyst, userType strin
 								return templ_7745c5c3_Err
 							}
 							var templ_7745c5c3_Var65 string
-							templ_7745c5c3_Var65, templ_7745c5c3_Err = templ.JoinStringErrs(categoryError)
+							templ_7745c5c3_Var65, templ_7745c5c3_Err = templ.JoinStringErrs(category_error)
 							if templ_7745c5c3_Err != nil {
-								return templ.Error{Err: templ_7745c5c3_Err, FileName: `views/tickets/ticket_form.templ`, Line: 316, Col: 55}
+								return templ.Error{Err: templ_7745c5c3_Err, FileName: `views/tickets/ticket_form.templ`, Line: 316, Col: 56}
 							}
 							_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString(templ.EscapeString(templ_7745c5c3_Var65))
 							if templ_7745c5c3_Err != nil {
@@ -1484,14 +1484,14 @@ func TicketForm(ticket models.Ticket, currentUser models.Analyst, userType strin
 				}
 			} else {
 				if mode == "create" {
-					if subcategoryError == "" {
-						if newTicket.Category.UUID != uuid.Nil {
+					if subcategory_error == "" {
+						if new_ticket.Category.UUID != uuid.Nil {
 							_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString("<select name=\"subcategory\" class=\"uk-select text-zinc-50\" id=\"subcategories\">")
 							if templ_7745c5c3_Err != nil {
 								return templ_7745c5c3_Err
 							}
 							for _, subcategory := range models.GetSubcategories(ticket.Category.UUID.String()) {
-								if newTicket.Subcategory.UUID == subcategory.Subcategory_ID {
+								if new_ticket.Subcategory.UUID == subcategory.Subcategory_ID {
 									_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString("<option value=\"")
 									if templ_7745c5c3_Err != nil {
 										return templ_7745c5c3_Err
@@ -1599,13 +1599,13 @@ func TicketForm(ticket models.Ticket, currentUser models.Analyst, userType strin
 							}
 						}
 					} else {
-						if newTicket.Category.UUID != uuid.Nil {
+						if new_ticket.Category.UUID != uuid.Nil {
 							_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString("<select name=\"subcategory\" class=\"uk-select text-zinc-50 border border-red-600\" id=\"subcategories\">")
 							if templ_7745c5c3_Err != nil {
 								return templ_7745c5c3_Err
 							}
 							for _, subcategory := range models.GetSubcategories(ticket.Category.UUID.String()) {
-								if newTicket.Subcategory.UUID == subcategory.Subcategory_ID {
+								if new_ticket.Subcategory.UUID == subcategory.Subcategory_ID {
 									_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString("<option value=\"")
 									if templ_7745c5c3_Err != nil {
 										return templ_7745c5c3_Err
@@ -1707,9 +1707,9 @@ func TicketForm(ticket models.Ticket, currentUser models.Analyst, userType strin
 								return templ_7745c5c3_Err
 							}
 							var templ_7745c5c3_Var82 string
-							templ_7745c5c3_Var82, templ_7745c5c3_Err = templ.JoinStringErrs(subcategoryError)
+							templ_7745c5c3_Var82, templ_7745c5c3_Err = templ.JoinStringErrs(subcategory_error)
 							if templ_7745c5c3_Err != nil {
-								return templ.Error{Err: templ_7745c5c3_Err, FileName: `views/tickets/ticket_form.templ`, Line: 372, Col: 58}
+								return templ.Error{Err: templ_7745c5c3_Err, FileName: `views/tickets/ticket_form.templ`, Line: 372, Col: 59}
 							}
 							_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString(templ.EscapeString(templ_7745c5c3_Var82))
 							if templ_7745c5c3_Err != nil {
@@ -1725,9 +1725,9 @@ func TicketForm(ticket models.Ticket, currentUser models.Analyst, userType strin
 								return templ_7745c5c3_Err
 							}
 							var templ_7745c5c3_Var83 string
-							templ_7745c5c3_Var83, templ_7745c5c3_Err = templ.JoinStringErrs(subcategoryError)
+							templ_7745c5c3_Var83, templ_7745c5c3_Err = templ.JoinStringErrs(subcategory_error)
 							if templ_7745c5c3_Err != nil {
-								return templ.Error{Err: templ_7745c5c3_Err, FileName: `views/tickets/ticket_form.templ`, Line: 377, Col: 58}
+								return templ.Error{Err: templ_7745c5c3_Err, FileName: `views/tickets/ticket_form.templ`, Line: 377, Col: 59}
 							}
 							_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString(templ.EscapeString(templ_7745c5c3_Var83))
 							if templ_7745c5c3_Err != nil {
@@ -1740,15 +1740,15 @@ func TicketForm(ticket models.Ticket, currentUser models.Analyst, userType strin
 						}
 					}
 				} else if mode == "update" {
-					if ticket.Assigned_Analyst.UUID != currentUser.Analyst_ID {
-						if currentUser.Analyst_ID == models.GetTeam(ticket.Assigned_Team.UUID.String()).Manager_ID.UUID {
-							if subcategoryError == "" {
+					if ticket.Assigned_Analyst.UUID != current_user.Analyst_ID {
+						if current_user.Analyst_ID == models.GetTeam(ticket.Assigned_Team.UUID.String()).Manager_ID.UUID {
+							if subcategory_error == "" {
 								_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString("<select name=\"subcategory\" class=\"uk-select text-zinc-50\" id=\"subcategories\">")
 								if templ_7745c5c3_Err != nil {
 									return templ_7745c5c3_Err
 								}
 								for _, subcategory := range models.GetSubcategories(ticket.Category.UUID.String()) {
-									if newTicket.Subcategory.UUID == subcategory.Subcategory_ID {
+									if new_ticket.Subcategory.UUID == subcategory.Subcategory_ID {
 										_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString("<option value=\"")
 										if templ_7745c5c3_Err != nil {
 											return templ_7745c5c3_Err
@@ -1855,7 +1855,7 @@ func TicketForm(ticket models.Ticket, currentUser models.Analyst, userType strin
 									return templ_7745c5c3_Err
 								}
 								for _, subcategory := range models.GetSubcategories(ticket.Category.UUID.String()) {
-									if newTicket.Subcategory.UUID == subcategory.Subcategory_ID {
+									if new_ticket.Subcategory.UUID == subcategory.Subcategory_ID {
 										_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString("<option value=\"")
 										if templ_7745c5c3_Err != nil {
 											return templ_7745c5c3_Err
@@ -1957,9 +1957,9 @@ func TicketForm(ticket models.Ticket, currentUser models.Analyst, userType strin
 									return templ_7745c5c3_Err
 								}
 								var templ_7745c5c3_Var96 string
-								templ_7745c5c3_Var96, templ_7745c5c3_Err = templ.JoinStringErrs(subcategoryError)
+								templ_7745c5c3_Var96, templ_7745c5c3_Err = templ.JoinStringErrs(subcategory_error)
 								if templ_7745c5c3_Err != nil {
-									return templ.Error{Err: templ_7745c5c3_Err, FileName: `views/tickets/ticket_form.templ`, Line: 411, Col: 59}
+									return templ.Error{Err: templ_7745c5c3_Err, FileName: `views/tickets/ticket_form.templ`, Line: 411, Col: 60}
 								}
 								_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString(templ.EscapeString(templ_7745c5c3_Var96))
 								if templ_7745c5c3_Err != nil {
@@ -2046,13 +2046,13 @@ func TicketForm(ticket models.Ticket, currentUser models.Analyst, userType strin
 							}
 						}
 					} else {
-						if subcategoryError == "" {
+						if subcategory_error == "" {
 							_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString("<select name=\"subcategory\" class=\"uk-select text-zinc-50\" id=\"subcategories\">")
 							if templ_7745c5c3_Err != nil {
 								return templ_7745c5c3_Err
 							}
 							for _, subcategory := range models.GetSubcategories(ticket.Category.UUID.String()) {
-								if newTicket.Subcategory.UUID == subcategory.Subcategory_ID {
+								if new_ticket.Subcategory.UUID == subcategory.Subcategory_ID {
 									_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString("<option value=\"")
 									if templ_7745c5c3_Err != nil {
 										return templ_7745c5c3_Err
@@ -2159,7 +2159,7 @@ func TicketForm(ticket models.Ticket, currentUser models.Analyst, userType strin
 								return templ_7745c5c3_Err
 							}
 							for _, subcategory := range models.GetSubcategories(ticket.Category.UUID.String()) {
-								if newTicket.Subcategory.UUID == subcategory.Subcategory_ID {
+								if new_ticket.Subcategory.UUID == subcategory.Subcategory_ID {
 									_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString("<option value=\"")
 									if templ_7745c5c3_Err != nil {
 										return templ_7745c5c3_Err
@@ -2261,9 +2261,9 @@ func TicketForm(ticket models.Ticket, currentUser models.Analyst, userType strin
 								return templ_7745c5c3_Err
 							}
 							var templ_7745c5c3_Var113 string
-							templ_7745c5c3_Var113, templ_7745c5c3_Err = templ.JoinStringErrs(subcategoryError)
+							templ_7745c5c3_Var113, templ_7745c5c3_Err = templ.JoinStringErrs(subcategory_error)
 							if templ_7745c5c3_Err != nil {
-								return templ.Error{Err: templ_7745c5c3_Err, FileName: `views/tickets/ticket_form.templ`, Line: 453, Col: 58}
+								return templ.Error{Err: templ_7745c5c3_Err, FileName: `views/tickets/ticket_form.templ`, Line: 453, Col: 59}
 							}
 							_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString(templ.EscapeString(templ_7745c5c3_Var113))
 							if templ_7745c5c3_Err != nil {
@@ -2306,9 +2306,9 @@ func TicketForm(ticket models.Ticket, currentUser models.Analyst, userType strin
 						return templ_7745c5c3_Err
 					}
 					var templ_7745c5c3_Var115 string
-					templ_7745c5c3_Var115, templ_7745c5c3_Err = templ.JoinStringErrs(newTicket.Title)
+					templ_7745c5c3_Var115, templ_7745c5c3_Err = templ.JoinStringErrs(new_ticket.Title)
 					if templ_7745c5c3_Err != nil {
-						return templ.Error{Err: templ_7745c5c3_Err, FileName: `views/tickets/ticket_form.templ`, Line: 466, Col: 104}
+						return templ.Error{Err: templ_7745c5c3_Err, FileName: `views/tickets/ticket_form.templ`, Line: 466, Col: 105}
 					}
 					_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString(templ.EscapeString(templ_7745c5c3_Var115))
 					if templ_7745c5c3_Err != nil {
@@ -2319,17 +2319,17 @@ func TicketForm(ticket models.Ticket, currentUser models.Analyst, userType strin
 						return templ_7745c5c3_Err
 					}
 				} else if mode == "update" {
-					if ticket.Assigned_Analyst.UUID != currentUser.Analyst_ID {
-						if currentUser.Analyst_ID == models.GetTeam(ticket.Assigned_Team.UUID.String()).Manager_ID.UUID {
-							if newTicket.Title != "" {
+					if ticket.Assigned_Analyst.UUID != current_user.Analyst_ID {
+						if current_user.Analyst_ID == models.GetTeam(ticket.Assigned_Team.UUID.String()).Manager_ID.UUID {
+							if new_ticket.Title != "" {
 								_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString("<input name=\"title\" class=\"uk-input text-zinc-50 text-base\" type=\"text\" value=\"")
 								if templ_7745c5c3_Err != nil {
 									return templ_7745c5c3_Err
 								}
 								var templ_7745c5c3_Var116 string
-								templ_7745c5c3_Var116, templ_7745c5c3_Err = templ.JoinStringErrs(newTicket.Title)
+								templ_7745c5c3_Var116, templ_7745c5c3_Err = templ.JoinStringErrs(new_ticket.Title)
 								if templ_7745c5c3_Err != nil {
-									return templ.Error{Err: templ_7745c5c3_Err, FileName: `views/tickets/ticket_form.templ`, Line: 471, Col: 107}
+									return templ.Error{Err: templ_7745c5c3_Err, FileName: `views/tickets/ticket_form.templ`, Line: 471, Col: 108}
 								}
 								_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString(templ.EscapeString(templ_7745c5c3_Var116))
 								if templ_7745c5c3_Err != nil {
@@ -2378,15 +2378,15 @@ func TicketForm(ticket models.Ticket, currentUser models.Analyst, userType strin
 							}
 						}
 					} else {
-						if newTicket.Title != "" {
+						if new_ticket.Title != "" {
 							_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString("<input name=\"title\" class=\"uk-input text-zinc-50 text-base\" type=\"text\" value=\"")
 							if templ_7745c5c3_Err != nil {
 								return templ_7745c5c3_Err
 							}
 							var templ_7745c5c3_Var119 string
-							templ_7745c5c3_Var119, templ_7745c5c3_Err = templ.JoinStringErrs(newTicket.Title)
+							templ_7745c5c3_Var119, templ_7745c5c3_Err = templ.JoinStringErrs(new_ticket.Title)
 							if templ_7745c5c3_Err != nil {
-								return templ.Error{Err: templ_7745c5c3_Err, FileName: `views/tickets/ticket_form.templ`, Line: 480, Col: 106}
+								return templ.Error{Err: templ_7745c5c3_Err, FileName: `views/tickets/ticket_form.templ`, Line: 480, Col: 107}
 							}
 							_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString(templ.EscapeString(templ_7745c5c3_Var119))
 							if templ_7745c5c3_Err != nil {
@@ -2447,9 +2447,9 @@ func TicketForm(ticket models.Ticket, currentUser models.Analyst, userType strin
 						return templ_7745c5c3_Err
 					}
 					var templ_7745c5c3_Var122 string
-					templ_7745c5c3_Var122, templ_7745c5c3_Err = templ.JoinStringErrs(newTicket.Description)
+					templ_7745c5c3_Var122, templ_7745c5c3_Err = templ.JoinStringErrs(new_ticket.Description)
 					if templ_7745c5c3_Err != nil {
-						return templ.Error{Err: templ_7745c5c3_Err, FileName: `views/tickets/ticket_form.templ`, Line: 494, Col: 117}
+						return templ.Error{Err: templ_7745c5c3_Err, FileName: `views/tickets/ticket_form.templ`, Line: 494, Col: 118}
 					}
 					_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString(templ.EscapeString(templ_7745c5c3_Var122))
 					if templ_7745c5c3_Err != nil {
@@ -2460,17 +2460,17 @@ func TicketForm(ticket models.Ticket, currentUser models.Analyst, userType strin
 						return templ_7745c5c3_Err
 					}
 				} else if mode == "update" {
-					if ticket.Assigned_Analyst.UUID != currentUser.Analyst_ID {
-						if currentUser.Analyst_ID == models.GetTeam(ticket.Assigned_Team.UUID.String()).Manager_ID.UUID {
-							if newTicket.Description != "" {
+					if ticket.Assigned_Analyst.UUID != current_user.Analyst_ID {
+						if current_user.Analyst_ID == models.GetTeam(ticket.Assigned_Team.UUID.String()).Manager_ID.UUID {
+							if new_ticket.Description != "" {
 								_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString("<textarea name=\"desc\" class=\"uk-textarea font-mono text-zinc-50 text-base\" rows=\"10\">")
 								if templ_7745c5c3_Err != nil {
 									return templ_7745c5c3_Err
 								}
 								var templ_7745c5c3_Var123 string
-								templ_7745c5c3_Var123, templ_7745c5c3_Err = templ.JoinStringErrs(newTicket.Description)
+								templ_7745c5c3_Var123, templ_7745c5c3_Err = templ.JoinStringErrs(new_ticket.Description)
 								if templ_7745c5c3_Err != nil {
-									return templ.Error{Err: templ_7745c5c3_Err, FileName: `views/tickets/ticket_form.templ`, Line: 499, Col: 120}
+									return templ.Error{Err: templ_7745c5c3_Err, FileName: `views/tickets/ticket_form.templ`, Line: 499, Col: 121}
 								}
 								_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString(templ.EscapeString(templ_7745c5c3_Var123))
 								if templ_7745c5c3_Err != nil {
@@ -2519,15 +2519,15 @@ func TicketForm(ticket models.Ticket, currentUser models.Analyst, userType strin
 							}
 						}
 					} else {
-						if newTicket.Description != "" {
+						if new_ticket.Description != "" {
 							_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString("<textarea name=\"desc\" class=\"uk-textarea font-mono text-zinc-50 text-base\" rows=\"10\">")
 							if templ_7745c5c3_Err != nil {
 								return templ_7745c5c3_Err
 							}
 							var templ_7745c5c3_Var126 string
-							templ_7745c5c3_Var126, templ_7745c5c3_Err = templ.JoinStringErrs(newTicket.Description)
+							templ_7745c5c3_Var126, templ_7745c5c3_Err = templ.JoinStringErrs(new_ticket.Description)
 							if templ_7745c5c3_Err != nil {
-								return templ.Error{Err: templ_7745c5c3_Err, FileName: `views/tickets/ticket_form.templ`, Line: 508, Col: 119}
+								return templ.Error{Err: templ_7745c5c3_Err, FileName: `views/tickets/ticket_form.templ`, Line: 508, Col: 120}
 							}
 							_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString(templ.EscapeString(templ_7745c5c3_Var126))
 							if templ_7745c5c3_Err != nil {
@@ -2681,7 +2681,7 @@ func TicketForm(ticket models.Ticket, currentUser models.Analyst, userType strin
 			}
 			return templ_7745c5c3_Err
 		})
-		templ_7745c5c3_Err = layouts.Navbar(userType).Render(templ.WithChildren(ctx, templ_7745c5c3_Var2), templ_7745c5c3_Buffer)
+		templ_7745c5c3_Err = layouts.Navbar(user_type).Render(templ.WithChildren(ctx, templ_7745c5c3_Var2), templ_7745c5c3_Buffer)
 		if templ_7745c5c3_Err != nil {
 			return templ_7745c5c3_Err
 		}

@@ -5,17 +5,17 @@ import (
 	"github.com/VladanT3/IT_Ticketing_Platform/views/layouts"
 )
 
-templ TicketSearch(currentUser models.Analyst, userType string, searchType string) {
-	@layouts.Navbar(userType) {
+templ TicketSearch(current_user models.Analyst, user_type string, search_type string) {
+	@layouts.Navbar(user_type) {
 		<div class="container mx-auto mt-5 flex flex-col">
 			<div class="flex flex-col">
-				<h1 class="text-2xl mb-3">{ searchType }</h1>
+				<h1 class="text-2xl mb-3">{ search_type }</h1>
 				<hr/>
 			</div>
 			<div class="grid grid-cols-5 mt-3">
 				<div class="col-span-1 grid grid-cols-5">
 					<form hx-post="/tickets/filter" hx-trigger="submit" hx-swap="innerHTML" hx-target="#tickets" class="col-span-4 flex flex-col">
-						<input type="hidden" name="search_type" value={ searchType }/>
+						<input type="hidden" name="search_type" value={ search_type }/>
 						<div class="flex flex-col mt-3">
 							<label>Search:</label>
 							<input type="text" name="search" class="uk-input text-zinc-50 text-base"/>
@@ -62,12 +62,12 @@ templ TicketSearch(currentUser models.Analyst, userType string, searchType strin
 					<div class="uk-divider-vertical min-h-full"></div>
 				</div>
 				<div class="col-span-4 flex flex-col" id="tickets">
-					if searchType == "All Ticket Search" {
+					if search_type == "All Ticket Search" {
 						@Tickets(models.GetAllTickets())
-					} else if searchType == "Unassigned Tickets" {
-						@Tickets(models.GetTeamsUnassignedTickets(currentUser.Team_ID.UUID.String()))
-					} else if searchType == "Team Tickets" && userType == "manager" {
-						@Tickets(models.GetTeamTickets(currentUser.Team_ID.UUID.String()))
+					} else if search_type == "Unassigned Tickets" {
+						@Tickets(models.GetTeamsUnassignedTickets(current_user.Team_ID.UUID.String()))
+					} else if search_type == "Team Tickets" && user_type == "manager" {
+						@Tickets(models.GetTeamTickets(current_user.Team_ID.UUID.String()))
 					}
 				</div>
 			</div>

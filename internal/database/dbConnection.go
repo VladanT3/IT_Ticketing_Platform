@@ -16,8 +16,8 @@ func Connect() {
 		log.Fatal("Error loading env variables: ", err)
 	}
 
-	dbConn := os.Getenv("DB_CONN")
-	db, err := sql.Open("postgres", dbConn)
+	db_conn := os.Getenv("DB_CONN")
+	db, err := sql.Open("postgres", db_conn)
 	if err != nil {
 		log.Fatal("Unable to connect to database: ", err)
 	}

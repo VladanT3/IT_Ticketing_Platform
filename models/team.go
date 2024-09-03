@@ -43,3 +43,29 @@ func GetTeam(teamID string) Team {
 
 	return team
 }
+
+func GetAllTeams() []Team {
+	var db *sql.DB = database.DB_Connection
+	teams := []Team{}
+
+	query := `select * from team;`
+	rows, err := db.Query(query)
+	if err != nil {
+		slog.Error("error getting all teams", "error message", err)
+		return []Team{}
+	}
+	defer rows.Close()
+
+	team := Team{}
+	for rows.Next() {
+		err = rows.Scan(&team.Team_ID, &team.Team_Name, &team.Manager_ID)
+		if err != nil {
+			slog.Error("error getting all teams", "error message", err)
+			return []Team{}
+		}
+
+		teams = append(teams, team)
+	}
+
+	return teams
+}

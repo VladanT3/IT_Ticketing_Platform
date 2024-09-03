@@ -7,8 +7,8 @@ import (
 	"strconv"
 )
 
-templ TicketForm(ticket models.Ticket, currentUser models.Analyst, userType string, mode string, categoryError string, subcategoryError string, newTicket models.Ticket) {
-	@layouts.Navbar(userType) {
+templ TicketForm(ticket models.Ticket, current_user models.Analyst, user_type string, mode string, category_error string, subcategory_error string, new_ticket models.Ticket) {
+	@layouts.Navbar(user_type) {
 		<div class="container mx-auto mt-5">
 			<form action="/ticket" method="POST" class="grid grid-cols-5">
 				<input type="hidden" value={ mode } name="mode"/>
@@ -19,8 +19,8 @@ templ TicketForm(ticket models.Ticket, currentUser models.Analyst, userType stri
 							<button type="submit" name="save_type" class="uk-button uk-width-1-1 bg-zinc-50 text-zinc-900 border border-zinc-50 hover:bg-zinc-900 hover:text-zinc-50" value="Save">Save</button>
 							<button type="submit" name="save_type" class="uk-button uk-width-1-1 bg-zinc-50 text-zinc-900 border border-zinc-50 hover:bg-zinc-900 hover:text-zinc-50 mt-3" value="Save and Exit">Save and Exit</button>
 						} else if mode == "update" {
-							if ticket.Assigned_Analyst.UUID != currentUser.Analyst_ID {
-								if currentUser.Analyst_ID == models.GetTeam(ticket.Assigned_Team.UUID.String()).Manager_ID.UUID {
+							if ticket.Assigned_Analyst.UUID != current_user.Analyst_ID {
+								if current_user.Analyst_ID == models.GetTeam(ticket.Assigned_Team.UUID.String()).Manager_ID.UUID {
 									<button type="submit" name="save_type" class="uk-button uk-width-1-1 bg-zinc-50 text-zinc-900 border border-zinc-50 hover:bg-zinc-900 hover:text-zinc-50" value="Save">Save</button>
 									<button type="submit" name="save_type" class="uk-button uk-width-1-1 bg-zinc-50 text-zinc-900 border border-zinc-50 hover:bg-zinc-900 hover:text-zinc-50 mt-3" value="Save and Exit">Save and Exit</button>
 									if ticket.Status == "Open" {
@@ -37,27 +37,27 @@ templ TicketForm(ticket models.Ticket, currentUser models.Analyst, userType stri
 								}
 							}
 							if ticket.Status == "Closed" {
-								if ticket.Assigned_Analyst.UUID == currentUser.Analyst_ID {
+								if ticket.Assigned_Analyst.UUID == current_user.Analyst_ID {
 									<a href={ "/ticket/" + templ.SafeURL(ticket.Ticket_ID.String()) + "/reopen/form" } class="uk-button uk-width-1-1 bg-zinc-50 text-zinc-900 border border-zinc-50 hover:bg-zinc-900 hover:text-zinc-50 mt-3">Reopen</a>
-								} else if currentUser.Analyst_ID == models.GetTeam(ticket.Assigned_Team.UUID.String()).Manager_ID.UUID {
+								} else if current_user.Analyst_ID == models.GetTeam(ticket.Assigned_Team.UUID.String()).Manager_ID.UUID {
 									<a href={ "/ticket/" + templ.SafeURL(ticket.Ticket_ID.String()) + "/reopen/form" } class="uk-button uk-width-1-1 bg-zinc-50 text-zinc-900 border border-zinc-50 hover:bg-zinc-900 hover:text-zinc-50 mt-3">Reopen</a>
 								}
 							}
-							if ticket.Assigned_Analyst.UUID != currentUser.Analyst_ID {
+							if ticket.Assigned_Analyst.UUID != current_user.Analyst_ID {
 								if !ticket.Assigned_Analyst.Valid {
 									<button type="button" class="uk-button uk-width-1-1 bg-zinc-50 text-zinc-900 border border-zinc-50 hover:bg-zinc-900 hover:text-zinc-50 mt-3">Assign to Me</button>
-								} else if currentUser.Analyst_ID == models.GetTeam(ticket.Assigned_Team.UUID.String()).Manager_ID.UUID {
+								} else if current_user.Analyst_ID == models.GetTeam(ticket.Assigned_Team.UUID.String()).Manager_ID.UUID {
 									<button type="button" class="uk-button uk-width-1-1 bg-zinc-50 text-zinc-900 border border-zinc-50 hover:bg-zinc-900 hover:text-zinc-50 mt-3">Assign to Me</button>
 								}
 							}
-							if ticket.Assigned_Analyst.UUID == currentUser.Analyst_ID {
+							if ticket.Assigned_Analyst.UUID == current_user.Analyst_ID {
 								<button type="button" class="uk-button uk-width-1-1 bg-zinc-50 text-zinc-900 border border-zinc-50 hover:bg-zinc-900 hover:text-zinc-50 mt-3">Assign Ticket</button>
 							} else if !ticket.Assigned_Analyst.Valid {
 								<button type="button" class="uk-button uk-width-1-1 bg-zinc-50 text-zinc-900 border border-zinc-50 hover:bg-zinc-900 hover:text-zinc-50 mt-3">Assign Ticket</button>
-							} else if currentUser.Analyst_ID == models.GetTeam(ticket.Assigned_Team.UUID.String()).Manager_ID.UUID {
+							} else if current_user.Analyst_ID == models.GetTeam(ticket.Assigned_Team.UUID.String()).Manager_ID.UUID {
 								<button type="button" class="uk-button uk-width-1-1 bg-zinc-50 text-zinc-900 border border-zinc-50 hover:bg-zinc-900 hover:text-zinc-50 mt-3">Assign Ticket</button>
 							}
-							if currentUser.Analyst_ID == models.GetTeam(ticket.Assigned_Team.UUID.String()).Manager_ID.UUID {
+							if current_user.Analyst_ID == models.GetTeam(ticket.Assigned_Team.UUID.String()).Manager_ID.UUID {
 								<button type="button" hx-delete={ "/ticket/delete/" + ticket.Ticket_ID.String() } hx-target="#ticket_form" hx-swap="innerHTML" class="uk-button uk-width-1-1 bg-zinc-900 text-red-600 border border-red-600 hover:bg-red-600 hover:text-zinc-900 mt-3">Delete Ticket</button>
 							}
 							<hr class="mt-3"/>
@@ -99,10 +99,10 @@ templ TicketForm(ticket models.Ticket, currentUser models.Analyst, userType stri
 								} else {
 									if mode == "create" {
 										<select name="ticket_type" class="uk-select text-zinc-50">
-											if newTicket.Type == "Request" {
+											if new_ticket.Type == "Request" {
 												<option value="Request" selected>Request</option>
 												<option value="Incident">Incident</option>
-											} else if newTicket.Type == "Incident" {
+											} else if new_ticket.Type == "Incident" {
 												<option value="Request">Request</option>
 												<option value="Incident" selected>Incident</option>
 											} else {
@@ -111,13 +111,13 @@ templ TicketForm(ticket models.Ticket, currentUser models.Analyst, userType stri
 											}
 										</select>
 									} else if mode == "update" {
-										if ticket.Assigned_Analyst.UUID != currentUser.Analyst_ID {
-											if currentUser.Analyst_ID == models.GetTeam(ticket.Assigned_Team.UUID.String()).Manager_ID.UUID {
+										if ticket.Assigned_Analyst.UUID != current_user.Analyst_ID {
+											if current_user.Analyst_ID == models.GetTeam(ticket.Assigned_Team.UUID.String()).Manager_ID.UUID {
 												<select name="ticket_type" class="uk-select text-zinc-50">
-													if newTicket.Type == "Request" {
+													if new_ticket.Type == "Request" {
 														<option value="Request" selected>Request</option>
 														<option value="Incident">Incident</option>
-													} else if newTicket.Type == "Incident" {
+													} else if new_ticket.Type == "Incident" {
 														<option value="Request">Request</option>
 														<option value="Incident" selected>Incident</option>
 													} else {
@@ -143,10 +143,10 @@ templ TicketForm(ticket models.Ticket, currentUser models.Analyst, userType stri
 											}
 										} else {
 											<select name="ticket_type" class="uk-select text-zinc-50">
-												if newTicket.Type == "Request" {
+												if new_ticket.Type == "Request" {
 													<option value="Request" selected>Request</option>
 													<option value="Incident">Incident</option>
-												} else if newTicket.Type == "Incident" {
+												} else if new_ticket.Type == "Incident" {
 													<option value="Request">Request</option>
 													<option value="Incident" selected>Incident</option>
 												} else {
@@ -170,12 +170,12 @@ templ TicketForm(ticket models.Ticket, currentUser models.Analyst, userType stri
 									<input disabled name="customer_contact" class="uk-input text-zinc-50 text-base" type="text" value={ ticket.Customer_Contact } required/>
 								} else {
 									if mode == "create" {
-										<input name="customer_contact" class="uk-input text-zinc-50 text-base" type="text" value={ newTicket.Customer_Contact } required/>
+										<input name="customer_contact" class="uk-input text-zinc-50 text-base" type="text" value={ new_ticket.Customer_Contact } required/>
 									} else if mode == "update" {
-										if ticket.Assigned_Analyst.UUID != currentUser.Analyst_ID {
-											if currentUser.Analyst_ID == models.GetTeam(ticket.Assigned_Team.UUID.String()).Manager_ID.UUID {
-												if newTicket.Customer_Contact != "" {
-													<input name="customer_contact" class="uk-input text-zinc-50 text-base" type="text" value={ newTicket.Customer_Contact } required/>
+										if ticket.Assigned_Analyst.UUID != current_user.Analyst_ID {
+											if current_user.Analyst_ID == models.GetTeam(ticket.Assigned_Team.UUID.String()).Manager_ID.UUID {
+												if new_ticket.Customer_Contact != "" {
+													<input name="customer_contact" class="uk-input text-zinc-50 text-base" type="text" value={ new_ticket.Customer_Contact } required/>
 												} else {
 													<input name="customer_contact" class="uk-input text-zinc-50 text-base" type="text" value={ ticket.Customer_Contact } required/>
 												}
@@ -183,8 +183,8 @@ templ TicketForm(ticket models.Ticket, currentUser models.Analyst, userType stri
 												<input disabled name="customer_contact" class="uk-input text-zinc-50 text-base" type="text" value={ ticket.Customer_Contact } required/>
 											}
 										} else {
-											if newTicket.Customer_Contact != "" {
-												<input name="customer_contact" class="uk-input text-zinc-50 text-base" type="text" value={ newTicket.Customer_Contact } required/>
+											if new_ticket.Customer_Contact != "" {
+												<input name="customer_contact" class="uk-input text-zinc-50 text-base" type="text" value={ new_ticket.Customer_Contact } required/>
 											} else {
 												<input name="customer_contact" class="uk-input text-zinc-50 text-base" type="text" value={ ticket.Customer_Contact } required/>
 											}
@@ -199,7 +199,7 @@ templ TicketForm(ticket models.Ticket, currentUser models.Analyst, userType stri
 								if ticket.Status == "Closed" {
 									<select disabled name="category" class="uk-select text-zinc-50">
 										for _, category := range models.GetAllCategories() {
-											if newTicket.Category.UUID == category.Category_ID {
+											if new_ticket.Category.UUID == category.Category_ID {
 												<option value={ category.Category_ID.String() } selected>{ category.Category_Name }</option>
 											} else {
 												<option value={ category.Category_ID.String() }>{ category.Category_Name }</option>
@@ -208,11 +208,11 @@ templ TicketForm(ticket models.Ticket, currentUser models.Analyst, userType stri
 									</select>
 								} else {
 									if mode == "create" {
-										if categoryError == "" {
+										if category_error == "" {
 											<select name="category" class="uk-select text-zinc-50" hx-get="/subcategories/get/select" hx-target="#subcategories" hx-swap="outerHTML" hx-trigger="change">
 												<option value="none">Select...</option>
 												for _, category := range models.GetAllCategories() {
-													if newTicket.Category.UUID == category.Category_ID {
+													if new_ticket.Category.UUID == category.Category_ID {
 														<option value={ category.Category_ID.String() } selected>{ category.Category_Name }</option>
 													} else {
 														<option value={ category.Category_ID.String() }>{ category.Category_Name }</option>
@@ -223,23 +223,23 @@ templ TicketForm(ticket models.Ticket, currentUser models.Analyst, userType stri
 											<select name="category" class="uk-select text-zinc-50 border border-red-600" hx-get="/subcategories/get/select" hx-target="#subcategories" hx-swap="outerHTML" hx-trigger="change">
 												<option value="none">Select...</option>
 												for _, category := range models.GetAllCategories() {
-													if newTicket.Category.UUID == category.Category_ID {
+													if new_ticket.Category.UUID == category.Category_ID {
 														<option value={ category.Category_ID.String() } selected>{ category.Category_Name }</option>
 													} else {
 														<option value={ category.Category_ID.String() }>{ category.Category_Name }</option>
 													}
 												}
 											</select>
-											<label class="text-red-600">{ categoryError }</label>
+											<label class="text-red-600">{ category_error }</label>
 										}
 									} else if mode == "update" {
-										if ticket.Assigned_Analyst.UUID != currentUser.Analyst_ID {
-											if currentUser.Analyst_ID == models.GetTeam(ticket.Assigned_Team.UUID.String()).Manager_ID.UUID {
-												if categoryError == "" {
+										if ticket.Assigned_Analyst.UUID != current_user.Analyst_ID {
+											if current_user.Analyst_ID == models.GetTeam(ticket.Assigned_Team.UUID.String()).Manager_ID.UUID {
+												if category_error == "" {
 													<select name="category" class="uk-select text-zinc-50" hx-get="/subcategories/get/select" hx-target="#subcategories" hx-swap="outerHTML" hx-trigger="change">
 														<option value="none">Select...</option>
 														for _, category := range models.GetAllCategories() {
-															if newTicket.Category.UUID == category.Category_ID {
+															if new_ticket.Category.UUID == category.Category_ID {
 																<option value={ category.Category_ID.String() } selected>{ category.Category_Name }</option>
 															} else {
 																if ticket.Category.UUID == category.Category_ID {
@@ -254,7 +254,7 @@ templ TicketForm(ticket models.Ticket, currentUser models.Analyst, userType stri
 													<select name="category" class="uk-select text-zinc-50 border border-red-600" hx-get="/subcategories/get/select" hx-target="#subcategories" hx-swap="outerHTML" hx-trigger="change">
 														<option value="none">Select...</option>
 														for _, category := range models.GetAllCategories() {
-															if newTicket.Category.UUID == category.Category_ID {
+															if new_ticket.Category.UUID == category.Category_ID {
 																<option value={ category.Category_ID.String() } selected>{ category.Category_Name }</option>
 															} else {
 																if ticket.Category.UUID == category.Category_ID {
@@ -265,12 +265,12 @@ templ TicketForm(ticket models.Ticket, currentUser models.Analyst, userType stri
 															}
 														}
 													</select>
-													<label class="text-red-600">{ categoryError }</label>
+													<label class="text-red-600">{ category_error }</label>
 												}
 											} else {
 												<select disabled name="category" class="uk-select text-zinc-50" hx-get="/subcategories/get/select" hx-target="#subcategories" hx-swap="outerHTML" hx-trigger="change">
 													for _, category := range models.GetAllCategories() {
-														if newTicket.Category.UUID == category.Category_ID {
+														if new_ticket.Category.UUID == category.Category_ID {
 															<option value={ category.Category_ID.String() } selected>{ category.Category_Name }</option>
 														} else {
 															if ticket.Category.UUID == category.Category_ID {
@@ -283,11 +283,11 @@ templ TicketForm(ticket models.Ticket, currentUser models.Analyst, userType stri
 												</select>
 											}
 										} else {
-											if categoryError == "" {
+											if category_error == "" {
 												<select name="category" class="uk-select text-zinc-50" hx-get="/subcategories/get/select" hx-target="#subcategories" hx-swap="outerHTML" hx-trigger="change">
 													<option value="none">Select...</option>
 													for _, category := range models.GetAllCategories() {
-														if newTicket.Category.UUID == category.Category_ID {
+														if new_ticket.Category.UUID == category.Category_ID {
 															<option value={ category.Category_ID.String() } selected>{ category.Category_Name }</option>
 														} else {
 															if ticket.Category.UUID == category.Category_ID {
@@ -302,7 +302,7 @@ templ TicketForm(ticket models.Ticket, currentUser models.Analyst, userType stri
 												<select name="category" class="uk-select text-zinc-50 border border-red-600" hx-get="/subcategories/get/select" hx-target="#subcategories" hx-swap="outerHTML" hx-trigger="change">
 													<option value="none">Select...</option>
 													for _, category := range models.GetAllCategories() {
-														if newTicket.Category.UUID == category.Category_ID {
+														if new_ticket.Category.UUID == category.Category_ID {
 															<option value={ category.Category_ID.String() } selected>{ category.Category_Name }</option>
 														} else {
 															if ticket.Category.UUID == category.Category_ID {
@@ -313,7 +313,7 @@ templ TicketForm(ticket models.Ticket, currentUser models.Analyst, userType stri
 														}
 													}
 												</select>
-												<label class="text-red-600">{ categoryError }</label>
+												<label class="text-red-600">{ category_error }</label>
 											}
 										}
 									}
@@ -334,11 +334,11 @@ templ TicketForm(ticket models.Ticket, currentUser models.Analyst, userType stri
 									</select>
 								} else {
 									if mode == "create" {
-										if subcategoryError == "" {
-											if newTicket.Category.UUID != uuid.Nil {
+										if subcategory_error == "" {
+											if new_ticket.Category.UUID != uuid.Nil {
 												<select name="subcategory" class="uk-select text-zinc-50" id="subcategories">
 													for _, subcategory := range models.GetSubcategories(ticket.Category.UUID.String()) {
-														if newTicket.Subcategory.UUID == subcategory.Subcategory_ID {
+														if new_ticket.Subcategory.UUID == subcategory.Subcategory_ID {
 															<option value={ subcategory.Subcategory_ID.String() } selected>{ subcategory.Subcategory_Name }</option>
 														} else {
 															if ticket.Subcategory.UUID == subcategory.Subcategory_ID {
@@ -355,10 +355,10 @@ templ TicketForm(ticket models.Ticket, currentUser models.Analyst, userType stri
 												</select>
 											}
 										} else {
-											if newTicket.Category.UUID != uuid.Nil {
+											if new_ticket.Category.UUID != uuid.Nil {
 												<select name="subcategory" class="uk-select text-zinc-50 border border-red-600" id="subcategories">
 													for _, subcategory := range models.GetSubcategories(ticket.Category.UUID.String()) {
-														if newTicket.Subcategory.UUID == subcategory.Subcategory_ID {
+														if new_ticket.Subcategory.UUID == subcategory.Subcategory_ID {
 															<option value={ subcategory.Subcategory_ID.String() } selected>{ subcategory.Subcategory_Name }</option>
 														} else {
 															if ticket.Subcategory.UUID == subcategory.Subcategory_ID {
@@ -369,21 +369,21 @@ templ TicketForm(ticket models.Ticket, currentUser models.Analyst, userType stri
 														}
 													}
 												</select>
-												<label class="text-red-600">{ subcategoryError }</label>
+												<label class="text-red-600">{ subcategory_error }</label>
 											} else {
 												<select name="subcategory" class="uk-select text-zinc-50 border border-red-600" id="subcategories" disabled>
 													<option value="none">Please select category</option>
 												</select>
-												<label class="text-red-600">{ subcategoryError }</label>
+												<label class="text-red-600">{ subcategory_error }</label>
 											}
 										}
 									} else if mode == "update" {
-										if ticket.Assigned_Analyst.UUID != currentUser.Analyst_ID {
-											if currentUser.Analyst_ID == models.GetTeam(ticket.Assigned_Team.UUID.String()).Manager_ID.UUID {
-												if subcategoryError == "" {
+										if ticket.Assigned_Analyst.UUID != current_user.Analyst_ID {
+											if current_user.Analyst_ID == models.GetTeam(ticket.Assigned_Team.UUID.String()).Manager_ID.UUID {
+												if subcategory_error == "" {
 													<select name="subcategory" class="uk-select text-zinc-50" id="subcategories">
 														for _, subcategory := range models.GetSubcategories(ticket.Category.UUID.String()) {
-															if newTicket.Subcategory.UUID == subcategory.Subcategory_ID {
+															if new_ticket.Subcategory.UUID == subcategory.Subcategory_ID {
 																<option value={ subcategory.Subcategory_ID.String() } selected>{ subcategory.Subcategory_Name }</option>
 															} else {
 																if ticket.Subcategory.UUID == subcategory.Subcategory_ID {
@@ -397,7 +397,7 @@ templ TicketForm(ticket models.Ticket, currentUser models.Analyst, userType stri
 												} else {
 													<select name="subcategory" class="uk-select text-zinc-50 border border-red-600" id="subcategories">
 														for _, subcategory := range models.GetSubcategories(ticket.Category.UUID.String()) {
-															if newTicket.Subcategory.UUID == subcategory.Subcategory_ID {
+															if new_ticket.Subcategory.UUID == subcategory.Subcategory_ID {
 																<option value={ subcategory.Subcategory_ID.String() } selected>{ subcategory.Subcategory_Name }</option>
 															} else {
 																if ticket.Subcategory.UUID == subcategory.Subcategory_ID {
@@ -408,7 +408,7 @@ templ TicketForm(ticket models.Ticket, currentUser models.Analyst, userType stri
 															}
 														}
 													</select>
-													<label class="text-red-600">{ subcategoryError }</label>
+													<label class="text-red-600">{ subcategory_error }</label>
 												}
 											} else {
 												<select disabled name="subcategory" class="uk-select text-zinc-50" id="subcategories">
@@ -422,10 +422,10 @@ templ TicketForm(ticket models.Ticket, currentUser models.Analyst, userType stri
 												</select>
 											}
 										} else {
-											if subcategoryError == "" {
+											if subcategory_error == "" {
 												<select name="subcategory" class="uk-select text-zinc-50" id="subcategories">
 													for _, subcategory := range models.GetSubcategories(ticket.Category.UUID.String()) {
-														if newTicket.Subcategory.UUID == subcategory.Subcategory_ID {
+														if new_ticket.Subcategory.UUID == subcategory.Subcategory_ID {
 															<option value={ subcategory.Subcategory_ID.String() } selected>{ subcategory.Subcategory_Name }</option>
 														} else {
 															if ticket.Subcategory.UUID == subcategory.Subcategory_ID {
@@ -439,7 +439,7 @@ templ TicketForm(ticket models.Ticket, currentUser models.Analyst, userType stri
 											} else {
 												<select name="subcategory" class="uk-select text-zinc-50 border border-red-600" id="subcategories">
 													for _, subcategory := range models.GetSubcategories(ticket.Category.UUID.String()) {
-														if newTicket.Subcategory.UUID == subcategory.Subcategory_ID {
+														if new_ticket.Subcategory.UUID == subcategory.Subcategory_ID {
 															<option value={ subcategory.Subcategory_ID.String() } selected>{ subcategory.Subcategory_Name }</option>
 														} else {
 															if ticket.Subcategory.UUID == subcategory.Subcategory_ID {
@@ -450,7 +450,7 @@ templ TicketForm(ticket models.Ticket, currentUser models.Analyst, userType stri
 														}
 													}
 												</select>
-												<label class="text-red-600">{ subcategoryError }</label>
+												<label class="text-red-600">{ subcategory_error }</label>
 											}
 										}
 									}
@@ -463,12 +463,12 @@ templ TicketForm(ticket models.Ticket, currentUser models.Analyst, userType stri
 								<input disabled name="title" class="uk-input text-zinc-50 text-base" type="text" value={ ticket.Title } required/>
 							} else {
 								if mode == "create" {
-									<input name="title" class="uk-input text-zinc-50 text-base" type="text" value={ newTicket.Title } required/>
+									<input name="title" class="uk-input text-zinc-50 text-base" type="text" value={ new_ticket.Title } required/>
 								} else if mode == "update" {
-									if ticket.Assigned_Analyst.UUID != currentUser.Analyst_ID {
-										if currentUser.Analyst_ID == models.GetTeam(ticket.Assigned_Team.UUID.String()).Manager_ID.UUID {
-											if newTicket.Title != "" {
-												<input name="title" class="uk-input text-zinc-50 text-base" type="text" value={ newTicket.Title } required/>
+									if ticket.Assigned_Analyst.UUID != current_user.Analyst_ID {
+										if current_user.Analyst_ID == models.GetTeam(ticket.Assigned_Team.UUID.String()).Manager_ID.UUID {
+											if new_ticket.Title != "" {
+												<input name="title" class="uk-input text-zinc-50 text-base" type="text" value={ new_ticket.Title } required/>
 											} else {
 												<input name="title" class="uk-input text-zinc-50 text-base" type="text" value={ ticket.Title } required/>
 											}
@@ -476,8 +476,8 @@ templ TicketForm(ticket models.Ticket, currentUser models.Analyst, userType stri
 											<input disabled name="title" class="uk-input text-zinc-50 text-base" type="text" value={ ticket.Title } required/>
 										}
 									} else {
-										if newTicket.Title != "" {
-											<input name="title" class="uk-input text-zinc-50 text-base" type="text" value={ newTicket.Title } required/>
+										if new_ticket.Title != "" {
+											<input name="title" class="uk-input text-zinc-50 text-base" type="text" value={ new_ticket.Title } required/>
 										} else {
 											<input name="title" class="uk-input text-zinc-50 text-base" type="text" value={ ticket.Title } required/>
 										}
@@ -491,12 +491,12 @@ templ TicketForm(ticket models.Ticket, currentUser models.Analyst, userType stri
 								<textarea disabled name="desc" class="uk-textarea font-mono text-zinc-50 text-base" rows="10">{ ticket.Description }</textarea>
 							} else {
 								if mode == "create" {
-									<textarea name="desc" class="uk-textarea font-mono text-zinc-50 text-base" rows="10">{ newTicket.Description }</textarea>
+									<textarea name="desc" class="uk-textarea font-mono text-zinc-50 text-base" rows="10">{ new_ticket.Description }</textarea>
 								} else if mode == "update" {
-									if ticket.Assigned_Analyst.UUID != currentUser.Analyst_ID {
-										if currentUser.Analyst_ID == models.GetTeam(ticket.Assigned_Team.UUID.String()).Manager_ID.UUID {
-											if newTicket.Description != "" {
-												<textarea name="desc" class="uk-textarea font-mono text-zinc-50 text-base" rows="10">{ newTicket.Description }</textarea>
+									if ticket.Assigned_Analyst.UUID != current_user.Analyst_ID {
+										if current_user.Analyst_ID == models.GetTeam(ticket.Assigned_Team.UUID.String()).Manager_ID.UUID {
+											if new_ticket.Description != "" {
+												<textarea name="desc" class="uk-textarea font-mono text-zinc-50 text-base" rows="10">{ new_ticket.Description }</textarea>
 											} else {
 												<textarea name="desc" class="uk-textarea font-mono text-zinc-50 text-base" rows="10">{ ticket.Description }</textarea>
 											}
@@ -504,8 +504,8 @@ templ TicketForm(ticket models.Ticket, currentUser models.Analyst, userType stri
 											<textarea disabled name="desc" class="uk-textarea font-mono text-zinc-50 text-base" rows="10">{ ticket.Description }</textarea>
 										}
 									} else {
-										if newTicket.Description != "" {
-											<textarea name="desc" class="uk-textarea font-mono text-zinc-50 text-base" rows="10">{ newTicket.Description }</textarea>
+										if new_ticket.Description != "" {
+											<textarea name="desc" class="uk-textarea font-mono text-zinc-50 text-base" rows="10">{ new_ticket.Description }</textarea>
 										} else {
 											<textarea name="desc" class="uk-textarea font-mono text-zinc-50 text-base" rows="10">{ ticket.Description }</textarea>
 										}

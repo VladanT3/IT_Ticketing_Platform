@@ -35,6 +35,10 @@ func main() {
 	router.Get("/ticket/{ticket_id}/reopen/form", handlers.Make(handlers.ShowTicketReopenForm))
 	router.Post("/ticket/{ticket_id}/reopen", handlers.Make(handlers.ReopenTicket))
 	router.Get("/ticket/{ticket_id}/reopen/history", handlers.Make(handlers.ShowTicketReopenHistory))
+	//TODO: assignment history
+	router.Get("/ticket/{ticket_id}/assign/form", handlers.Make(handlers.ShowTicketAssignmentForm))
+	router.Post("/ticket/{ticket_id}/assign", handlers.Make(handlers.AssignTicket))
+	router.Get("/ticket/{ticket_id}/assign/history", handlers.Make(handlers.ShowTicketAssignmentHistory))
 
 	router.Get("/tickets/search", handlers.Make(handlers.ShowAllTicketSearch))
 	router.Get("/tickets/team", handlers.Make(handlers.ShowTeamTickets))
@@ -57,6 +61,9 @@ func main() {
 	router.Post("/subcategory/create", handlers.Make(handlers.CreateSubcategory))
 	router.Put("/subcategory/update/{subcategory_id}", handlers.Make(handlers.UpdateSubcategory))
 	router.Delete("/subcategory/delete/{subcategory_id}", handlers.Make(handlers.DeleteSubcategory))
+
+	router.Get("/team/analysts", handlers.Make(handlers.GetTeamsAnalysts))
+	router.Get("/analyst/team", handlers.Make(handlers.GetAnalystsTeam))
 
 	router.Get("/error", handlers.Make(handlers.ShowError))
 

@@ -441,3 +441,21 @@ func ShowTicketReopenHistory(w http.ResponseWriter, r *http.Request) error {
 
 	return Render(w, r, tickets.ReopenHistory(LoggedInUserType, reopens, ticket_id))
 }
+
+func ShowTicketAssignmentForm(w http.ResponseWriter, r *http.Request) error {
+	ticket_id := chi.URLParam("ticket_id")
+
+	return Render(w, r, tickets.AssignmentForm())
+}
+
+func AssignTicket(w http.ResponseWriter, r *http.Request) error {
+	ticket_id := chi.URLParam("ticket_id")
+
+	return nil
+}
+
+func ShowTicketAssignmentHistory(w http.ResponseWriter, r *http.Request) error {
+	ticket_id := chi.URLParam("ticket_id")
+
+	return nil
+}

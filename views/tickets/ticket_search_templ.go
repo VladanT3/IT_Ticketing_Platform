@@ -13,7 +13,7 @@ import (
 	"github.com/VladanT3/IT_Ticketing_Platform/views/layouts"
 )
 
-func TicketSearch(currentUser models.Analyst, userType string, searchType string) templ.Component {
+func TicketSearch(current_user models.Analyst, user_type string, search_type string) templ.Component {
 	return templruntime.GeneratedTemplate(func(templ_7745c5c3_Input templruntime.GeneratedComponentInput) (templ_7745c5c3_Err error) {
 		templ_7745c5c3_W, ctx := templ_7745c5c3_Input.Writer, templ_7745c5c3_Input.Context
 		templ_7745c5c3_Buffer, templ_7745c5c3_IsBuffer := templruntime.GetBuffer(templ_7745c5c3_W)
@@ -48,9 +48,9 @@ func TicketSearch(currentUser models.Analyst, userType string, searchType string
 				return templ_7745c5c3_Err
 			}
 			var templ_7745c5c3_Var3 string
-			templ_7745c5c3_Var3, templ_7745c5c3_Err = templ.JoinStringErrs(searchType)
+			templ_7745c5c3_Var3, templ_7745c5c3_Err = templ.JoinStringErrs(search_type)
 			if templ_7745c5c3_Err != nil {
-				return templ.Error{Err: templ_7745c5c3_Err, FileName: `views/tickets/ticket_search.templ`, Line: 12, Col: 42}
+				return templ.Error{Err: templ_7745c5c3_Err, FileName: `views/tickets/ticket_search.templ`, Line: 12, Col: 43}
 			}
 			_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString(templ.EscapeString(templ_7745c5c3_Var3))
 			if templ_7745c5c3_Err != nil {
@@ -61,9 +61,9 @@ func TicketSearch(currentUser models.Analyst, userType string, searchType string
 				return templ_7745c5c3_Err
 			}
 			var templ_7745c5c3_Var4 string
-			templ_7745c5c3_Var4, templ_7745c5c3_Err = templ.JoinStringErrs(searchType)
+			templ_7745c5c3_Var4, templ_7745c5c3_Err = templ.JoinStringErrs(search_type)
 			if templ_7745c5c3_Err != nil {
-				return templ.Error{Err: templ_7745c5c3_Err, FileName: `views/tickets/ticket_search.templ`, Line: 18, Col: 64}
+				return templ.Error{Err: templ_7745c5c3_Err, FileName: `views/tickets/ticket_search.templ`, Line: 18, Col: 65}
 			}
 			_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString(templ.EscapeString(templ_7745c5c3_Var4))
 			if templ_7745c5c3_Err != nil {
@@ -109,18 +109,18 @@ func TicketSearch(currentUser models.Analyst, userType string, searchType string
 			if templ_7745c5c3_Err != nil {
 				return templ_7745c5c3_Err
 			}
-			if searchType == "All Ticket Search" {
+			if search_type == "All Ticket Search" {
 				templ_7745c5c3_Err = Tickets(models.GetAllTickets()).Render(ctx, templ_7745c5c3_Buffer)
 				if templ_7745c5c3_Err != nil {
 					return templ_7745c5c3_Err
 				}
-			} else if searchType == "Unassigned Tickets" {
-				templ_7745c5c3_Err = Tickets(models.GetTeamsUnassignedTickets(currentUser.Team_ID.UUID.String())).Render(ctx, templ_7745c5c3_Buffer)
+			} else if search_type == "Unassigned Tickets" {
+				templ_7745c5c3_Err = Tickets(models.GetTeamsUnassignedTickets(current_user.Team_ID.UUID.String())).Render(ctx, templ_7745c5c3_Buffer)
 				if templ_7745c5c3_Err != nil {
 					return templ_7745c5c3_Err
 				}
-			} else if searchType == "Team Tickets" && userType == "manager" {
-				templ_7745c5c3_Err = Tickets(models.GetTeamTickets(currentUser.Team_ID.UUID.String())).Render(ctx, templ_7745c5c3_Buffer)
+			} else if search_type == "Team Tickets" && user_type == "manager" {
+				templ_7745c5c3_Err = Tickets(models.GetTeamTickets(current_user.Team_ID.UUID.String())).Render(ctx, templ_7745c5c3_Buffer)
 				if templ_7745c5c3_Err != nil {
 					return templ_7745c5c3_Err
 				}
@@ -131,7 +131,7 @@ func TicketSearch(currentUser models.Analyst, userType string, searchType string
 			}
 			return templ_7745c5c3_Err
 		})
-		templ_7745c5c3_Err = layouts.Navbar(userType).Render(templ.WithChildren(ctx, templ_7745c5c3_Var2), templ_7745c5c3_Buffer)
+		templ_7745c5c3_Err = layouts.Navbar(user_type).Render(templ.WithChildren(ctx, templ_7745c5c3_Var2), templ_7745c5c3_Buffer)
 		if templ_7745c5c3_Err != nil {
 			return templ_7745c5c3_Err
 		}

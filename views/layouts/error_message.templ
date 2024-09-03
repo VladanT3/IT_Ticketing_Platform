@@ -1,8 +1,8 @@
 package layouts
 
-templ ErrorMessage(userType string, errMsg string) {
-	if userType != "" {
-		@Navbar(userType) {
+templ ErrorMessage(user_type string, err_msg string) {
+	if user_type != "" {
+		@Navbar(user_type) {
 			<div class="container mx-auto mt-5">
 				<div class="grid grid-rows-5">
 					<div></div>
@@ -10,7 +10,7 @@ templ ErrorMessage(userType string, errMsg string) {
 					<div class="grid grid-cols-3">
 						<div></div>
 						<div class="border-2 border-red-600 rounded-lg p-10 bg-red-400 flex flex-col">
-							<span class="text-zinc-900 self-center font-bold">{ errMsg }</span>
+							<span class="text-zinc-900 self-center font-bold">{ err_msg }</span>
 						</div>
 						<div></div>
 					</div>
@@ -29,7 +29,7 @@ templ ErrorMessage(userType string, errMsg string) {
 				<div class="grid grid-cols-3">
 					<div></div>
 					<div class="border-2 border-red-600 rounded-lg p-10 bg-red-400 flex flex-col">
-						<span class="text-zinc-900 self-center font-bold">{ errMsg }</span>
+						<span class="text-zinc-900 self-center font-bold">{ err_msg }</span>
 					</div>
 					<div></div>
 				</div>

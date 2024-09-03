@@ -10,7 +10,7 @@ import templruntime "github.com/a-h/templ/runtime"
 
 import "github.com/VladanT3/IT_Ticketing_Platform/views/layouts"
 
-func Login(emailErr string, passErr string, email string, pass string) templ.Component {
+func Login(email_err string, pass_err string, email string, pass string) templ.Component {
 	return templruntime.GeneratedTemplate(func(templ_7745c5c3_Input templruntime.GeneratedComponentInput) (templ_7745c5c3_Err error) {
 		templ_7745c5c3_W, ctx := templ_7745c5c3_Input.Writer, templ_7745c5c3_Input.Context
 		templ_7745c5c3_Buffer, templ_7745c5c3_IsBuffer := templruntime.GetBuffer(templ_7745c5c3_W)
@@ -44,7 +44,7 @@ func Login(emailErr string, passErr string, email string, pass string) templ.Com
 			if templ_7745c5c3_Err != nil {
 				return templ_7745c5c3_Err
 			}
-			if emailErr == "" {
+			if email_err == "" {
 				_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString("<input class=\"uk-input text-zinc-50 text-base\" type=\"email\" name=\"email\" value=\"")
 				if templ_7745c5c3_Err != nil {
 					return templ_7745c5c3_Err
@@ -62,7 +62,7 @@ func Login(emailErr string, passErr string, email string, pass string) templ.Com
 				if templ_7745c5c3_Err != nil {
 					return templ_7745c5c3_Err
 				}
-			} else if emailErr != "" {
+			} else if email_err != "" {
 				_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString("<input class=\"uk-input text-zinc-50 text-base border border-red-600\" type=\"email\" name=\"email\" value=\"")
 				if templ_7745c5c3_Err != nil {
 					return templ_7745c5c3_Err
@@ -81,9 +81,9 @@ func Login(emailErr string, passErr string, email string, pass string) templ.Com
 					return templ_7745c5c3_Err
 				}
 				var templ_7745c5c3_Var5 string
-				templ_7745c5c3_Var5, templ_7745c5c3_Err = templ.JoinStringErrs(emailErr)
+				templ_7745c5c3_Var5, templ_7745c5c3_Err = templ.JoinStringErrs(email_err)
 				if templ_7745c5c3_Err != nil {
-					return templ.Error{Err: templ_7745c5c3_Err, FileName: `views/login/login.templ`, Line: 21, Col: 46}
+					return templ.Error{Err: templ_7745c5c3_Err, FileName: `views/login/login.templ`, Line: 21, Col: 47}
 				}
 				_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString(templ.EscapeString(templ_7745c5c3_Var5))
 				if templ_7745c5c3_Err != nil {
@@ -98,7 +98,7 @@ func Login(emailErr string, passErr string, email string, pass string) templ.Com
 			if templ_7745c5c3_Err != nil {
 				return templ_7745c5c3_Err
 			}
-			if passErr == "" {
+			if pass_err == "" {
 				_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString("<input class=\"uk-input text-zinc-50 text-base\" id=\"passInput\" type=\"password\" name=\"password\" value=\"")
 				if templ_7745c5c3_Err != nil {
 					return templ_7745c5c3_Err
@@ -116,7 +116,7 @@ func Login(emailErr string, passErr string, email string, pass string) templ.Com
 				if templ_7745c5c3_Err != nil {
 					return templ_7745c5c3_Err
 				}
-			} else if passErr != "" {
+			} else if pass_err != "" {
 				_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString("<input class=\"uk-input text-zinc-50 text-base border border-red-600\" id=\"passInput\" type=\"password\" name=\"password\" value=\"")
 				if templ_7745c5c3_Err != nil {
 					return templ_7745c5c3_Err
@@ -135,9 +135,9 @@ func Login(emailErr string, passErr string, email string, pass string) templ.Com
 					return templ_7745c5c3_Err
 				}
 				var templ_7745c5c3_Var8 string
-				templ_7745c5c3_Var8, templ_7745c5c3_Err = templ.JoinStringErrs(passErr)
+				templ_7745c5c3_Var8, templ_7745c5c3_Err = templ.JoinStringErrs(pass_err)
 				if templ_7745c5c3_Err != nil {
-					return templ.Error{Err: templ_7745c5c3_Err, FileName: `views/login/login.templ`, Line: 28, Col: 45}
+					return templ.Error{Err: templ_7745c5c3_Err, FileName: `views/login/login.templ`, Line: 28, Col: 46}
 				}
 				_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString(templ.EscapeString(templ_7745c5c3_Var8))
 				if templ_7745c5c3_Err != nil {

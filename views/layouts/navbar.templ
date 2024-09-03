@@ -1,11 +1,11 @@
 package layouts
 
-templ Navbar(userType string) {
-	if userType == "analyst" {
+templ Navbar(user_type string) {
+	if user_type == "analyst" {
 		@Analyst_Nav() {
 			{ children... }
 		}
-	} else if userType == "manager" {
+	} else if user_type == "manager" {
 		@Manager_Nav() {
 			{ children... }
 		}
