@@ -1,0 +1,44 @@
+package tickets
+
+import "github.com/VladanT3/IT_Ticketing_Platform/views/layouts"
+import "github.com/VladanT3/IT_Ticketing_Platform/models"
+
+templ AssignmentHistory(user_type string, ticket_id string, assignments []models.AssignmentHistory) {
+	@layouts.Navbar(user_type) {
+		<div class="container mx-auto mt-5 flex flex-col">
+			<div class="grid grid-cols-5">
+				<div class="col-span-1 grid grid-cols-5">
+					<div class="col-span-4 flex flex-col">
+						<a href={ "/ticket/" + templ.SafeURL(ticket_id) } class="uk-button uk-width-1-1 bg-zinc-50 text-zinc-900 border border-zinc-50 hover:bg-zinc-900 hover:text-zinc-50 mt-3">Go Back</a>
+						<a href="/profile" class="uk-button uk-width-1-1 bg-zinc-50 text-zinc-900 border border-zinc-50 hover:bg-zinc-900 hover:text-zinc-50 mt-3">Exit</a>
+					</div>
+					<div class="uk-divider-vertical min-h-full"></div>
+				</div>
+				<div class="col-span-4 flex flex-col">
+					for _, assignment := range assignments {
+						<div class="flex flex-col">
+							<div class="grid grid-cols-5">
+								<div class="col-span-1 flex flex-col">
+									<label>Assigned from: </label>
+									<label>Assigned to: </label>
+									<label>Date: </label>
+								</div>
+								<div class="col-span-4 flex flex-col">
+									<label class="font-bold">{ models.GetAnalyst(assignment.Assigned_From.UUID.String()).First_Name + " " + models.GetAnalyst(assignment.Assigned_From.UUID.String()).Last_Name }</label>
+									if assignment.Assigned_to_Analyst.Valid {
+										<label class="font-bold">{ models.GetTeam(assignment.Assigned_to_Team.UUID.String()).Team_Name } / { models.GetAnalyst(assignment.Assigned_to_Analyst.UUID.String()).First_Name + " " + models.GetAnalyst(assignment.Assigned_to_Analyst.UUID.String()).Last_Name }</label>
+									} else {
+										<label class="font-bold">{ models.GetTeam(assignment.Assigned_to_Team.UUID.String()).Team_Name }</label>
+									}
+									<label>{ assignment.Assignment_Date.Format("Mon 02/01 15:04 2006.") }</label>
+								</div>
+							</div>
+							<textarea readonly rows="10" class="uk-textarea font-mono text-zinc-50 text-base">{ assignment.Assignment_Message }</textarea>
+						</div>
+						<hr style="margin-top: 2rem; margin-bottom: 1rem;"/>
+					}
+				</div>
+			</div>
+		</div>
+	}
+}

@@ -5,6 +5,6 @@ import "github.com/VladanT3/IT_Ticketing_Platform/models"
 templ SelectAnalyst(analysts []models.Analyst) {
 	<option value="none"></option>
 	for _, analyst := range analysts {
-		<option value={ analyst.Analyst_ID.String() }>{ analyst.First_Name + " " + analyst.Last_Name }</option>
+		<option id="analyst" value={ analyst.Analyst_ID.String() }>{ analyst.First_Name + " " + analyst.Last_Name }</option>
 	}
 }

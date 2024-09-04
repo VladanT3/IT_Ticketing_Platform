@@ -443,19 +443,68 @@ func ShowTicketReopenHistory(w http.ResponseWriter, r *http.Request) error {
 }
 
 func ShowTicketAssignmentForm(w http.ResponseWriter, r *http.Request) error {
-	ticket_id := chi.URLParam("ticket_id")
+	ticket_id := chi.URLParam(r, "ticket_id")
 
-	return Render(w, r, tickets.AssignmentForm())
+	ticket, err := models.GetTicket(ticket_id)
+	if err != nil {
+		err_msg := "Internal server error:\nerror getting ticket for assignment: " + err.Error()
+		return Render(w, r, layouts.ErrorMessage(LoggedInUserType, err_msg))
+	}
+
+	return Render(w, r, tickets.AssignmentForm(LoggedInUserType, ticket, false, "", ""))
 }
 
 func AssignTicket(w http.ResponseWriter, r *http.Request) error {
-	ticket_id := chi.URLParam("ticket_id")
+	ticket_id := chi.URLParam(r, "ticket_id")
+	assign_to_analyst := r.FormValue("analyst")
+	assign_to_team := r.FormValue("team")
+	message := r.FormValue("message")
 
-	return nil
+	ticket, err := models.GetTicket(ticket_id)
+	if err != nil {
+		err_msg := "Internal server error:\nerror getting ticket for assignment: " + err.Error()
+		return Render(w, r, layouts.ErrorMessage(LoggedInUserType, err_msg))
+	}
+
+	if assign_to_team == "none" {
+		return Render(w, r, tickets.AssignmentForm(LoggedInUserType, ticket, true, assign_to_team, assign_to_analyst))
+	}
+
+	err = models.AssignTicket(ticket_id, LoggedInUser.Analyst_ID.String(), assign_to_analyst, assign_to_team, message)
+	if err != nil {
+		err_msg := "Internal server error:\nerror assigning ticket: " + err.Error()
+		return Render(w, r, layouts.ErrorMessage(LoggedInUserType, err_msg))
+	}
+
+	return Render(w, r, tickets.TicketForm(ticket, LoggedInUser, LoggedInUserType, "update", "", "", models.Ticket{}))
 }
 
 func ShowTicketAssignmentHistory(w http.ResponseWriter, r *http.Request) error {
-	ticket_id := chi.URLParam("ticket_id")
+	ticket_id := chi.URLParam(r, "ticket_id")
 
-	return nil
+	ticket_assignments, err := models.GetAllTicketsAssignments(ticket_id)
+	if err != nil {
+		err_msg := "Internal server error:\nerror getting all ticket assignments: " + err.Error()
+		return Render(w, r, layouts.ErrorMessage(LoggedInUserType, err_msg))
+	}
+
+	return Render(w, r, tickets.AssignmentHistory(LoggedInUserType, ticket_id, ticket_assignments))
+}
+
+func AssignTicketToMe(w http.ResponseWriter, r *http.Request) error {
+	ticket_id := chi.URLParam(r, "ticket_id")
+
+	ticket, err := models.GetTicket(ticket_id)
+	if err != nil {
+		err_msg := "Internal server error:\nerror getting ticket for assignment: " + err.Error()
+		return Render(w, r, layouts.ErrorMessage(LoggedInUserType, err_msg))
+	}
+
+	err = models.AssignTicket(ticket_id, LoggedInUser.Analyst_ID.String(), LoggedInUser.Analyst_ID.String(), LoggedInUser.Team_ID.UUID.String(), "Assigned to self.")
+	if err != nil {
+		err_msg := "Internal server error:\nerror assigning ticket to self: " + err.Error()
+		return Render(w, r, layouts.ErrorMessage(LoggedInUserType, err_msg))
+	}
+
+	return Render(w, r, tickets.TicketForm(ticket, LoggedInUser, LoggedInUserType, "update", "", "", models.Ticket{}))
 }

@@ -45,9 +45,9 @@ templ TicketForm(ticket models.Ticket, current_user models.Analyst, user_type st
 							}
 							if ticket.Assigned_Analyst.UUID != current_user.Analyst_ID {
 								if !ticket.Assigned_Analyst.Valid {
-									<button type="button" class="uk-button uk-width-1-1 bg-zinc-50 text-zinc-900 border border-zinc-50 hover:bg-zinc-900 hover:text-zinc-50 mt-3">Assign to Me</button>
+									<button type="button" hx-post={ "/ticket/" + ticket.Ticket_ID.String() + "/assign/self" } class="uk-button uk-width-1-1 bg-zinc-50 text-zinc-900 border border-zinc-50 hover:bg-zinc-900 hover:text-zinc-50 mt-3">Assign to Me</button>
 								} else if current_user.Analyst_ID == models.GetTeam(ticket.Assigned_Team.UUID.String()).Manager_ID.UUID {
-									<button type="button" class="uk-button uk-width-1-1 bg-zinc-50 text-zinc-900 border border-zinc-50 hover:bg-zinc-900 hover:text-zinc-50 mt-3">Assign to Me</button>
+									<button type="button" hx-post={ "/ticket/" + ticket.Ticket_ID.String() + "/assign/self" } class="uk-button uk-width-1-1 bg-zinc-50 text-zinc-900 border border-zinc-50 hover:bg-zinc-900 hover:text-zinc-50 mt-3">Assign to Me</button>
 								}
 							}
 							if ticket.Assigned_Analyst.UUID == current_user.Analyst_ID {

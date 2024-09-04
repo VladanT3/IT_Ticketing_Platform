@@ -35,10 +35,11 @@ func main() {
 	router.Get("/ticket/{ticket_id}/reopen/form", handlers.Make(handlers.ShowTicketReopenForm))
 	router.Post("/ticket/{ticket_id}/reopen", handlers.Make(handlers.ReopenTicket))
 	router.Get("/ticket/{ticket_id}/reopen/history", handlers.Make(handlers.ShowTicketReopenHistory))
-	//TODO: assignment history
 	router.Get("/ticket/{ticket_id}/assign/form", handlers.Make(handlers.ShowTicketAssignmentForm))
 	router.Post("/ticket/{ticket_id}/assign", handlers.Make(handlers.AssignTicket))
 	router.Get("/ticket/{ticket_id}/assign/history", handlers.Make(handlers.ShowTicketAssignmentHistory))
+	router.Post("/ticket/{ticket_id}/assign/self", handlers.Make(handlers.AssignTicketToMe))
+	//TODO: need to test assignment
 
 	router.Get("/tickets/search", handlers.Make(handlers.ShowAllTicketSearch))
 	router.Get("/tickets/team", handlers.Make(handlers.ShowTeamTickets))
