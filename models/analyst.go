@@ -5,7 +5,6 @@ import (
 	"log/slog"
 
 	"github.com/VladanT3/IT_Ticketing_Platform/internal/database"
-	"github.com/VladanT3/IT_Ticketing_Platform/views/analyst"
 	"github.com/google/uuid"
 )
 

@@ -30,10 +30,10 @@ templ AssignmentHistory(user_type string, ticket_id string, assignments []models
 									} else {
 										<label class="font-bold">{ models.GetTeam(assignment.Assigned_to_Team.UUID.String()).Team_Name }</label>
 									}
-									<label>{ assignment.Assignment_Date.Format("Mon 02/01 15:04 2006.") }</label>
+									<label class="font-bold">{ assignment.Assignment_Date.Format("Mon 02/01 15:04 2006.") }</label>
 								</div>
 							</div>
-							<textarea readonly rows="10" class="uk-textarea font-mono text-zinc-50 text-base">{ assignment.Assignment_Message }</textarea>
+							<textarea readonly rows="10" class="uk-textarea font-mono text-zinc-50 text-base mt-3">{ assignment.Assignment_Message }</textarea>
 						</div>
 						<hr style="margin-top: 2rem; margin-bottom: 1rem;"/>
 					}

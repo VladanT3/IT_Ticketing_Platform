@@ -24,10 +24,12 @@ func GetTeamsAnalysts(w http.ResponseWriter, r *http.Request) error {
 }
 
 func GetAnalystsTeam(w http.ResponseWriter, r *http.Request) error {
-	analyst := r.FormValue("analyst")
+	analyst_id := r.FormValue("analyst")
 
-	if analyst == "none" {
-		//TODO: figure out how to make no changes to the team select
+	analyst := models.GetAnalyst(analyst_id)
+
+	if analyst_id == "none" {
+		return Render(w, r, team.SelectTeam(analyst))
 	} else {
 		return Render(w, r, team.SelectTeam(analyst))
 	}

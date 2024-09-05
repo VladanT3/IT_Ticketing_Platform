@@ -64,12 +64,12 @@ func AssignmentForm(user_type string, ticket models.Ticket, team_error bool, pic
 			if templ_7745c5c3_Err != nil {
 				return templ_7745c5c3_Err
 			}
-			_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString("</h1><div class=\"flex flex-row justify-between\"><div class=\"flex flex-col\"><label>Team:</label> ")
+			_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString("</h1><div class=\"flex flex-row\"><div class=\"flex flex-col\" style=\"width: 40%;\"><label>Team:</label> ")
 			if templ_7745c5c3_Err != nil {
 				return templ_7745c5c3_Err
 			}
 			if !team_error {
-				_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString("<select id=\"teams\" name=\"team\" class=\"uk-select text-zinc-50\" hx-get=\"/team/analysts\" hx-target=\"#analysts\" hx-swap=\"innerHTML\" hx-trigger=\"change\"><option value=\"none\">Select...</option> ")
+				_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString("<select id=\"teams\" name=\"team\" class=\"uk-select text-zinc-50\" style=\"width: 100%;\" hx-get=\"/team/analysts\" hx-target=\"#analysts\" hx-swap=\"innerHTML\" hx-trigger=\"change\"><option value=\"none\">Select...</option> ")
 				if templ_7745c5c3_Err != nil {
 					return templ_7745c5c3_Err
 				}
@@ -143,7 +143,7 @@ func AssignmentForm(user_type string, ticket models.Ticket, team_error bool, pic
 					return templ_7745c5c3_Err
 				}
 			} else {
-				_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString("<select id=\"teams\" name=\"team\" class=\"uk-select text-zinc-50 border border-red-600\" hx-get=\"/team/analysts\" hx-target=\"#analysts\" hx-swap=\"innerHTML\" hx-trigger=\"change\"><option value=\"none\">Select...</option> ")
+				_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString("<select id=\"teams\" name=\"team\" class=\"uk-select text-zinc-50 border border-red-600\" style=\"width: 100%;\" hx-get=\"/team/analysts\" hx-target=\"#analysts\" hx-swap=\"innerHTML\" hx-trigger=\"change\"><option value=\"none\">Select...</option> ")
 				if templ_7745c5c3_Err != nil {
 					return templ_7745c5c3_Err
 				}
@@ -184,7 +184,7 @@ func AssignmentForm(user_type string, ticket models.Ticket, team_error bool, pic
 					return templ_7745c5c3_Err
 				}
 			}
-			_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString("</div><div class=\"flex flex-col\"><label>Analyst:</label> <select id=\"analysts\" name=\"analyst\" class=\"uk-select text-zinc-50\" hx-get=\"/analyst/team\" hx-target=\"#teams\" hx-swap=\"innerHTML\" hx-trigger=\"click from:#analyst\"><option value=\"none\"></option> ")
+			_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString("</div><div style=\"width: 20%;\"></div><div class=\"flex flex-col\" style=\"width: 40%;\"><label>Analyst:</label> <select id=\"analysts\" name=\"analyst\" class=\"uk-select text-zinc-50\" style=\"width: 100%;\" hx-get=\"/analyst/team\" hx-target=\"#teams\" hx-swap=\"innerHTML\" hx-trigger=\"click from:#analyst\"><option value=\"none\"></option> ")
 			if templ_7745c5c3_Err != nil {
 				return templ_7745c5c3_Err
 			}
@@ -197,7 +197,7 @@ func AssignmentForm(user_type string, ticket models.Ticket, team_error bool, pic
 					var templ_7745c5c3_Var11 string
 					templ_7745c5c3_Var11, templ_7745c5c3_Err = templ.JoinStringErrs(analyst.Analyst_ID.String())
 					if templ_7745c5c3_Err != nil {
-						return templ.Error{Err: templ_7745c5c3_Err, FileName: `views/tickets/assignment_form.templ`, Line: 42, Col: 74}
+						return templ.Error{Err: templ_7745c5c3_Err, FileName: `views/tickets/assignment_form.templ`, Line: 43, Col: 74}
 					}
 					_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString(templ.EscapeString(templ_7745c5c3_Var11))
 					if templ_7745c5c3_Err != nil {
@@ -210,7 +210,7 @@ func AssignmentForm(user_type string, ticket models.Ticket, team_error bool, pic
 					var templ_7745c5c3_Var12 string
 					templ_7745c5c3_Var12, templ_7745c5c3_Err = templ.JoinStringErrs(analyst.First_Name + " " + analyst.Last_Name)
 					if templ_7745c5c3_Err != nil {
-						return templ.Error{Err: templ_7745c5c3_Err, FileName: `views/tickets/assignment_form.templ`, Line: 42, Col: 123}
+						return templ.Error{Err: templ_7745c5c3_Err, FileName: `views/tickets/assignment_form.templ`, Line: 43, Col: 123}
 					}
 					_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString(templ.EscapeString(templ_7745c5c3_Var12))
 					if templ_7745c5c3_Err != nil {
@@ -228,7 +228,7 @@ func AssignmentForm(user_type string, ticket models.Ticket, team_error bool, pic
 					var templ_7745c5c3_Var13 string
 					templ_7745c5c3_Var13, templ_7745c5c3_Err = templ.JoinStringErrs(analyst.Analyst_ID.String())
 					if templ_7745c5c3_Err != nil {
-						return templ.Error{Err: templ_7745c5c3_Err, FileName: `views/tickets/assignment_form.templ`, Line: 44, Col: 65}
+						return templ.Error{Err: templ_7745c5c3_Err, FileName: `views/tickets/assignment_form.templ`, Line: 45, Col: 65}
 					}
 					_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString(templ.EscapeString(templ_7745c5c3_Var13))
 					if templ_7745c5c3_Err != nil {
@@ -241,7 +241,7 @@ func AssignmentForm(user_type string, ticket models.Ticket, team_error bool, pic
 					var templ_7745c5c3_Var14 string
 					templ_7745c5c3_Var14, templ_7745c5c3_Err = templ.JoinStringErrs(analyst.First_Name + " " + analyst.Last_Name)
 					if templ_7745c5c3_Err != nil {
-						return templ.Error{Err: templ_7745c5c3_Err, FileName: `views/tickets/assignment_form.templ`, Line: 44, Col: 114}
+						return templ.Error{Err: templ_7745c5c3_Err, FileName: `views/tickets/assignment_form.templ`, Line: 45, Col: 114}
 					}
 					_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString(templ.EscapeString(templ_7745c5c3_Var14))
 					if templ_7745c5c3_Err != nil {

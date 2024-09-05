@@ -460,19 +460,30 @@ func AssignTicket(w http.ResponseWriter, r *http.Request) error {
 	assign_to_team := r.FormValue("team")
 	message := r.FormValue("message")
 
-	ticket, err := models.GetTicket(ticket_id)
-	if err != nil {
-		err_msg := "Internal server error:\nerror getting ticket for assignment: " + err.Error()
-		return Render(w, r, layouts.ErrorMessage(LoggedInUserType, err_msg))
-	}
-
 	if assign_to_team == "none" {
+		ticket, err := models.GetTicket(ticket_id)
+		if err != nil {
+			err_msg := "Internal server error:\nerror getting ticket for assignment: " + err.Error()
+			return Render(w, r, layouts.ErrorMessage(LoggedInUserType, err_msg))
+		}
 		return Render(w, r, tickets.AssignmentForm(LoggedInUserType, ticket, true, assign_to_team, assign_to_analyst))
 	}
 
-	err = models.AssignTicket(ticket_id, LoggedInUser.Analyst_ID.String(), assign_to_analyst, assign_to_team, message)
+	err := models.AssignTicket(ticket_id, LoggedInUser.Analyst_ID.String(), assign_to_analyst, assign_to_team, message)
 	if err != nil {
 		err_msg := "Internal server error:\nerror assigning ticket: " + err.Error()
+		return Render(w, r, layouts.ErrorMessage(LoggedInUserType, err_msg))
+	}
+
+	LoggedInUser, err = models.UpdateLoggedInUser(LoggedInUser)
+	if err != nil {
+		err_msg := "Internal server error:\nerror updating user statistics after assigning ticket: " + err.Error()
+		return Render(w, r, layouts.ErrorMessage(LoggedInUserType, err_msg))
+	}
+
+	ticket, err := models.GetTicket(ticket_id)
+	if err != nil {
+		err_msg := "Internal server error:\nerror getting ticket for assignment: " + err.Error()
 		return Render(w, r, layouts.ErrorMessage(LoggedInUserType, err_msg))
 	}
 
@@ -494,17 +505,25 @@ func ShowTicketAssignmentHistory(w http.ResponseWriter, r *http.Request) error {
 func AssignTicketToMe(w http.ResponseWriter, r *http.Request) error {
 	ticket_id := chi.URLParam(r, "ticket_id")
 
+	err := models.AssignTicket(ticket_id, LoggedInUser.Analyst_ID.String(), LoggedInUser.Analyst_ID.String(), LoggedInUser.Team_ID.UUID.String(), "Assigned to self.")
+	if err != nil {
+		err_msg := "Internal server error:\nerror assigning ticket to self: " + err.Error()
+		return Render(w, r, layouts.ErrorMessage(LoggedInUserType, err_msg))
+	}
+
+	LoggedInUser, err = models.UpdateLoggedInUser(LoggedInUser)
+	if err != nil {
+		err_msg := "Internal server error:\nerror updating user statistics after assigning ticket: " + err.Error()
+		return Render(w, r, layouts.ErrorMessage(LoggedInUserType, err_msg))
+	}
+
 	ticket, err := models.GetTicket(ticket_id)
 	if err != nil {
 		err_msg := "Internal server error:\nerror getting ticket for assignment: " + err.Error()
 		return Render(w, r, layouts.ErrorMessage(LoggedInUserType, err_msg))
 	}
 
-	err = models.AssignTicket(ticket_id, LoggedInUser.Analyst_ID.String(), LoggedInUser.Analyst_ID.String(), LoggedInUser.Team_ID.UUID.String(), "Assigned to self.")
-	if err != nil {
-		err_msg := "Internal server error:\nerror assigning ticket to self: " + err.Error()
-		return Render(w, r, layouts.ErrorMessage(LoggedInUserType, err_msg))
-	}
+	w.Header().Add("HX-Redirect", "/ticket/"+ticket_id)
 
 	return Render(w, r, tickets.TicketForm(ticket, LoggedInUser, LoggedInUserType, "update", "", "", models.Ticket{}))
 }

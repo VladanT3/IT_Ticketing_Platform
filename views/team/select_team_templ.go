@@ -10,7 +10,7 @@ import templruntime "github.com/a-h/templ/runtime"
 
 import "github.com/VladanT3/IT_Ticketing_Platform/models"
 
-func SelectTeam(analyst_id string) templ.Component {
+func SelectTeam(analyst models.Analyst) templ.Component {
 	return templruntime.GeneratedTemplate(func(templ_7745c5c3_Input templruntime.GeneratedComponentInput) (templ_7745c5c3_Err error) {
 		templ_7745c5c3_W, ctx := templ_7745c5c3_Input.Writer, templ_7745c5c3_Input.Context
 		templ_7745c5c3_Buffer, templ_7745c5c3_IsBuffer := templruntime.GetBuffer(templ_7745c5c3_W)
@@ -33,7 +33,7 @@ func SelectTeam(analyst_id string) templ.Component {
 			return templ_7745c5c3_Err
 		}
 		for _, team := range models.GetAllTeams() {
-			if team.Team_ID.String() == analyst_id {
+			if team.Team_ID == analyst.Team_ID.UUID {
 				_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString("<option selected value=\"")
 				if templ_7745c5c3_Err != nil {
 					return templ_7745c5c3_Err

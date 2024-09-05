@@ -122,27 +122,27 @@ func AssignmentHistory(user_type string, ticket_id string, assignments []models.
 						return templ_7745c5c3_Err
 					}
 				}
-				_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString("<label>")
+				_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString("<label class=\"font-bold\">")
 				if templ_7745c5c3_Err != nil {
 					return templ_7745c5c3_Err
 				}
 				var templ_7745c5c3_Var8 string
 				templ_7745c5c3_Var8, templ_7745c5c3_Err = templ.JoinStringErrs(assignment.Assignment_Date.Format("Mon 02/01 15:04 2006."))
 				if templ_7745c5c3_Err != nil {
-					return templ.Error{Err: templ_7745c5c3_Err, FileName: `views/tickets/assignment_history.templ`, Line: 33, Col: 76}
+					return templ.Error{Err: templ_7745c5c3_Err, FileName: `views/tickets/assignment_history.templ`, Line: 33, Col: 94}
 				}
 				_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString(templ.EscapeString(templ_7745c5c3_Var8))
 				if templ_7745c5c3_Err != nil {
 					return templ_7745c5c3_Err
 				}
-				_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString("</label></div></div><textarea readonly rows=\"10\" class=\"uk-textarea font-mono text-zinc-50 text-base\">")
+				_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString("</label></div></div><textarea readonly rows=\"10\" class=\"uk-textarea font-mono text-zinc-50 text-base mt-3\">")
 				if templ_7745c5c3_Err != nil {
 					return templ_7745c5c3_Err
 				}
 				var templ_7745c5c3_Var9 string
 				templ_7745c5c3_Var9, templ_7745c5c3_Err = templ.JoinStringErrs(assignment.Assignment_Message)
 				if templ_7745c5c3_Err != nil {
-					return templ.Error{Err: templ_7745c5c3_Err, FileName: `views/tickets/assignment_history.templ`, Line: 36, Col: 120}
+					return templ.Error{Err: templ_7745c5c3_Err, FileName: `views/tickets/assignment_history.templ`, Line: 36, Col: 125}
 				}
 				_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString(templ.EscapeString(templ_7745c5c3_Var9))
 				if templ_7745c5c3_Err != nil {

@@ -9,11 +9,11 @@ templ AssignmentForm(user_type string, ticket models.Ticket, team_error bool, pi
 		<div class="container mx-auto mt-5 flex flex-col items-center">
 			<form method="post" action={ "/ticket/" + templ.SafeURL(ticket.Ticket_ID.String()) + "/assign" } class="flex flex-col border border-zinc-50 border-dashed rounded-xl p-5" style="width: 60%">
 				<h1 class="text-2xl">Assign { ticket.Type + "/" + strconv.Itoa(ticket.Ticket_Number) }</h1>
-				<div class="flex flex-row justify-between">
-					<div class="flex flex-col">
+				<div class="flex flex-row">
+					<div class="flex flex-col" style="width: 40%;">
 						<label>Team:</label>
 						if !team_error {
-							<select id="teams" name="team" class="uk-select text-zinc-50" hx-get="/team/analysts" hx-target="#analysts" hx-swap="innerHTML" hx-trigger="change">
+							<select id="teams" name="team" class="uk-select text-zinc-50" style="width: 100%;" hx-get="/team/analysts" hx-target="#analysts" hx-swap="innerHTML" hx-trigger="change">
 								<option value="none">Select...</option>
 								for _, team := range models.GetAllTeams() {
 									if team.Team_ID.String() == picked_team {
@@ -24,7 +24,7 @@ templ AssignmentForm(user_type string, ticket models.Ticket, team_error bool, pi
 								}
 							</select>
 						} else {
-							<select id="teams" name="team" class="uk-select text-zinc-50 border border-red-600" hx-get="/team/analysts" hx-target="#analysts" hx-swap="innerHTML" hx-trigger="change">
+							<select id="teams" name="team" class="uk-select text-zinc-50 border border-red-600" style="width: 100%;" hx-get="/team/analysts" hx-target="#analysts" hx-swap="innerHTML" hx-trigger="change">
 								<option value="none">Select...</option>
 								for _, team := range models.GetAllTeams() {
 									<option value={ team.Team_ID.String() }>{ team.Team_Name }</option>
@@ -33,9 +33,10 @@ templ AssignmentForm(user_type string, ticket models.Ticket, team_error bool, pi
 							<label class="text-red-600">Please select a team which to assign the ticket to!</label>
 						}
 					</div>
-					<div class="flex flex-col">
+					<div style="width: 20%;"></div>
+					<div class="flex flex-col" style="width: 40%;">
 						<label>Analyst:</label>
-						<select id="analysts" name="analyst" class="uk-select text-zinc-50" hx-get="/analyst/team" hx-target="#teams" hx-swap="innerHTML" hx-trigger="click from:#analyst">
+						<select id="analysts" name="analyst" class="uk-select text-zinc-50" style="width: 100%;" hx-get="/analyst/team" hx-target="#teams" hx-swap="innerHTML" hx-trigger="click from:#analyst">
 							<option value="none"></option>
 							for _, analyst := range models.GetAllAnalysts() {
 								if analyst.Analyst_ID.String() == picked_analyst {

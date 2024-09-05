@@ -2,10 +2,10 @@ package team
 
 import "github.com/VladanT3/IT_Ticketing_Platform/models"
 
-templ SelectTeam(analyst_id string) {
+templ SelectTeam(analyst models.Analyst) {
 	<option value="none">Select...</option>
 	for _, team := range models.GetAllTeams() {
-		if team.Team_ID.String() == analyst_id {
+		if team.Team_ID == analyst.Team_ID.UUID {
 			<option selected value={ team.Team_ID.String() }>{ team.Team_Name }</option>
 		} else {
 			<option value={ team.Team_ID.String() }>{ team.Team_Name }</option>

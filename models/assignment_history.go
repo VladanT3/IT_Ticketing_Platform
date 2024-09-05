@@ -103,7 +103,7 @@ func GetAllTicketsAssignments(ticket_id string) ([]AssignmentHistory, error) {
 	assignments := []AssignmentHistory{}
 	assignment := AssignmentHistory{}
 
-	query := `select * from assignment_history where ticket_id = $1;`
+	query := `select * from assignment_history where ticket_id = $1 order by assignment_date desc;`
 
 	rows, err := db.Query(query, ticket_id)
 	if err != nil {
