@@ -39,7 +39,6 @@ func main() {
 	router.Post("/ticket/{ticket_id}/assign", handlers.Make(handlers.AssignTicket))
 	router.Get("/ticket/{ticket_id}/assign/history", handlers.Make(handlers.ShowTicketAssignmentHistory))
 	router.Post("/ticket/{ticket_id}/assign/self", handlers.Make(handlers.AssignTicketToMe))
-	//TODO: need to test assignment
 
 	router.Get("/tickets/search", handlers.Make(handlers.ShowAllTicketSearch))
 	router.Get("/tickets/team", handlers.Make(handlers.ShowTeamTickets))
@@ -65,6 +64,12 @@ func main() {
 
 	router.Get("/team/analysts", handlers.Make(handlers.GetTeamsAnalysts))
 	router.Get("/analyst/team", handlers.Make(handlers.GetAnalystsTeam))
+
+	router.Get("/users/view", handlers.Make(handlers.ShowUserView))
+	router.Get("/users/team/view", handlers.Make(handlers.ShowTeamView))
+	router.Post("/users/filter", handlers.Make(handlers.FilterUsers))
+
+	//router.Get("/user/{analyst_id}")
 
 	router.Get("/error", handlers.Make(handlers.ShowError))
 

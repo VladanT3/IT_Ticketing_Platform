@@ -3,6 +3,7 @@ package models
 import (
 	"database/sql"
 	"log/slog"
+	"strings"
 
 	"github.com/VladanT3/IT_Ticketing_Platform/internal/database"
 	"github.com/google/uuid"
@@ -119,7 +120,7 @@ func GetAllAnalysts() []Analyst {
 	var db *sql.DB = database.DB_Connection
 	analysts := []Analyst{}
 
-	query := `select * from analyst;`
+	query := `select * from analyst order by first_name, last_name;`
 	rows, err := db.Query(query)
 	if err != nil {
 		slog.Error("error getting all analysts", "error message", err)
@@ -156,7 +157,7 @@ func GetTeamsAnalysts(team_id string) []Analyst {
 	var db *sql.DB = database.DB_Connection
 	analysts := []Analyst{}
 
-	query := `select * from analyst where team_id = $1;`
+	query := `select * from analyst where team_id = $1 order by first_name, last_name;`
 	rows, err := db.Query(query, team_id)
 	if err != nil {
 		slog.Error("error getting a teams analysts", "error message", err)
@@ -183,6 +184,62 @@ func GetTeamsAnalysts(team_id string) []Analyst {
 			return []Analyst{}
 		}
 
+		analysts = append(analysts, analyst)
+	}
+
+	return analysts
+}
+
+func FilterUsers(search_term string, view_type string, team_id string) []Analyst {
+	var db *sql.DB = database.DB_Connection
+	analysts := []Analyst{}
+	analyst := Analyst{}
+	search_term = strings.ToLower(search_term)
+	search_term = "%" + search_term + "%"
+	var queryArgs []any
+
+	query := `
+		select * 
+		from analyst 
+		where (lower(first_name) like $1 or
+		lower(last_name) like $1)
+	`
+	queryArgs = append(queryArgs, search_term)
+
+	if view_type == "Team View" {
+		query += `
+			and team_id = $2
+		`
+		queryArgs = append(queryArgs, team_id)
+	}
+
+	query += `
+		order by first_name, last_name;
+	`
+	rows, err := db.Query(query, queryArgs...)
+	if err != nil {
+		slog.Error("error filtering analysts", "error message", err)
+		return []Analyst{}
+	}
+	defer rows.Close()
+
+	for rows.Next() {
+		err = rows.Scan(
+			&analyst.Analyst_ID,
+			&analyst.First_Name,
+			&analyst.Last_Name,
+			&analyst.Email,
+			&analyst.Password,
+			&analyst.Phone_Number,
+			&analyst.Team_ID,
+			&analyst.Number_of_Open_Tickets,
+			&analyst.Number_of_Opened_Tickets,
+			&analyst.Number_of_Closed_Tickets,
+		)
+		if err != nil {
+			slog.Error("error scanning filtered analysts", "error message", err)
+			return []Analyst{}
+		}
 		analysts = append(analysts, analyst)
 	}
 

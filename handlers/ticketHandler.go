@@ -353,13 +353,13 @@ func ShowUnassignedTickets(w http.ResponseWriter, r *http.Request) error {
 func FilterTickets(w http.ResponseWriter, r *http.Request) error {
 	search := r.FormValue("search")
 	customer := r.FormValue("customer")
-	ticketType := r.FormValue("type")
+	ticket_type := r.FormValue("type")
 	status := r.FormValue("status")
 	category := r.FormValue("category")
 	subcategory := r.FormValue("subcategory")
-	searchType := r.FormValue("search_type")
+	search_type := r.FormValue("search_type")
 
-	fileteredTickets, err := models.FilterTickets(search, customer, ticketType, status, category, subcategory, searchType, LoggedInUser.Team_ID.UUID.String())
+	filetered_tickets, err := models.FilterTickets(search, customer, ticket_type, status, category, subcategory, search_type, LoggedInUser.Team_ID.UUID.String())
 	if err != nil {
 		err_msg := "Internal server error:\nerror filtering tickets: " + err.Error()
 		w.Header().Add("ErrorMessage", err_msg)
@@ -367,7 +367,7 @@ func FilterTickets(w http.ResponseWriter, r *http.Request) error {
 		return Render(w, r, layouts.ErrorMessage(LoggedInUserType, err_msg))
 	}
 
-	return Render(w, r, tickets.Tickets(fileteredTickets))
+	return Render(w, r, tickets.Tickets(filetered_tickets))
 }
 
 func CloseTicket(w http.ResponseWriter, r *http.Request) error {

@@ -30,12 +30,12 @@ templ TicketSearch(current_user models.Analyst, user_type string, search_type st
 							<label><input type="radio" name="type" value="Request" class="uk-checkbox border rounded-full border-zinc-50"/> Request</label>
 							<label><input type="radio" name="type" value="Incident" class="uk-checkbox border rounded-full border-zinc-50"/> Incident</label>
 						</div>
-						<di class="flex flex-col mt-3">
+						<div class="flex flex-col mt-3">
 							<label>Status:</label>
 							<label><input type="radio" name="status" value="Both" class="uk-checkbox border rounded-full border-zinc-50" checked/> Both</label>
 							<label><input type="radio" name="status" value="Open" class="uk-checkbox border rounded-full border-zinc-50"/> Open</label>
 							<label><input type="radio" name="status" value="Closed" class="uk-checkbox border rounded-full border-zinc-50"/> Closed</label>
-						</di>
+						</div>
 						<div class="flex flex-col mt-3">
 							<label>Category:</label>
 							<select name="category" class="uk-select text-zinc-50" hx-get="/subcategories/get/select" hx-target="#subcategories" hx-swap="outerHTML" hx-trigger="change">

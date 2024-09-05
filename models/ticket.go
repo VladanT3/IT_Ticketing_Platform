@@ -157,7 +157,7 @@ func UpdateTicket(ticket Ticket) (string, error) {
 	return new_ticket_id, nil
 }
 
-func FilterTickets(search string, customer string, ticketType string, status string, category string, subcategory string, searchType string, teamID string) ([]Ticket, error) {
+func FilterTickets(search string, customer string, ticket_type string, status string, category string, subcategory string, search_type string, team_id string) ([]Ticket, error) {
 	var db *sql.DB = database.DB_Connection
 	tickets := []Ticket{}
 	ticket := Ticket{}
@@ -181,18 +181,18 @@ func FilterTickets(search string, customer string, ticketType string, status str
 		lower(customer_contact) like $2
 	`
 
-	if searchType == "Team Tickets" {
+	if search_type == "Team Tickets" {
 		query += `
 			and assigned_team = $3
 		`
-		queryArgs = append(queryArgs, teamID)
+		queryArgs = append(queryArgs, team_id)
 		queryArgIter++
-	} else if searchType == "Unassigned Tickets" {
+	} else if search_type == "Unassigned Tickets" {
 		query += `
 			and assigned_team = $3 and
 			assigned_analyst is null
 		`
-		queryArgs = append(queryArgs, teamID)
+		queryArgs = append(queryArgs, team_id)
 		queryArgIter++
 	}
 
@@ -210,11 +210,11 @@ func FilterTickets(search string, customer string, ticketType string, status str
 		queryArgIter++
 	}
 
-	if ticketType != "Both" {
+	if ticket_type != "Both" {
 		query += `
 			and type = $` + strconv.Itoa(queryArgIter+1) + `
 		`
-		queryArgs = append(queryArgs, ticketType)
+		queryArgs = append(queryArgs, ticket_type)
 		queryArgIter++
 	}
 

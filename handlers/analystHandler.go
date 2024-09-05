@@ -34,3 +34,20 @@ func GetAnalystsTeam(w http.ResponseWriter, r *http.Request) error {
 		return Render(w, r, team.SelectTeam(analyst))
 	}
 }
+
+func ShowUserView(w http.ResponseWriter, r *http.Request) error {
+	return Render(w, r, analyst.UserView(LoggedInUserType, LoggedInUser, "User View"))
+}
+
+func ShowTeamView(w http.ResponseWriter, r *http.Request) error {
+	return Render(w, r, analyst.UserView(LoggedInUserType, LoggedInUser, "Team View"))
+}
+
+func FilterUsers(w http.ResponseWriter, r *http.Request) error {
+	search_term := r.FormValue("search")
+	view_type := r.FormValue("view_type")
+
+	analysts := models.FilterUsers(search_term, view_type, LoggedInUser.Team_ID.UUID.String())
+
+	return Render(w, r, analyst.Users(analysts))
+}
