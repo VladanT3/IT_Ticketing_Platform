@@ -1,0 +1,95 @@
+package user
+
+import "github.com/VladanT3/IT_Ticketing_Platform/views/layouts"
+import "github.com/VladanT3/IT_Ticketing_Platform/models"
+
+templ UserForm(user_type string, analyst models.Analyst, view_type string, old_analyst models.Analyst, errs [4]bool) {
+	@layouts.Navbar(user_type) {
+		<div class="container mx-auto mt-5">
+			<form hx-put={ "/user/update/" + analyst.Analyst_ID.String() } class="grid grid-cols-5">
+				<input type="hidden" name="view_type" value={ view_type }/>
+				<input type="hidden" name="analyst_id" value={ analyst.Analyst_ID.String() }/>
+				<div class="col-span-1 grid grid-cols-5">
+					<div class="col-span-4 flex flex-col">
+						<button type="submit" class="uk-button bg-zinc-50 text-zinc-900 border border-zinc-50 hover:bg-zinc-900 hover:text-zinc-50">Save</button>
+						<button type="submit" class="uk-button bg-zinc-50 text-zinc-900 border border-zinc-50 hover:bg-zinc-900 hover:text-zinc-50 mt-3">Save and Exit</button>
+						if view_type == "User View" {
+							<a href="/user/view" class="uk-button bg-zinc-50 text-zinc-900 border border-zinc-50 hover:bg-zinc-900 hover:text-zinc-50 mt-3">Exit</a>
+							<button type="button" class="uk-button bg-zinc-900 text-red-600 border border-red-600 hover:bg-zinc-900 hover:text-zinc-50 mt-3">Delete User</button>
+						} else if view_type == "Team View" {
+							<a href="/user/team/view" class="uk-button bg-zinc-50 text-zinc-900 border border-zinc-50 hover:bg-zinc-900 hover:text-zinc-50 mt-3">Exit</a>
+						}
+					</div>
+					<div class="uk-divider-vertical min-h-full"></div>
+				</div>
+				<div class="col-span-4 grid grid-cols-3">
+					<div></div>
+					<div class="flex flex-col">
+						<div class="flex flex-row">
+							<div class="flex flex-col" style="width: 45%;">
+								<label>First name:</label>
+								if !errs[0] {
+									if old_analyst.First_Name != "" {
+										<input type="text" name="first_name" value={ old_analyst.First_Name } class="uk-input text-base text-zinc-50"/>
+									} else {
+										<input type="text" name="first_name" class="uk-input text-base text-zinc-50"/>
+									}
+								} else {
+									<input type="text" name="first_name" class="uk-input text-base text-zinc-50 border border-red-600"/>
+									<label class="text-red-600">Please input a first name!</label>
+								}
+							</div>
+							<div style="width: 10%;"></div>
+							<div class="flex flex-col" style="width: 45%;">
+								<label>Last name:</label>
+								if !errs[1] {
+									if old_analyst.Last_Name != "" {
+										<input type="text" name="last_name" value={ old_analyst.Last_Name } class="uk-input text-base text-zinc-50"/>
+									} else {
+										<input type="text" name="last_name" class="uk-input text-base text-zinc-50"/>
+									}
+								} else {
+									<input type="text" name="last_name" class="uk-input text-base text-zinc-50 border border-red-600"/>
+									<label class="text-red-600">Please input a last name!</label>
+								}
+							</div>
+						</div>
+						<label class="mt-3">Email:</label>
+						if !errs[2] {
+							if old_analyst.Email != "" {
+								<input type="text" name="email" value={ old_analyst.Email } class="uk-input text-base text-zinc-50"/>
+							} else {
+								<input type="text" name="email" class="uk-input text-base text-zinc-50"/>
+							}
+						} else {
+							<input type="text" name="email" class="uk-input text-base text-zinc-50 border border-red-600"/>
+							<label class="text-red-600">Please input an email!</label>
+						}
+						<label class="mt-3">Phone number:</label>
+						if !errs[3] {
+							if old_analyst.Phone_Number != "" {
+								<input type="text" name="phone_number" value={ old_analyst.Phone_Number } class="uk-input text-base text-zinc-50"/>
+							} else {
+								<input type="text" name="phone_number" class="uk-input text-base text-zinc-50"/>
+							}
+						} else {
+							<input type="text" name="phone_number" class="uk-input text-base text-zinc-50 border border-red-600"/>
+							<label class="text-red-600">Please input a phone number!</label>
+						}
+						<label class="mt-3">Team:</label>
+						<select class="uk-select text-zinc-50" name="team">
+							for _, team := range models.GetAllTeams() {
+								if team.Team_ID == analyst.Team_ID.UUID {
+									<option selected value={ team.Team_ID.String() }>{ team.Team_Name }</option>
+								} else {
+									<option value={ team.Team_ID.String() }>{ team.Team_Name }</option>
+								}
+							}
+						</select>
+					</div>
+					<div></div>
+				</div>
+			</form>
+		</div>
+	}
+}

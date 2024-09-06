@@ -190,31 +190,49 @@ func GetTeamsAnalysts(team_id string) []Analyst {
 	return analysts
 }
 
-func FilterUsers(search_term string, view_type string, team_id string) []Analyst {
+func FilterUsers(search_term string, view_type string, team_id string, user_type string) []Analyst {
 	var db *sql.DB = database.DB_Connection
 	analysts := []Analyst{}
 	analyst := Analyst{}
 	search_term = strings.ToLower(search_term)
 	search_term = "%" + search_term + "%"
 	var queryArgs []any
+	var query string
 
-	query := `
-		select * 
-		from analyst 
-		where (lower(first_name) like $1 or
-		lower(last_name) like $1)
-	`
+	if user_type == "Managers" {
+		query = `
+			select *
+			from analyst an join manager m on a.Analyst_ID = m.Manager_ID
+			where (lower(an.first_name) like $1 or
+			lower(an.last_name) like $1)
+		`
+	} else if user_type == "Administrators" {
+		query = `
+			select *
+			from analyst an join administrator ad on an.Analyst_ID = ad.Administrator_ID
+			where (lower(an.first_name) like $1 or
+			lower(an.last_name) like $1)
+		`
+	} else {
+		query = `
+			select * 
+			from analyst an
+			where (lower(an.first_name) like $1 or
+			lower(an.last_name) like $1)
+		`
+	}
+
 	queryArgs = append(queryArgs, search_term)
 
 	if view_type == "Team View" {
 		query += `
-			and team_id = $2
+			and an.team_id = $2
 		`
 		queryArgs = append(queryArgs, team_id)
 	}
 
 	query += `
-		order by first_name, last_name;
+		order by an.first_name, an.last_name;
 	`
 	rows, err := db.Query(query, queryArgs...)
 	if err != nil {
@@ -244,4 +262,23 @@ func FilterUsers(search_term string, view_type string, team_id string) []Analyst
 	}
 
 	return analysts
+}
+
+func UpdateAnalyst(new_analyst Analyst) error {
+	var db *sql.DB = database.DB_Connection
+	query := `
+		update analyst set
+		first_name = $1,
+		last_name = $2,
+		email = $3,
+		phone_number = $4,
+		team_id = $5
+		where analyst_id = $6;
+	`
+	_, err := db.Exec(query, new_analyst.First_Name, new_analyst.Last_Name, new_analyst.Email, new_analyst.Phone_Number, new_analyst.Team_ID.UUID, new_analyst.Analyst_ID)
+	if err != nil {
+		return err
+	}
+
+	return nil
 }

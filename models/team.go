@@ -48,7 +48,7 @@ func GetAllTeams() []Team {
 	var db *sql.DB = database.DB_Connection
 	teams := []Team{}
 
-	query := `select * from team;`
+	query := `select * from team order by team_name;`
 	rows, err := db.Query(query)
 	if err != nil {
 		slog.Error("error getting all teams", "error message", err)

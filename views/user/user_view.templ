@@ -1,0 +1,49 @@
+package user
+
+import "github.com/VladanT3/IT_Ticketing_Platform/views/layouts"
+import "github.com/VladanT3/IT_Ticketing_Platform/models"
+
+templ UserView(user_type string, current_user models.Analyst, view_type string) {
+	@layouts.Navbar(user_type) {
+		<div class="container mx-auto mt-5">
+			<div class="flex flex-col">
+				<h1 class="text-2xl mb-3">{ view_type }</h1>
+				<hr/>
+			</div>
+			<div class="grid grid-cols-5 mt-3">
+				<div class="col-span-1 grid grid-cols-5">
+					if view_type == "Team View" {
+						<form class="col-span-4" hx-post="/users/filter" hx-trigger="keyup changed delay:500ms from:#search" hx-target="#users" hx-swap="innerHTML">
+							<input type="hidden" name="view_type" value={ view_type }/>
+							<div class="flex flex-col mt-3">
+								<label>Search:</label>
+								<input type="text" name="search" id="search" class="uk-input text-zinc-50 text-base"/>
+							</div>
+						</form>
+					}
+					if view_type == "User View" {
+						<form class="col-span-4 flex flex-col" hx-post="/users/filter" hx-trigger="keyup changed delay:500ms from:#search" hx-target="#users" hx-swap="innerHTML">
+							<input type="hidden" name="view_type" value={ view_type }/>
+							<div class="flex flex-col mt-3">
+								<label>Search:</label>
+								<input type="text" name="search" id="search" class="uk-input text-zinc-50 text-base"/>
+							</div>
+							<label class="mt-3">Select user type:</label>
+							<label><input type="radio" name="user_type" value="All" class="uk-checkbox border rounded-full border-zinc-50" checked/> All</label>
+							<label><input type="radio" name="user_type" value="Managers" class="uk-checkbox border rounded-full border-zinc-50"/> Managers</label>
+							<label><input type="radio" name="user_type" value="Adminstrators" class="uk-checkbox border rounded-full border-zinc-50"/> Administrators</label>
+						</form>
+					}
+					<div class="uk-divider-vertical min-h-full"></div>
+				</div>
+				<div class="col-span-4 flex flex-col" id="users">
+					if view_type == "User View" {
+						@Users(models.GetAllAnalysts())
+					} else if view_type == "Team View" {
+						@Users(models.GetTeamsAnalysts(current_user.Team_ID.UUID.String()))
+					}
+				</div>
+			</div>
+		</div>
+	}
+}
