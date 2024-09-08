@@ -2,11 +2,12 @@ package handlers
 
 import (
 	"net/http"
+	"time"
 
 	"github.com/VladanT3/IT_Ticketing_Platform/models"
-	"github.com/VladanT3/IT_Ticketing_Platform/views/analyst"
 	"github.com/VladanT3/IT_Ticketing_Platform/views/layouts"
 	"github.com/VladanT3/IT_Ticketing_Platform/views/team"
+	"github.com/VladanT3/IT_Ticketing_Platform/views/user"
 	"github.com/go-chi/chi/v5"
 	"github.com/google/uuid"
 )
@@ -75,7 +76,45 @@ func ShowUserForm(w http.ResponseWriter, r *http.Request) error {
 
 	analyst := models.GetAnalyst(analyst_id)
 
-	return Render(w, r, user.UserForm(LoggedInUserType, analyst, view_type, models.Analyst{}, [4]bool{false, false, false, false}))
+	return Render(w, r, user.UserForm(LoggedInUserType, analyst, view_type, models.Analyst{}, [4]bool{false, false, false, false}, true))
+}
+
+func ShowNewUserForm(w http.ResponseWriter, r *http.Request) error {
+	view_type_cookie, err := r.Cookie("view_type")
+	if err != nil {
+		err_msg := "Internal server error:\nno cookie with name 'ticket_type': " + err.Error()
+		return Render(w, r, layouts.ErrorMessage(LoggedInUserType, err_msg))
+	}
+	view_type := view_type_cookie.Value
+
+	return Render(w, r, user.UserForm(LoggedInUserType, models.Analyst{}, view_type, models.Analyst{}, [4]bool{false, false, false, false}, true))
+}
+
+func UserRedirect(w http.ResponseWriter, r *http.Request) error {
+	mode := r.FormValue("mode")
+	analyst_id := r.FormValue("analyst_id")
+
+	http.SetCookie(w, &http.Cookie{
+		Name:    "view_type",
+		Value:   r.FormValue("view_type"),
+		Expires: time.Time.Add(time.Now(), time.Second*10),
+	})
+	http.SetCookie(w, &http.Cookie{
+		Name:    "analyst_id",
+		Value:   r.FormValue("analyst_id"),
+		Expires: time.Time.Add(time.Now(), time.Second*10),
+	})
+	//TODO: continue this
+
+	if mode == "create" {
+		http.Redirect(w, r, "/user/create", http.StatusSeeOther)
+		return nil
+	} else if mode == "update" {
+		http.Redirect(w, r, "/user/update"+analyst_id, http.StatusSeeOther)
+		return nil
+	}
+
+	return nil
 }
 
 func UpdateUser(w http.ResponseWriter, r *http.Request) error {
@@ -119,11 +158,21 @@ func UpdateUser(w http.ResponseWriter, r *http.Request) error {
 		errCounter += 1
 	}
 
-	if errCounter > 0 {
-		return Render(w, r, user.UserForm(LoggedInUserType, analyst, view_type, new_analyst, errs))
+	_, email_exists, err := models.CheckEmail(email)
+	if err != nil {
+		err_msg := "Internal server error:\nerror checking email validity when updating user: " + err.Error()
+		return Render(w, r, layouts.ErrorMessage(LoggedInUserType, err_msg))
 	}
 
-	err := models.UpdateAnalyst(new_analyst)
+	if email_exists {
+		return Render(w, r, user.UserForm(LoggedInUserType, analyst, view_type, new_analyst, errs, false))
+	}
+
+	if errCounter > 0 {
+		return Render(w, r, user.UserForm(LoggedInUserType, analyst, view_type, new_analyst, errs, true))
+	}
+
+	err = models.UpdateAnalyst(new_analyst)
 	if err != nil {
 		err_msg := "Internal server error:\nerror updating user: " + err.Error()
 		return Render(w, r, layouts.ErrorMessage(LoggedInUserType, err_msg))
@@ -142,6 +191,25 @@ func UpdateUser(w http.ResponseWriter, r *http.Request) error {
 		w.Header().Add("HX-Redirect", "/users/team/view")
 		return Render(w, r, user.UserView(LoggedInUserType, LoggedInUser, "Team View"))
 	}
+
+	return nil
+}
+
+func DeleteUser(w http.ResponseWriter, r *http.Request) error {
+	analyst_id := chi.URLParam(r, "analyst_id")
+
+	err := models.DeleteAnalyst(analyst_id)
+	if err != nil {
+		err_msg := "Internal server error:\nerror deleting user: " + err.Error()
+		w.Header().Add("ErrorMessage", err_msg)
+		w.Header().Add("HX-Redirect", "/error")
+		return Render(w, r, layouts.ErrorMessage(LoggedInUserType, err_msg))
+	}
+
+	return Render(w, r, user.DeletedUser())
+}
+
+func CreateUser(w http.ResponseWriter, r *http.Request) error {
 
 	return nil
 }

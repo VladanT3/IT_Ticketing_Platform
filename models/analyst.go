@@ -282,3 +282,15 @@ func UpdateAnalyst(new_analyst Analyst) error {
 
 	return nil
 }
+
+func DeleteAnalyst(analyst_id string) error {
+	var db *sql.DB = database.DB_Connection
+	query := `delete from analyst where analyst_id = $1;`
+
+	_, err := db.Exec(query, analyst_id)
+	if err != nil {
+		return err
+	}
+
+	return nil
+}

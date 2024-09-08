@@ -65,15 +65,20 @@ func main() {
 	router.Get("/team/analysts", handlers.Make(handlers.GetTeamsAnalysts))
 	router.Get("/analyst/team", handlers.Make(handlers.GetAnalystsTeam))
 
+	//TODO: test everything below
 	router.Get("/users/view", handlers.Make(handlers.ShowUserView))
 	router.Get("/users/team/view", handlers.Make(handlers.ShowTeamView))
-	//TODO: check if this is all done
 	router.Post("/users/filter", handlers.Make(handlers.FilterUsers))
 
-	//TODO: test all of this
 	router.Get("/user/{analyst_id}", handlers.Make(handlers.ShowUserForm))
-	router.Put("/user/update/{analyst_id}", handlers.Make(handlers.UpdateUser))
-	//TODO: delete user, create user (is it gonna be another form nightmare like ticket form :( )
+	//TODO: finish
+	router.Get("/user/new", handlers.Make(handlers.ShowNewUserForm))
+	//TODO: finish
+	router.Post("/user", handlers.Make(handlers.UserRedirect))
+	//TODO: finish
+	router.Get("user/create", handlers.Make(handlers.CreateUser))
+	router.Get("/user/update/{analyst_id}", handlers.Make(handlers.UpdateUser))
+	router.Delete("user/delete/{analyst_id}", handlers.Make(handlers.DeleteUser))
 
 	router.Get("/error", handlers.Make(handlers.ShowError))
 
