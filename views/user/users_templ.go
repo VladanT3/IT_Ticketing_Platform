@@ -28,6 +28,10 @@ func Users(analysts []models.Analyst) templ.Component {
 			templ_7745c5c3_Var1 = templ.NopComponent
 		}
 		ctx = templ.ClearChildren(ctx)
+		_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString("<a href=\"/user/new\" class=\"border border-green-600 rounded-lg p-3 self-center text-green-600 hover:bg-green-600 hover:text-zinc-900\" style=\"width: 100%; margin-bottom: 0.5rem;\"><span class=\"text-xl font-bold\">+ Add a new Analyst</span></a> ")
+		if templ_7745c5c3_Err != nil {
+			return templ_7745c5c3_Err
+		}
 		for _, analyst := range analysts {
 			_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString("<a href=\"")
 			if templ_7745c5c3_Err != nil {
@@ -38,14 +42,14 @@ func Users(analysts []models.Analyst) templ.Component {
 			if templ_7745c5c3_Err != nil {
 				return templ_7745c5c3_Err
 			}
-			_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString("\" style=\"margin-bottom: 0.5rem\" class=\"flex flex-col border border-zinc-50 rounded-lg p-3 hover:border-zinc-900 hover:bg-zinc-50 hover:text-zinc-900 hover:cursor-pointer\" style=\"width: 100%;\"><span class=\"text-lg\">Name: <span class=\"font-bold\">")
+			_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString("\" class=\"flex flex-col border border-zinc-50 rounded-lg p-3 hover:border-zinc-900 hover:bg-zinc-50 hover:text-zinc-900\" style=\"width: 100%; margin-bottom: 0.5rem;\"><span class=\"text-lg\">Name: <span class=\"font-bold\">")
 			if templ_7745c5c3_Err != nil {
 				return templ_7745c5c3_Err
 			}
 			var templ_7745c5c3_Var3 string
 			templ_7745c5c3_Var3, templ_7745c5c3_Err = templ.JoinStringErrs(analyst.First_Name + " " + analyst.Last_Name)
 			if templ_7745c5c3_Err != nil {
-				return templ.Error{Err: templ_7745c5c3_Err, FileName: `views/user/users.templ`, Line: 8, Col: 101}
+				return templ.Error{Err: templ_7745c5c3_Err, FileName: `views/user/users.templ`, Line: 11, Col: 101}
 			}
 			_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString(templ.EscapeString(templ_7745c5c3_Var3))
 			if templ_7745c5c3_Err != nil {
@@ -58,7 +62,7 @@ func Users(analysts []models.Analyst) templ.Component {
 			var templ_7745c5c3_Var4 string
 			templ_7745c5c3_Var4, templ_7745c5c3_Err = templ.JoinStringErrs(analyst.Email)
 			if templ_7745c5c3_Err != nil {
-				return templ.Error{Err: templ_7745c5c3_Err, FileName: `views/user/users.templ`, Line: 9, Col: 71}
+				return templ.Error{Err: templ_7745c5c3_Err, FileName: `views/user/users.templ`, Line: 12, Col: 71}
 			}
 			_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString(templ.EscapeString(templ_7745c5c3_Var4))
 			if templ_7745c5c3_Err != nil {

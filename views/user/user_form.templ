@@ -3,7 +3,7 @@ package user
 import "github.com/VladanT3/IT_Ticketing_Platform/views/layouts"
 import "github.com/VladanT3/IT_Ticketing_Platform/models"
 
-templ UserForm(user_type string, analyst models.Analyst, view_type string, old_analyst models.Analyst, errs [4]bool, valid_email bool, mode string) {
+templ UserForm(user_type string, analyst models.Analyst, view_type string, old_analyst models.Analyst, errs [5]bool, valid_email bool, mode string, old_user_type string) {
 	@layouts.Navbar(user_type) {
 		<div class="container mx-auto mt-5">
 			<form action="/user" method="post" class="grid grid-cols-5">
@@ -29,6 +29,46 @@ templ UserForm(user_type string, analyst models.Analyst, view_type string, old_a
 					<div></div>
 					<div class="flex flex-col">
 						<div class="flex flex-row">
+							<label>User type:</label>
+							<select name="user_type" class="uk-select text-zinc-50">
+								if mode == "create" {
+									if old_user_type == "analyst" {
+										<option selected value="analyst">Analyst</option>
+									} else {
+										<option value="analyst">Analyst</option>
+									}
+									if old_user_type == "manager" {
+										<option selected value="manager">Manager</option>
+									} else {
+										<option value="manager">Manager</option>
+									}
+									if old_user_type == "admin" {
+										<option selected value="admin">Administrator</option>
+									} else {
+										<option value="admin">Administrator</option>
+									}
+								} else if mode == "update" {
+									if old_user_type == "analyst" {
+										<option selected value="analyst">Analyst</option>
+									} else {
+										<option value="analyst">Analyst</option>
+									}
+									if old_user_type == "manager" {
+										<option selected value="manager">Manager</option>
+									} else if models.IsUserManagerNoError(analyst.Analyst_ID.String()) {
+										<option selected value="manager">Manager</option>
+									} else {
+										<option value="manager">Manager</option>
+									}
+									if old_user_type == "admin" {
+										<option selected value="admin">Administrator</option>
+									} else if models.IsUserAdminNoError(analyst.Analyst_ID.String()) {
+										<option selected value="admin">Administrator</option>
+									} else {
+										<option value="admin">Administrator</option>
+									}
+								}
+							</select>
 							<div class="flex flex-col" style="width: 45%;">
 								<label>First name:</label>
 								if !errs[0] {
@@ -73,8 +113,22 @@ templ UserForm(user_type string, analyst models.Analyst, view_type string, old_a
 							<input type="email" name="email" class="uk-input text-base text-zinc-50 border border-red-600"/>
 							<label class="text-red-600">Please input an email!</label>
 						}
+						if mode == "create" {
+							<label class="mt-3">Temporary password:</label>
+							if !errs[3] {
+								if old_analyst.Password != "" {
+									<input type="password" name="password" id="password" value={ old_analyst.Password } class="uk-input text-base text-zinc-50"/>
+								} else {
+									<input type="password" name="password" id="password" class="uk-input text-base text-zinc-50"/>
+								}
+							} else {
+								<input type="password" name="password" id="password" class="uk-input text-base text-zinc-50 border border-red-600"/>
+								<label class="text-red-600">Please input a password!</label>
+							}
+							<label><input class="uk-checkbox border rounded-full border-zinc-50" type="checkbox" id="show_password"/> Show password</label>
+						}
 						<label class="mt-3">Phone number:</label>
-						if !errs[3] {
+						if !errs[4] {
 							if old_analyst.Phone_Number != "" {
 								<input type="text" name="phone_number" value={ old_analyst.Phone_Number } class="uk-input text-base text-zinc-50"/>
 							} else {
@@ -109,5 +163,16 @@ templ UserForm(user_type string, analyst models.Analyst, view_type string, old_a
 				</div>
 			</form>
 		</div>
+		<script>
+			const show_password = document.getElementById('show_password');
+			const pass_input = document.getElementById('password');
+
+			show_password.addEventListener("change", function() {
+				if (show_password.checked)
+					pass_input.type = 'text';
+				else
+					pass_input.type = 'password';
+			});
+		</script>
 	}
 }

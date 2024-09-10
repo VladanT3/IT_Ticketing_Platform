@@ -66,19 +66,20 @@ func main() {
 	router.Get("/analyst/team", handlers.Make(handlers.GetAnalystsTeam))
 
 	//TODO: test everything below
+	//make the thing where manager requests data change
 	router.Get("/users/view", handlers.Make(handlers.ShowUserView))
 	router.Get("/users/team/view", handlers.Make(handlers.ShowTeamView))
 	router.Post("/users/filter", handlers.Make(handlers.FilterUsers))
 
+	//TODO: view_type data is not being passed, needs to be fixed
 	router.Get("/user/{analyst_id}", handlers.Make(handlers.ShowUserForm))
-	//TODO: finish
 	router.Get("/user/new", handlers.Make(handlers.ShowNewUserForm))
-	//TODO: finish
 	router.Post("/user", handlers.Make(handlers.UserRedirect))
-	//TODO: finish
-	router.Get("user/create", handlers.Make(handlers.CreateUser))
+	router.Get("/user/create", handlers.Make(handlers.CreateUser))
 	router.Get("/user/update/{analyst_id}", handlers.Make(handlers.UpdateUser))
-	router.Delete("user/delete/{analyst_id}", handlers.Make(handlers.DeleteUser))
+	router.Delete("/user/delete/{analyst_id}", handlers.Make(handlers.DeleteUser))
+	//TODO: password change
+	router.Put("/user/password/change", handlers.Make(handlers.ChangePassword))
 
 	router.Get("/error", handlers.Make(handlers.ShowError))
 

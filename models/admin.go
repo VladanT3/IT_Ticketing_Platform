@@ -26,3 +26,19 @@ func IsUserAdmin(analyst_id string) (bool, error) {
 
 	return true, nil
 }
+
+func IsUserAdminNoError(analyst_id string) bool {
+	var db *sql.DB = database.DB_Connection
+	admin := Admin{}
+
+	query := `select * from administrator where administrator_id = $1;`
+	err := db.QueryRow(query, analyst_id).Scan(&admin.Admin_ID)
+	if err != nil {
+		if err == sql.ErrNoRows {
+			return false
+		}
+		return false
+	}
+
+	return true
+}

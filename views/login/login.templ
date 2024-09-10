@@ -22,9 +22,9 @@ templ Login(email_err string, pass_err string, email string, pass string) {
 							}
 							<label class="mt-3">Password</label>
 							if pass_err == "" {
-								<input class="uk-input text-zinc-50 text-base" id="passInput" type="password" name="password" value={ pass }/>
+								<input class="uk-input text-zinc-50 text-base" id="password" type="password" name="password" value={ pass }/>
 							} else if pass_err != "" {
-								<input class="uk-input text-zinc-50 text-base border border-red-600" id="passInput" type="password" name="password" value={ pass }/>
+								<input class="uk-input text-zinc-50 text-base border border-red-600" id="show_password" type="password" name="password" value={ pass }/>
 								<label class="text-red-600">{ pass_err }</label>
 							}
 							<label><input class="uk-checkbox border rounded-full border-zinc-50" type="checkbox" id="showPassword"/> Show password</label>
@@ -38,14 +38,14 @@ templ Login(email_err string, pass_err string, email string, pass string) {
 			</div>
 		</div>
 		<script>
-			const showPassword = document.getElementById('showPassword');
-			const passInput = document.getElementById('passInput');
+			const show_password = document.getElementById('show_password');
+			const pass_input = document.getElementById('password');
 
-			showPassword.addEventListener("change", function () {
-				if (showPassword.checked)
-					passInput.type = 'text';
+			show_password.addEventListener("change", function() {
+				if (show_password.checked)
+					pass_input.type = 'text';
 				else
-					passInput.type = 'password';
+					pass_input.type = 'password';
 			});
 		</script>
 	}

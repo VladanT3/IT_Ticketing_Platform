@@ -78,7 +78,7 @@ func UserView(user_type string, current_user models.Analyst, view_type string) t
 				}
 			}
 			if view_type == "User View" {
-				_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString("<form class=\"col-span-4 flex flex-col\" hx-post=\"/users/filter\" hx-trigger=\"keyup changed delay:500ms from:#search\" hx-target=\"#users\" hx-swap=\"innerHTML\"><input type=\"hidden\" name=\"view_type\" value=\"")
+				_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString("<form class=\"col-span-4 flex flex-col\" hx-post=\"/users/filter\" hx-target=\"#users\" hx-swap=\"innerHTML\"><input type=\"hidden\" name=\"view_type\" value=\"")
 				if templ_7745c5c3_Err != nil {
 					return templ_7745c5c3_Err
 				}
@@ -91,7 +91,7 @@ func UserView(user_type string, current_user models.Analyst, view_type string) t
 				if templ_7745c5c3_Err != nil {
 					return templ_7745c5c3_Err
 				}
-				_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString("\"><div class=\"flex flex-col mt-3\"><label>Search:</label> <input type=\"text\" name=\"search\" id=\"search\" class=\"uk-input text-zinc-50 text-base\"></div><label class=\"mt-3\">Select user type:</label> <label><input type=\"radio\" name=\"user_type\" value=\"All\" class=\"uk-checkbox border rounded-full border-zinc-50\" checked> All</label> <label><input type=\"radio\" name=\"user_type\" value=\"Managers\" class=\"uk-checkbox border rounded-full border-zinc-50\"> Managers</label> <label><input type=\"radio\" name=\"user_type\" value=\"Adminstrators\" class=\"uk-checkbox border rounded-full border-zinc-50\"> Administrators</label></form>")
+				_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString("\"><div class=\"flex flex-col mt-3\"><label>Search:</label> <input type=\"text\" name=\"search\" id=\"search\" class=\"uk-input text-zinc-50 text-base\"></div><label class=\"mt-3\">Select user type:</label> <label><input type=\"radio\" name=\"user_type\" id=\"user_type\" value=\"all\" class=\"uk-checkbox border rounded-full border-zinc-50\" checked> All</label> <label><input type=\"radio\" name=\"user_type\" id=\"user_type\" value=\"managers\" class=\"uk-checkbox border rounded-full border-zinc-50\"> Managers</label> <label><input type=\"radio\" name=\"user_type\" id=\"user_type\" value=\"administrators\" class=\"uk-checkbox border rounded-full border-zinc-50\"> Administrators</label><div class=\"mt-3\"></div><button type=\"submit\" class=\"uk-button uk-width-1-1 bg-zinc-50 text-zinc-900 border border-zinc-50 hover:bg-zinc-900 hover:text-zinc-50\">Apply Filters</button></form>")
 				if templ_7745c5c3_Err != nil {
 					return templ_7745c5c3_Err
 				}

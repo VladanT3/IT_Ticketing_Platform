@@ -199,23 +199,23 @@ func FilterUsers(search_term string, view_type string, team_id string, user_type
 	var queryArgs []any
 	var query string
 
-	if user_type == "Managers" {
+	if user_type == "managers" {
 		query = `
-			select *
-			from analyst an join manager m on a.Analyst_ID = m.Manager_ID
+			select an.*
+			from analyst an join manager m on an.analyst_id = m.manager_id
 			where (lower(an.first_name) like $1 or
 			lower(an.last_name) like $1)
 		`
-	} else if user_type == "Administrators" {
+	} else if user_type == "administrators" {
 		query = `
-			select *
-			from analyst an join administrator ad on an.Analyst_ID = ad.Administrator_ID
+			select an.*
+			from analyst an join administrator ad on an.analyst_id = ad.administrator_id
 			where (lower(an.first_name) like $1 or
 			lower(an.last_name) like $1)
 		`
 	} else {
 		query = `
-			select * 
+			select an.* 
 			from analyst an
 			where (lower(an.first_name) like $1 or
 			lower(an.last_name) like $1)
@@ -288,6 +288,18 @@ func DeleteAnalyst(analyst_id string) error {
 	query := `delete from analyst where analyst_id = $1;`
 
 	_, err := db.Exec(query, analyst_id)
+	if err != nil {
+		return err
+	}
+
+	return nil
+}
+
+func CreateAnalyst(new_analyst Analyst, user_type string) error {
+	var db *sql.DB = database.DB_Connection
+	query := `insert into analyst values(gen_random_uuid(), $1, $2, $3, $4, $5, $6, default, default, default);`
+
+	_, err := db.Exec(query, new_analyst.First_Name, new_analyst.Last_Name, new_analyst.Email, new_analyst.Password, new_analyst.Phone_Number, new_analyst.Team_ID.UUID)
 	if err != nil {
 		return err
 	}

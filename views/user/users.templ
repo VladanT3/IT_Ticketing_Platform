@@ -3,8 +3,11 @@ package user
 import "github.com/VladanT3/IT_Ticketing_Platform/models"
 
 templ Users(analysts []models.Analyst) {
+	<a href="/user/new" class="border border-green-600 rounded-lg p-3 self-center text-green-600 hover:bg-green-600 hover:text-zinc-900" style="width: 100%; margin-bottom: 0.5rem;">
+		<span class="text-xl font-bold">+ Add a new Analyst</span>
+	</a>
 	for _, analyst := range analysts {
-		<a href={ "/user/" + templ.SafeURL(analyst.Analyst_ID.String()) } style="margin-bottom: 0.5rem" class="flex flex-col border border-zinc-50 rounded-lg p-3 hover:border-zinc-900 hover:bg-zinc-50 hover:text-zinc-900 hover:cursor-pointer" style="width: 100%;">
+		<a href={ "/user/" + templ.SafeURL(analyst.Analyst_ID.String()) } class="flex flex-col border border-zinc-50 rounded-lg p-3 hover:border-zinc-900 hover:bg-zinc-50 hover:text-zinc-900" style="width: 100%; margin-bottom: 0.5rem;">
 			<span class="text-lg">Name: <span class="font-bold">{ analyst.First_Name + " " + analyst.Last_Name }</span></span>
 			<span class="text-lg">Email: <span class="font-bold">{ analyst.Email }</span></span>
 		</a>
