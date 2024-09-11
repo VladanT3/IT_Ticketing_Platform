@@ -64,12 +64,12 @@ func CheckPassword(password string, email string) (bool, error) {
 	}
 }
 
-func GetAnalyst(analystID string) Analyst {
+func GetAnalyst(analyst_id string) Analyst {
 	var db *sql.DB = database.DB_Connection
 	analyst := Analyst{}
 
 	query := `select * from analyst where analyst_id = $1;`
-	err := db.QueryRow(query, analystID).Scan(
+	err := db.QueryRow(query, analyst_id).Scan(
 		&analyst.Analyst_ID,
 		&analyst.First_Name,
 		&analyst.Last_Name,
@@ -305,4 +305,38 @@ func CreateAnalyst(new_analyst Analyst, user_type string) error {
 	}
 
 	return nil
+}
+
+func IsEmailSame(analyst_id string, email string) (bool, error) {
+	var db *sql.DB = database.DB_Connection
+	var count int
+
+	query := `select count(*) from analyst where analyst_id = $1 and email = $2;`
+	err := db.QueryRow(query, analyst_id, email).Scan(&count)
+	if err != nil {
+		return false, err
+	}
+
+	if count > 0 {
+		return true, nil
+	} else {
+		return false, nil
+	}
+}
+
+func UserExists(analyst_id string) (bool, error) {
+	var db *sql.DB = database.DB_Connection
+	var count int
+
+	query := `select count(*) from analyst where analyst_id = $1;`
+	err := db.QueryRow(query, analyst_id).Scan(&count)
+	if err != nil {
+		return false, err
+	}
+
+	if count > 0 {
+		return true, nil
+	} else {
+		return false, nil
+	}
 }

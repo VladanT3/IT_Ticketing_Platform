@@ -101,12 +101,12 @@ func UserView(user_type string, current_user models.Analyst, view_type string) t
 				return templ_7745c5c3_Err
 			}
 			if view_type == "User View" {
-				templ_7745c5c3_Err = Users(models.GetAllAnalysts()).Render(ctx, templ_7745c5c3_Buffer)
+				templ_7745c5c3_Err = Users(models.GetAllAnalysts(), view_type).Render(ctx, templ_7745c5c3_Buffer)
 				if templ_7745c5c3_Err != nil {
 					return templ_7745c5c3_Err
 				}
 			} else if view_type == "Team View" {
-				templ_7745c5c3_Err = Users(models.GetTeamsAnalysts(current_user.Team_ID.UUID.String())).Render(ctx, templ_7745c5c3_Buffer)
+				templ_7745c5c3_Err = Users(models.GetTeamsAnalysts(current_user.Team_ID.UUID.String()), view_type).Render(ctx, templ_7745c5c3_Buffer)
 				if templ_7745c5c3_Err != nil {
 					return templ_7745c5c3_Err
 				}

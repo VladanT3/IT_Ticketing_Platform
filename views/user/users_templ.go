@@ -10,7 +10,7 @@ import templruntime "github.com/a-h/templ/runtime"
 
 import "github.com/VladanT3/IT_Ticketing_Platform/models"
 
-func Users(analysts []models.Analyst) templ.Component {
+func Users(analysts []models.Analyst, view_type string) templ.Component {
 	return templruntime.GeneratedTemplate(func(templ_7745c5c3_Input templruntime.GeneratedComponentInput) (templ_7745c5c3_Err error) {
 		templ_7745c5c3_W, ctx := templ_7745c5c3_Input.Writer, templ_7745c5c3_Input.Context
 		templ_7745c5c3_Buffer, templ_7745c5c3_IsBuffer := templruntime.GetBuffer(templ_7745c5c3_W)
@@ -28,47 +28,73 @@ func Users(analysts []models.Analyst) templ.Component {
 			templ_7745c5c3_Var1 = templ.NopComponent
 		}
 		ctx = templ.ClearChildren(ctx)
-		_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString("<a href=\"/user/new\" class=\"border border-green-600 rounded-lg p-3 self-center text-green-600 hover:bg-green-600 hover:text-zinc-900\" style=\"width: 100%; margin-bottom: 0.5rem;\"><span class=\"text-xl font-bold\">+ Add a new Analyst</span></a> ")
+		_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString("<form action=\"/user/new\" method=\"get\"><input type=\"hidden\" name=\"view_type\" value=\"")
+		if templ_7745c5c3_Err != nil {
+			return templ_7745c5c3_Err
+		}
+		var templ_7745c5c3_Var2 string
+		templ_7745c5c3_Var2, templ_7745c5c3_Err = templ.JoinStringErrs(view_type)
+		if templ_7745c5c3_Err != nil {
+			return templ.Error{Err: templ_7745c5c3_Err, FileName: `views/user/users.templ`, Line: 7, Col: 57}
+		}
+		_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString(templ.EscapeString(templ_7745c5c3_Var2))
+		if templ_7745c5c3_Err != nil {
+			return templ_7745c5c3_Err
+		}
+		_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString("\"> <button type=\"submit\" class=\"flex flex-row text-xl font-bold border border-green-600 rounded-lg p-3 self-center text-green-600 hover:bg-green-600 hover:text-zinc-900\" style=\"width: 100%; margin-bottom: 0.5rem;\"><span class=\"self-start\">+ Add a new Analyst</span></button></form>")
 		if templ_7745c5c3_Err != nil {
 			return templ_7745c5c3_Err
 		}
 		for _, analyst := range analysts {
-			_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString("<a href=\"")
+			_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString("<form method=\"get\" action=\"")
 			if templ_7745c5c3_Err != nil {
 				return templ_7745c5c3_Err
 			}
-			var templ_7745c5c3_Var2 templ.SafeURL = "/user/" + templ.SafeURL(analyst.Analyst_ID.String())
-			_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString(templ.EscapeString(string(templ_7745c5c3_Var2)))
+			var templ_7745c5c3_Var3 templ.SafeURL = "/user/" + templ.SafeURL(analyst.Analyst_ID.String())
+			_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString(templ.EscapeString(string(templ_7745c5c3_Var3)))
 			if templ_7745c5c3_Err != nil {
 				return templ_7745c5c3_Err
 			}
-			_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString("\" class=\"flex flex-col border border-zinc-50 rounded-lg p-3 hover:border-zinc-900 hover:bg-zinc-50 hover:text-zinc-900\" style=\"width: 100%; margin-bottom: 0.5rem;\"><span class=\"text-lg\">Name: <span class=\"font-bold\">")
-			if templ_7745c5c3_Err != nil {
-				return templ_7745c5c3_Err
-			}
-			var templ_7745c5c3_Var3 string
-			templ_7745c5c3_Var3, templ_7745c5c3_Err = templ.JoinStringErrs(analyst.First_Name + " " + analyst.Last_Name)
-			if templ_7745c5c3_Err != nil {
-				return templ.Error{Err: templ_7745c5c3_Err, FileName: `views/user/users.templ`, Line: 11, Col: 101}
-			}
-			_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString(templ.EscapeString(templ_7745c5c3_Var3))
-			if templ_7745c5c3_Err != nil {
-				return templ_7745c5c3_Err
-			}
-			_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString("</span></span> <span class=\"text-lg\">Email: <span class=\"font-bold\">")
+			_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString("\"><input type=\"hidden\" name=\"view_type\" value=\"")
 			if templ_7745c5c3_Err != nil {
 				return templ_7745c5c3_Err
 			}
 			var templ_7745c5c3_Var4 string
-			templ_7745c5c3_Var4, templ_7745c5c3_Err = templ.JoinStringErrs(analyst.Email)
+			templ_7745c5c3_Var4, templ_7745c5c3_Err = templ.JoinStringErrs(view_type)
 			if templ_7745c5c3_Err != nil {
-				return templ.Error{Err: templ_7745c5c3_Err, FileName: `views/user/users.templ`, Line: 12, Col: 71}
+				return templ.Error{Err: templ_7745c5c3_Err, FileName: `views/user/users.templ`, Line: 14, Col: 58}
 			}
 			_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString(templ.EscapeString(templ_7745c5c3_Var4))
 			if templ_7745c5c3_Err != nil {
 				return templ_7745c5c3_Err
 			}
-			_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString("</span></span></a>")
+			_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString("\"> <button type=\"submit\" class=\"flex flex-row border border-zinc-50 rounded-lg p-3 hover:border-zinc-900 hover:bg-zinc-50 hover:text-zinc-900\" style=\"width: 100%; margin-bottom: 0.5rem;\"><div class=\"self-start flex flex-col\"><div class=\"flex flex-row\"><span class=\"text-lg self-start\">Name: <span class=\"font-bold\">")
+			if templ_7745c5c3_Err != nil {
+				return templ_7745c5c3_Err
+			}
+			var templ_7745c5c3_Var5 string
+			templ_7745c5c3_Var5, templ_7745c5c3_Err = templ.JoinStringErrs(analyst.First_Name + " " + analyst.Last_Name)
+			if templ_7745c5c3_Err != nil {
+				return templ.Error{Err: templ_7745c5c3_Err, FileName: `views/user/users.templ`, Line: 18, Col: 115}
+			}
+			_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString(templ.EscapeString(templ_7745c5c3_Var5))
+			if templ_7745c5c3_Err != nil {
+				return templ_7745c5c3_Err
+			}
+			_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString("</span></span></div><div class=\"flex flex-row\"><span class=\"text-lg self-start\">Email: <span class=\"font-bold\">")
+			if templ_7745c5c3_Err != nil {
+				return templ_7745c5c3_Err
+			}
+			var templ_7745c5c3_Var6 string
+			templ_7745c5c3_Var6, templ_7745c5c3_Err = templ.JoinStringErrs(analyst.Email)
+			if templ_7745c5c3_Err != nil {
+				return templ.Error{Err: templ_7745c5c3_Err, FileName: `views/user/users.templ`, Line: 21, Col: 85}
+			}
+			_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString(templ.EscapeString(templ_7745c5c3_Var6))
+			if templ_7745c5c3_Err != nil {
+				return templ_7745c5c3_Err
+			}
+			_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString("</span></span></div></div></button></form>")
 			if templ_7745c5c3_Err != nil {
 				return templ_7745c5c3_Err
 			}

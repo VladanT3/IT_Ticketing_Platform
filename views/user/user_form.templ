@@ -13,7 +13,6 @@ templ UserForm(user_type string, analyst models.Analyst, view_type string, old_a
 				<div class="col-span-1 grid grid-cols-5">
 					<div class="col-span-4 flex flex-col">
 						<button type="submit" class="uk-button bg-zinc-50 text-zinc-900 border border-zinc-50 hover:bg-zinc-900 hover:text-zinc-50">Save</button>
-						<button type="submit" class="uk-button bg-zinc-50 text-zinc-900 border border-zinc-50 hover:bg-zinc-900 hover:text-zinc-50 mt-3">Save and Exit</button>
 						if view_type == "User View" {
 							<a href="/user/view" class="uk-button bg-zinc-50 text-zinc-900 border border-zinc-50 hover:bg-zinc-900 hover:text-zinc-50 mt-3">Exit</a>
 							if mode == "update" {
@@ -25,50 +24,50 @@ templ UserForm(user_type string, analyst models.Analyst, view_type string, old_a
 					</div>
 					<div class="uk-divider-vertical min-h-full"></div>
 				</div>
-				<div id="user_form" class="col-span-4 grid grid-cols-3">
+				<div class="col-span-4 grid grid-cols-3">
 					<div></div>
-					<div class="flex flex-col">
-						<div class="flex flex-row">
-							<label>User type:</label>
-							<select name="user_type" class="uk-select text-zinc-50">
-								if mode == "create" {
-									if old_user_type == "analyst" {
-										<option selected value="analyst">Analyst</option>
-									} else {
-										<option value="analyst">Analyst</option>
-									}
-									if old_user_type == "manager" {
-										<option selected value="manager">Manager</option>
-									} else {
-										<option value="manager">Manager</option>
-									}
-									if old_user_type == "admin" {
-										<option selected value="admin">Administrator</option>
-									} else {
-										<option value="admin">Administrator</option>
-									}
-								} else if mode == "update" {
-									if old_user_type == "analyst" {
-										<option selected value="analyst">Analyst</option>
-									} else {
-										<option value="analyst">Analyst</option>
-									}
-									if old_user_type == "manager" {
-										<option selected value="manager">Manager</option>
-									} else if models.IsUserManagerNoError(analyst.Analyst_ID.String()) {
-										<option selected value="manager">Manager</option>
-									} else {
-										<option value="manager">Manager</option>
-									}
-									if old_user_type == "admin" {
-										<option selected value="admin">Administrator</option>
-									} else if models.IsUserAdminNoError(analyst.Analyst_ID.String()) {
-										<option selected value="admin">Administrator</option>
-									} else {
-										<option value="admin">Administrator</option>
-									}
+					<div id="user_form" class="flex flex-col">
+						<label>User type:</label>
+						<select name="user_type" class="uk-select text-zinc-50">
+							if mode == "create" {
+								if old_user_type == "analyst" {
+									<option selected value="analyst">Analyst</option>
+								} else {
+									<option value="analyst">Analyst</option>
 								}
-							</select>
+								if old_user_type == "manager" {
+									<option selected value="manager">Manager</option>
+								} else {
+									<option value="manager">Manager</option>
+								}
+								if old_user_type == "admin" {
+									<option selected value="admin">Administrator</option>
+								} else {
+									<option value="admin">Administrator</option>
+								}
+							} else if mode == "update" {
+								if old_user_type == "analyst" {
+									<option selected value="analyst">Analyst</option>
+								} else {
+									<option value="analyst">Analyst</option>
+								}
+								if old_user_type == "manager" {
+									<option selected value="manager">Manager</option>
+								} else if models.IsUserManagerNoError(analyst.Analyst_ID.String()) {
+									<option selected value="manager">Manager</option>
+								} else {
+									<option value="manager">Manager</option>
+								}
+								if old_user_type == "admin" {
+									<option selected value="admin">Administrator</option>
+								} else if models.IsUserAdminNoError(analyst.Analyst_ID.String()) {
+									<option selected value="admin">Administrator</option>
+								} else {
+									<option value="admin">Administrator</option>
+								}
+							}
+						</select>
+						<div class="flex flex-row">
 							<div class="flex flex-col" style="width: 45%;">
 								<label>First name:</label>
 								if !errs[0] {
@@ -103,10 +102,10 @@ templ UserForm(user_type string, analyst models.Analyst, view_type string, old_a
 								if old_analyst.Email != "" {
 									<input type="email" name="email" value={ old_analyst.Email } class="uk-input text-base text-zinc-50"/>
 								} else {
-									<input type="email" name="email" value={ analyst.Last_Name } class="uk-input text-base text-zinc-50"/>
+									<input type="email" name="email" value={ analyst.Email } class="uk-input text-base text-zinc-50"/>
 								}
 							} else {
-								<input type="email" name="email" class="uk-input text-base text-zinc-50 border border-red-600"/>
+								<input type="email" name="email" value={ old_analyst.Email } class="uk-input text-base text-zinc-50 border border-red-600"/>
 								<label class="text-red-600">Email already exists!</label>
 							}
 						} else {
@@ -132,7 +131,7 @@ templ UserForm(user_type string, analyst models.Analyst, view_type string, old_a
 							if old_analyst.Phone_Number != "" {
 								<input type="text" name="phone_number" value={ old_analyst.Phone_Number } class="uk-input text-base text-zinc-50"/>
 							} else {
-								<input type="text" name="phone_number" value={ analyst.Last_Name } class="uk-input text-base text-zinc-50"/>
+								<input type="text" name="phone_number" value={ analyst.Phone_Number } class="uk-input text-base text-zinc-50"/>
 							}
 						} else {
 							<input type="text" name="phone_number" class="uk-input text-base text-zinc-50 border border-red-600"/>

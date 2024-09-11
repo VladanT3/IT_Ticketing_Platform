@@ -40,20 +40,10 @@ func GetAnalystsTeam(w http.ResponseWriter, r *http.Request) error {
 }
 
 func ShowUserView(w http.ResponseWriter, r *http.Request) error {
-	http.SetCookie(w, &http.Cookie{
-		Name:    "view_type",
-		Value:   "User View",
-		Expires: time.Time.Add(time.Now(), time.Hour*1),
-	})
 	return Render(w, r, user.UserView(LoggedInUserType, LoggedInUser, "User View"))
 }
 
 func ShowTeamView(w http.ResponseWriter, r *http.Request) error {
-	http.SetCookie(w, &http.Cookie{
-		Name:    "view_type",
-		Value:   "Team View",
-		Expires: time.Time.Add(time.Now(), time.Hour*1),
-	})
 	return Render(w, r, user.UserView(LoggedInUserType, LoggedInUser, "Team View"))
 }
 
@@ -64,30 +54,32 @@ func FilterUsers(w http.ResponseWriter, r *http.Request) error {
 
 	analysts := models.FilterUsers(search_term, view_type, LoggedInUser.Team_ID.UUID.String(), user_type)
 
-	return Render(w, r, user.Users(analysts))
+	return Render(w, r, user.Users(analysts, view_type))
 }
 
 func ShowUserForm(w http.ResponseWriter, r *http.Request) error {
 	analyst_id := chi.URLParam(r, "analyst_id")
-	view_type_cookie, err := r.Cookie("view_type")
+	view_type := r.FormValue("view_type")
+
+	analyst_exists, err := models.UserExists(analyst_id)
 	if err != nil {
-		err_msg := "Internal server error:\nno cookie with name 'ticket_type': " + err.Error()
+		err_msg := "Internal server error:\nerror checking if user exists: " + err.Error()
 		return Render(w, r, layouts.ErrorMessage(LoggedInUserType, err_msg))
 	}
-	view_type := view_type_cookie.Value
+
+	if !analyst_exists {
+		return Render(w, r, layouts.ErrorMessage(LoggedInUserType, "No user found: user doesn't exist or it was removed!"))
+	}
 
 	analyst := models.GetAnalyst(analyst_id)
+
+	w.Header().Add("HX-Redirect", "/user/"+analyst_id)
 
 	return Render(w, r, user.UserForm(LoggedInUserType, analyst, view_type, models.Analyst{}, [5]bool{false, false, false, false, false}, true, "update", ""))
 }
 
 func ShowNewUserForm(w http.ResponseWriter, r *http.Request) error {
-	view_type_cookie, err := r.Cookie("view_type")
-	if err != nil {
-		err_msg := "Internal server error:\nno cookie with name 'ticket_type': " + err.Error()
-		return Render(w, r, layouts.ErrorMessage(LoggedInUserType, err_msg))
-	}
-	view_type := view_type_cookie.Value
+	view_type := r.FormValue("view_type")
 
 	return Render(w, r, user.UserForm(LoggedInUserType, models.Analyst{}, view_type, models.Analyst{}, [5]bool{false, false, false, false, false}, true, "create", ""))
 }
@@ -146,7 +138,7 @@ func UserRedirect(w http.ResponseWriter, r *http.Request) error {
 		http.Redirect(w, r, "/user/create", http.StatusSeeOther)
 		return nil
 	} else if mode == "update" {
-		http.Redirect(w, r, "/user/update"+analyst_id, http.StatusSeeOther)
+		http.Redirect(w, r, "/user/update/"+analyst_id, http.StatusSeeOther)
 		return nil
 	}
 
@@ -208,6 +200,7 @@ func UpdateUser(w http.ResponseWriter, r *http.Request) error {
 	var errs [5]bool = [5]bool{false, false, false, false, false}
 	errCounter := 0
 	var new_analyst models.Analyst = models.Analyst{
+		Analyst_ID:   uuid.MustParse(analyst_id),
 		First_Name:   first_name,
 		Last_Name:    last_name,
 		Email:        email,
@@ -242,7 +235,14 @@ func UpdateUser(w http.ResponseWriter, r *http.Request) error {
 	}
 
 	if email_exists {
-		return Render(w, r, user.UserForm(LoggedInUserType, analyst, view_type, new_analyst, errs, false, "update", user_type))
+		same_email, err := models.IsEmailSame(analyst_id, email)
+		if err != nil {
+			err_msg := "Internal server error:\nerror checking if email is new: " + err.Error()
+			return Render(w, r, layouts.ErrorMessage(LoggedInUserType, err_msg))
+		}
+		if !same_email {
+			return Render(w, r, user.UserForm(LoggedInUserType, analyst, view_type, new_analyst, errs, false, "update", user_type))
+		}
 	}
 
 	if errCounter > 0 {
@@ -262,11 +262,9 @@ func UpdateUser(w http.ResponseWriter, r *http.Request) error {
 	}
 
 	if view_type == "User View" {
-		w.Header().Add("HX-Redirect", "/users/view")
-		return Render(w, r, user.UserView(LoggedInUserType, LoggedInUser, "User View"))
+		http.Redirect(w, r, "/users/view", http.StatusSeeOther)
 	} else if view_type == "Team View" {
-		w.Header().Add("HX-Redirect", "/users/team/view")
-		return Render(w, r, user.UserView(LoggedInUserType, LoggedInUser, "Team View"))
+		http.Redirect(w, r, "/users/team/view", http.StatusSeeOther)
 	}
 
 	return nil
@@ -392,11 +390,9 @@ func CreateUser(w http.ResponseWriter, r *http.Request) error {
 	}
 
 	if view_type == "User View" {
-		w.Header().Add("HX-Redirect", "/users/view")
-		return Render(w, r, user.UserView(LoggedInUserType, LoggedInUser, "User View"))
+		http.Redirect(w, r, "/users/view", http.StatusSeeOther)
 	} else if view_type == "Team View" {
-		w.Header().Add("HX-Redirect", "/users/team/view")
-		return Render(w, r, user.UserView(LoggedInUserType, LoggedInUser, "Team View"))
+		http.Redirect(w, r, "/users/team/view", http.StatusSeeOther)
 	}
 
 	return nil

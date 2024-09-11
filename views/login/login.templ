@@ -24,10 +24,10 @@ templ Login(email_err string, pass_err string, email string, pass string) {
 							if pass_err == "" {
 								<input class="uk-input text-zinc-50 text-base" id="password" type="password" name="password" value={ pass }/>
 							} else if pass_err != "" {
-								<input class="uk-input text-zinc-50 text-base border border-red-600" id="show_password" type="password" name="password" value={ pass }/>
+								<input class="uk-input text-zinc-50 text-base border border-red-600" id="password" type="password" name="password" value={ pass }/>
 								<label class="text-red-600">{ pass_err }</label>
 							}
-							<label><input class="uk-checkbox border rounded-full border-zinc-50" type="checkbox" id="showPassword"/> Show password</label>
+							<label><input class="uk-checkbox border rounded-full border-zinc-50" type="checkbox" id="show_password"/> Show password</label>
 							<button class="uk-button bg-zinc-50 text-zinc-900 border border-zinc-50 self-center mt-5 hover:bg-zinc-900 hover:text-zinc-50">Log In</button>
 						</form>
 					</div>

@@ -71,14 +71,14 @@ func main() {
 	router.Get("/users/team/view", handlers.Make(handlers.ShowTeamView))
 	router.Post("/users/filter", handlers.Make(handlers.FilterUsers))
 
-	//TODO: view_type data is not being passed, needs to be fixed
 	router.Get("/user/{analyst_id}", handlers.Make(handlers.ShowUserForm))
 	router.Get("/user/new", handlers.Make(handlers.ShowNewUserForm))
 	router.Post("/user", handlers.Make(handlers.UserRedirect))
+	//TODO: when making or updating user make it so Admins cant be chosen as a team unless user type is previously chosen as admin
 	router.Get("/user/create", handlers.Make(handlers.CreateUser))
 	router.Get("/user/update/{analyst_id}", handlers.Make(handlers.UpdateUser))
 	router.Delete("/user/delete/{analyst_id}", handlers.Make(handlers.DeleteUser))
-	//TODO: password change
+	//TODO: password change for analyst
 	router.Put("/user/password/change", handlers.Make(handlers.ChangePassword))
 
 	router.Get("/error", handlers.Make(handlers.ShowError))

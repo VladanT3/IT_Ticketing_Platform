@@ -2,14 +2,26 @@ package user
 
 import "github.com/VladanT3/IT_Ticketing_Platform/models"
 
-templ Users(analysts []models.Analyst) {
-	<a href="/user/new" class="border border-green-600 rounded-lg p-3 self-center text-green-600 hover:bg-green-600 hover:text-zinc-900" style="width: 100%; margin-bottom: 0.5rem;">
-		<span class="text-xl font-bold">+ Add a new Analyst</span>
-	</a>
+templ Users(analysts []models.Analyst, view_type string) {
+	<form action="/user/new" method="get">
+		<input type="hidden" name="view_type" value={ view_type }/>
+		<button type="submit" class="flex flex-row text-xl font-bold border border-green-600 rounded-lg p-3 self-center text-green-600 hover:bg-green-600 hover:text-zinc-900" style="width: 100%; margin-bottom: 0.5rem;">
+			<span class="self-start">+ Add a new Analyst</span>
+		</button>
+	</form>
 	for _, analyst := range analysts {
-		<a href={ "/user/" + templ.SafeURL(analyst.Analyst_ID.String()) } class="flex flex-col border border-zinc-50 rounded-lg p-3 hover:border-zinc-900 hover:bg-zinc-50 hover:text-zinc-900" style="width: 100%; margin-bottom: 0.5rem;">
-			<span class="text-lg">Name: <span class="font-bold">{ analyst.First_Name + " " + analyst.Last_Name }</span></span>
-			<span class="text-lg">Email: <span class="font-bold">{ analyst.Email }</span></span>
-		</a>
+		<form method="get" action={ "/user/" + templ.SafeURL(analyst.Analyst_ID.String()) }>
+			<input type="hidden" name="view_type" value={ view_type }/>
+			<button type="submit" class="flex flex-row border border-zinc-50 rounded-lg p-3 hover:border-zinc-900 hover:bg-zinc-50 hover:text-zinc-900" style="width: 100%; margin-bottom: 0.5rem;">
+				<div class="self-start flex flex-col">
+					<div class="flex flex-row">
+						<span class="text-lg self-start">Name: <span class="font-bold">{ analyst.First_Name + " " + analyst.Last_Name }</span></span>
+					</div>
+					<div class="flex flex-row">
+						<span class="text-lg self-start">Email: <span class="font-bold">{ analyst.Email }</span></span>
+					</div>
+				</div>
+			</button>
+		</form>
 	}
 }

@@ -40,9 +40,9 @@ templ UserView(user_type string, current_user models.Analyst, view_type string) 
 				</div>
 				<div class="col-span-4 flex flex-col" id="users">
 					if view_type == "User View" {
-						@Users(models.GetAllAnalysts())
+						@Users(models.GetAllAnalysts(), view_type)
 					} else if view_type == "Team View" {
-						@Users(models.GetTeamsAnalysts(current_user.Team_ID.UUID.String()))
+						@Users(models.GetTeamsAnalysts(current_user.Team_ID.UUID.String()), view_type)
 					}
 				</div>
 			</div>
