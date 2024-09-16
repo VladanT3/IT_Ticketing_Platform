@@ -21,6 +21,7 @@ func main() {
 	router.Handle("/*", http.StripPrefix("/public/", http.FileServer(http.Dir("./public"))))
 	router.Get("/", handlers.Make(handlers.Index))
 	//TODO: at the end add authorization for all get methods so they cant be accessed through the url without logging in
+	//TODO: maybe invest into some better responses, eg: user makes a ticket and gets a message that it was created?
 	router.Post("/login", handlers.Make(handlers.Login))
 	router.Post("/logout", handlers.Make(handlers.Logout))
 	router.Get("/profile", handlers.Make(handlers.Profile))
@@ -65,7 +66,6 @@ func main() {
 	router.Get("/team/analysts", handlers.Make(handlers.GetTeamsAnalysts))
 	router.Get("/analyst/team", handlers.Make(handlers.GetAnalystsTeam))
 
-	//TODO: make the thing where manager requests data change
 	router.Get("/users/view", handlers.Make(handlers.ShowUserView))
 	router.Get("/users/team/view", handlers.Make(handlers.ShowTeamView))
 	router.Post("/users/filter", handlers.Make(handlers.FilterUsers))
@@ -76,6 +76,8 @@ func main() {
 	router.Get("/user/create", handlers.Make(handlers.CreateUser))
 	router.Get("/user/update/{analyst_id}", handlers.Make(handlers.UpdateUser))
 	router.Delete("/user/delete/{analyst_id}", handlers.Make(handlers.DeleteUser))
+	//TODO: this, error checking written need to write request logic
+	router.Get("/user/request/update/{analyst_id}", handlers.Make(handlers.RequestUserDetailChange))
 	//TODO: password change for analyst
 	router.Put("/user/password/change", handlers.Make(handlers.ChangePassword))
 

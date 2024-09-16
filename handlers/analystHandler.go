@@ -191,12 +191,17 @@ func UserRedirect(w http.ResponseWriter, r *http.Request) error {
 		Expires: time.Time.Add(time.Now(), time.Second*10),
 	})
 
-	if mode == "create" {
-		http.Redirect(w, r, "/user/create", http.StatusSeeOther)
+	if view_type == "Team View" {
+		http.Redirect(w, r, "/user/request/update/"+analyst_id, http.StatusSeeOther)
 		return nil
-	} else if mode == "update" {
-		http.Redirect(w, r, "/user/update/"+analyst_id, http.StatusSeeOther)
-		return nil
+	} else if view_type == "User View" {
+		if mode == "create" {
+			http.Redirect(w, r, "/user/create", http.StatusSeeOther)
+			return nil
+		} else if mode == "update" {
+			http.Redirect(w, r, "/user/update/"+analyst_id, http.StatusSeeOther)
+			return nil
+		}
 	}
 
 	return nil
@@ -296,11 +301,7 @@ func UpdateUser(w http.ResponseWriter, r *http.Request) error {
 		return Render(w, r, layouts.ErrorMessage(LoggedInUserType, err_msg))
 	}
 
-	if view_type == "User View" {
-		http.Redirect(w, r, "/users/view", http.StatusSeeOther)
-	} else if view_type == "Team View" {
-		http.Redirect(w, r, "/users/team/view", http.StatusSeeOther)
-	}
+	http.Redirect(w, r, "/users/view", http.StatusSeeOther)
 
 	return nil
 }
@@ -397,10 +398,91 @@ func CreateUser(w http.ResponseWriter, r *http.Request) error {
 		return Render(w, r, layouts.ErrorMessage(LoggedInUserType, err_msg))
 	}
 
-	if view_type == "User View" {
-		http.Redirect(w, r, "/users/view", http.StatusSeeOther)
-	} else if view_type == "Team View" {
-		http.Redirect(w, r, "/users/team/view", http.StatusSeeOther)
+	http.Redirect(w, r, "/users/view", http.StatusSeeOther)
+
+	return nil
+}
+
+func RequestUserDetailChange(w http.ResponseWriter, r *http.Request) error {
+	view_type_cookie, err := r.Cookie("view_type")
+	if err != nil {
+		err_msg := "Internal server error:\ncookie with name 'view_type' doesn't exist!"
+		return Render(w, r, layouts.ErrorMessage(LoggedInUserType, err_msg))
+	}
+	view_type := view_type_cookie.Value
+	analyst_id_cookie, err := r.Cookie("analyst_id")
+	if err != nil {
+		err_msg := "Internal server error:\ncookie with name 'analyst_id' doesn't exist!"
+		return Render(w, r, layouts.ErrorMessage(LoggedInUserType, err_msg))
+	}
+	analyst_id := analyst_id_cookie.Value
+	first_name_cookie, err := r.Cookie("first_name")
+	if err != nil {
+		err_msg := "Internal server error:\ncookie with name 'first_name' doesn't exist!"
+		return Render(w, r, layouts.ErrorMessage(LoggedInUserType, err_msg))
+	}
+	first_name := first_name_cookie.Value
+	last_name_cookie, err := r.Cookie("last_name")
+	if err != nil {
+		err_msg := "Internal server error:\ncookie with name 'last_name' doesn't exist!"
+		return Render(w, r, layouts.ErrorMessage(LoggedInUserType, err_msg))
+	}
+	last_name := last_name_cookie.Value
+	email_cookie, err := r.Cookie("email")
+	if err != nil {
+		err_msg := "Internal server error:\ncookie with name 'email' doesn't exist!"
+		return Render(w, r, layouts.ErrorMessage(LoggedInUserType, err_msg))
+	}
+	email := email_cookie.Value
+	phone_number_cookie, err := r.Cookie("phone_number")
+	if err != nil {
+		err_msg := "Internal server error:\ncookie with name 'phone_number' doesn't exist!"
+		return Render(w, r, layouts.ErrorMessage(LoggedInUserType, err_msg))
+	}
+	phone_number := phone_number_cookie.Value
+	team_cookie, err := r.Cookie("team")
+	if err != nil {
+		err_msg := "Internal server error:\ncookie with name 'team' doesn't exist!"
+		return Render(w, r, layouts.ErrorMessage(LoggedInUserType, err_msg))
+	}
+	team := team_cookie.Value
+	user_type_cookie, err := r.Cookie("user_type")
+	if err != nil {
+		err_msg := "Internal server error:\ncookie with name 'user_type' doesn't exist!"
+		return Render(w, r, layouts.ErrorMessage(LoggedInUserType, err_msg))
+	}
+	user_type := user_type_cookie.Value
+
+	analyst := models.GetAnalyst(analyst_id)
+
+	var errs [5]bool = [5]bool{false, false, false, false, false}
+	var new_analyst models.Analyst = models.Analyst{
+		Analyst_ID:   uuid.MustParse(analyst_id),
+		First_Name:   first_name,
+		Last_Name:    last_name,
+		Email:        email,
+		Phone_Number: phone_number,
+		Team_ID: uuid.NullUUID{
+			UUID:  uuid.MustParse(team),
+			Valid: true,
+		},
+	}
+
+	_, email_exists, err := models.CheckEmail(email)
+	if err != nil {
+		err_msg := "Internal server error:\nerror checking email validity when updating user: " + err.Error()
+		return Render(w, r, layouts.ErrorMessage(LoggedInUserType, err_msg))
+	}
+
+	if email_exists {
+		same_email, err := models.IsEmailSame(analyst_id, email)
+		if err != nil {
+			err_msg := "Internal server error:\nerror checking if email is new: " + err.Error()
+			return Render(w, r, layouts.ErrorMessage(LoggedInUserType, err_msg))
+		}
+		if !same_email {
+			return Render(w, r, user.UserForm(LoggedInUserType, analyst, view_type, new_analyst, errs, false, "update", user_type, false))
+		}
 	}
 
 	return nil
