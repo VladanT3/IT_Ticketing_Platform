@@ -17,14 +17,14 @@ templ Login(email_err string, pass_err string, email string, pass string) {
 							if email_err == "" {
 								<input class="uk-input text-zinc-50 text-base" type="email" name="email" value={ email }/>
 							} else if email_err != "" {
-								<input class="uk-input text-zinc-50 text-base border border-red-600" type="email" name="email" value={ email }/>
+								<input autofocus class="uk-input text-zinc-50 text-base border border-red-600" type="email" name="email" value={ email }/>
 								<label class="text-red-600">{ email_err }</label>
 							}
 							<label class="mt-3">Password</label>
 							if pass_err == "" {
 								<input class="uk-input text-zinc-50 text-base" id="password" type="password" name="password" value={ pass }/>
 							} else if pass_err != "" {
-								<input class="uk-input text-zinc-50 text-base border border-red-600" id="password" type="password" name="password" value={ pass }/>
+								<input autofocus class="uk-input text-zinc-50 text-base border border-red-600" id="password" type="password" name="password" value={ pass }/>
 								<label class="text-red-600">{ pass_err }</label>
 							}
 							<label><input class="uk-checkbox border rounded-full border-zinc-50" type="checkbox" id="show_password"/> Show password</label>

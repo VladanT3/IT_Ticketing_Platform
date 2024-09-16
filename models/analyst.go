@@ -264,7 +264,7 @@ func FilterUsers(search_term string, view_type string, team_id string, user_type
 	return analysts
 }
 
-func UpdateAnalyst(new_analyst Analyst) error {
+func UpdateAnalyst(new_analyst Analyst, user_type string) error {
 	var db *sql.DB = database.DB_Connection
 	query := `
 		update analyst set
@@ -280,6 +280,60 @@ func UpdateAnalyst(new_analyst Analyst) error {
 		return err
 	}
 
+	manager_check, err := IsUserManager(new_analyst.Analyst_ID.String())
+	if err != nil {
+		return err
+	}
+	admin_check, err := IsUserAdmin(new_analyst.Analyst_ID.String())
+	if err != nil {
+		return err
+	}
+
+	if user_type == "manager" {
+		if !manager_check {
+			query = `insert into manager values($1);`
+			_, err := db.Exec(query, new_analyst.Analyst_ID)
+			if err != nil {
+				return err
+			}
+		}
+		if admin_check {
+			query = `delete from administrator where administrator_id = $1;`
+			_, err := db.Exec(query, new_analyst.Analyst_ID)
+			if err != nil {
+				return err
+			}
+		}
+	} else if user_type == "admin" {
+		if !admin_check {
+			query = `insert into administrator values($1);`
+			_, err := db.Exec(query, new_analyst.Analyst_ID)
+			if err != nil {
+				return err
+			}
+		}
+		if manager_check {
+			query = `delete from manager where manager_id = $1;`
+			_, err := db.Exec(query, new_analyst.Analyst_ID)
+			if err != nil {
+				return err
+			}
+		}
+	} else {
+		if admin_check {
+			query = `delete from administrator where administrator_id = $1;`
+			_, err := db.Exec(query, new_analyst.Analyst_ID)
+			if err != nil {
+				return err
+			}
+		} else if manager_check {
+			query = `delete from manager where manager_id = $1;`
+			_, err := db.Exec(query, new_analyst.Analyst_ID)
+			if err != nil {
+				return err
+			}
+		}
+	}
 	return nil
 }
 
@@ -292,16 +346,54 @@ func DeleteAnalyst(analyst_id string) error {
 		return err
 	}
 
+	manager_check, err := IsUserManager(analyst_id)
+	if err != nil {
+		return err
+	}
+	admin_check, err := IsUserAdmin(analyst_id)
+	if err != nil {
+		return err
+	}
+
+	if admin_check {
+		query = `delete from administrator where administrator_id = $1;`
+		_, err := db.Exec(query, analyst_id)
+		if err != nil {
+			return err
+		}
+	} else if manager_check {
+		query = `delete from manager where manager_id = $1;`
+		_, err := db.Exec(query, analyst_id)
+		if err != nil {
+			return err
+		}
+	}
+
 	return nil
 }
 
 func CreateAnalyst(new_analyst Analyst, user_type string) error {
 	var db *sql.DB = database.DB_Connection
-	query := `insert into analyst values(gen_random_uuid(), $1, $2, $3, $4, $5, $6, default, default, default);`
+	query := `insert into analyst values(gen_random_uuid(), $1, $2, $3, $4, $5, $6, default, default, default) returning analyst_id;`
+	var new_analyst_id uuid.UUID
 
-	_, err := db.Exec(query, new_analyst.First_Name, new_analyst.Last_Name, new_analyst.Email, new_analyst.Password, new_analyst.Phone_Number, new_analyst.Team_ID.UUID)
+	err := db.QueryRow(query, new_analyst.First_Name, new_analyst.Last_Name, new_analyst.Email, new_analyst.Password, new_analyst.Phone_Number, new_analyst.Team_ID.UUID).Scan(&new_analyst_id)
 	if err != nil {
 		return err
+	}
+
+	if user_type == "manager" {
+		query = `insert into manager values($1);`
+		_, err := db.Exec(query, new_analyst_id)
+		if err != nil {
+			return err
+		}
+	} else if user_type == "admin" {
+		query = `insert into administrator values($1);`
+		_, err := db.Exec(query, new_analyst_id)
+		if err != nil {
+			return err
+		}
 	}
 
 	return nil

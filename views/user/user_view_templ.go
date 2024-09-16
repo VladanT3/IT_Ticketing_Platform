@@ -101,6 +101,25 @@ func UserView(user_type string, current_user models.Analyst, view_type string) t
 				return templ_7745c5c3_Err
 			}
 			if view_type == "User View" {
+				_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString("<form action=\"/user/new\" method=\"get\"><input type=\"hidden\" name=\"view_type\" value=\"")
+				if templ_7745c5c3_Err != nil {
+					return templ_7745c5c3_Err
+				}
+				var templ_7745c5c3_Var6 string
+				templ_7745c5c3_Var6, templ_7745c5c3_Err = templ.JoinStringErrs(view_type)
+				if templ_7745c5c3_Err != nil {
+					return templ.Error{Err: templ_7745c5c3_Err, FileName: `views/user/user_view.templ`, Line: 44, Col: 62}
+				}
+				_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString(templ.EscapeString(templ_7745c5c3_Var6))
+				if templ_7745c5c3_Err != nil {
+					return templ_7745c5c3_Err
+				}
+				_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString("\"> <button type=\"submit\" class=\"flex flex-row text-xl font-bold border border-green-600 rounded-lg p-3 self-center text-green-600 hover:bg-green-600 hover:text-zinc-900\" style=\"width: 100%; margin-bottom: 0.5rem;\"><span class=\"self-start\">+ Add a new Analyst</span></button></form>")
+				if templ_7745c5c3_Err != nil {
+					return templ_7745c5c3_Err
+				}
+			}
+			if view_type == "User View" {
 				templ_7745c5c3_Err = Users(models.GetAllAnalysts(), view_type).Render(ctx, templ_7745c5c3_Buffer)
 				if templ_7745c5c3_Err != nil {
 					return templ_7745c5c3_Err

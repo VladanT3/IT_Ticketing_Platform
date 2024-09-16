@@ -75,62 +75,119 @@ func ShowUserForm(w http.ResponseWriter, r *http.Request) error {
 
 	w.Header().Add("HX-Redirect", "/user/"+analyst_id)
 
-	return Render(w, r, user.UserForm(LoggedInUserType, analyst, view_type, models.Analyst{}, [5]bool{false, false, false, false, false}, true, "update", ""))
+	return Render(w, r, user.UserForm(LoggedInUserType, analyst, view_type, models.Analyst{}, [5]bool{false, false, false, false, false}, true, "update", "", false))
 }
 
 func ShowNewUserForm(w http.ResponseWriter, r *http.Request) error {
 	view_type := r.FormValue("view_type")
 
-	return Render(w, r, user.UserForm(LoggedInUserType, models.Analyst{}, view_type, models.Analyst{}, [5]bool{false, false, false, false, false}, true, "create", ""))
+	return Render(w, r, user.UserForm(LoggedInUserType, models.Analyst{}, view_type, models.Analyst{}, [5]bool{false, false, false, false, false}, true, "create", "", false))
 }
 
 func UserRedirect(w http.ResponseWriter, r *http.Request) error {
 	mode := r.FormValue("mode")
 	analyst_id := r.FormValue("analyst_id")
+	user_type := r.FormValue("user_type")
+	team_id := r.FormValue("team")
+	team_name := models.GetTeam(team_id).Team_Name
+	view_type := r.FormValue("view_type")
+	first_name := r.FormValue("first_name")
+	last_name := r.FormValue("last_name")
+	email := r.FormValue("email")
+	password := r.FormValue("password")
+	phone_number := r.FormValue("phone_number")
+
+	var new_analyst models.Analyst = models.Analyst{
+		Analyst_ID:   uuid.MustParse(analyst_id),
+		First_Name:   first_name,
+		Last_Name:    last_name,
+		Email:        email,
+		Password:     password,
+		Phone_Number: phone_number,
+		Team_ID: uuid.NullUUID{
+			UUID:  uuid.MustParse(team_id),
+			Valid: true,
+		},
+	}
+
+	var errs [5]bool = [5]bool{false, false, false, false, false}
+	var errCounter int
+	if first_name == "" {
+		errs[0] = true
+		errCounter += 1
+	}
+	if last_name == "" {
+		errs[1] = true
+		errCounter += 1
+	}
+	if email == "" {
+		errs[2] = true
+		errCounter += 1
+	}
+	if mode == "create" {
+		if password == "" {
+			errs[3] = true
+			errCounter += 1
+		}
+	}
+	if phone_number == "" {
+		errs[4] = true
+		errCounter += 1
+	}
+
+	if errCounter > 0 {
+		return Render(w, r, user.UserForm(LoggedInUserType, models.GetAnalyst(analyst_id), view_type, new_analyst, errs, true, mode, user_type, false))
+	}
+
+	if user_type == "admin" && team_name != "Administrators" {
+		return Render(w, r, user.UserForm(LoggedInUserType, models.GetAnalyst(analyst_id), view_type, new_analyst, errs, true, mode, user_type, true))
+	} else if user_type != "admin" && team_name == "Administrators" {
+		return Render(w, r, user.UserForm(LoggedInUserType, models.GetAnalyst(analyst_id), view_type, new_analyst, errs, true, mode, user_type, true))
+	}
 
 	http.SetCookie(w, &http.Cookie{
 		Name:    "view_type",
-		Value:   r.FormValue("view_type"),
+		Value:   view_type,
 		Expires: time.Time.Add(time.Now(), time.Second*10),
 	})
 	http.SetCookie(w, &http.Cookie{
 		Name:    "analyst_id",
-		Value:   r.FormValue("analyst_id"),
+		Value:   analyst_id,
 		Expires: time.Time.Add(time.Now(), time.Second*10),
 	})
 	http.SetCookie(w, &http.Cookie{
 		Name:    "first_name",
-		Value:   r.FormValue("first_name"),
+		Value:   first_name,
 		Expires: time.Time.Add(time.Now(), time.Second*10),
 	})
 	http.SetCookie(w, &http.Cookie{
 		Name:    "last_name",
-		Value:   r.FormValue("last_name"),
+		Value:   last_name,
 		Expires: time.Time.Add(time.Now(), time.Second*10),
 	})
 	http.SetCookie(w, &http.Cookie{
 		Name:    "email",
-		Value:   r.FormValue("email"),
+		Value:   email,
 		Expires: time.Time.Add(time.Now(), time.Second*10),
 	})
 	http.SetCookie(w, &http.Cookie{
 		Name:    "password",
-		Value:   r.FormValue("password"),
+		Value:   password,
 		Expires: time.Time.Add(time.Now(), time.Second*10),
 	})
 	http.SetCookie(w, &http.Cookie{
 		Name:    "phone_number",
-		Value:   r.FormValue("phone_number"),
+		Value:   phone_number,
 		Expires: time.Time.Add(time.Now(), time.Second*10),
 	})
 	http.SetCookie(w, &http.Cookie{
 		Name:    "team",
-		Value:   r.FormValue("team"),
+		Value:   team_id,
 		Expires: time.Time.Add(time.Now(), time.Second*10),
 	})
 	http.SetCookie(w, &http.Cookie{
 		Name:    "user_type",
-		Value:   r.FormValue("user_type"),
+		Value:   user_type,
 		Expires: time.Time.Add(time.Now(), time.Second*10),
 	})
 
@@ -198,7 +255,6 @@ func UpdateUser(w http.ResponseWriter, r *http.Request) error {
 	analyst := models.GetAnalyst(analyst_id)
 
 	var errs [5]bool = [5]bool{false, false, false, false, false}
-	errCounter := 0
 	var new_analyst models.Analyst = models.Analyst{
 		Analyst_ID:   uuid.MustParse(analyst_id),
 		First_Name:   first_name,
@@ -209,23 +265,6 @@ func UpdateUser(w http.ResponseWriter, r *http.Request) error {
 			UUID:  uuid.MustParse(team),
 			Valid: true,
 		},
-	}
-
-	if first_name == "" {
-		errs[0] = true
-		errCounter += 1
-	}
-	if last_name == "" {
-		errs[1] = true
-		errCounter += 1
-	}
-	if email == "" {
-		errs[2] = true
-		errCounter += 1
-	}
-	if phone_number == "" {
-		errs[4] = true
-		errCounter += 1
 	}
 
 	_, email_exists, err := models.CheckEmail(email)
@@ -241,15 +280,11 @@ func UpdateUser(w http.ResponseWriter, r *http.Request) error {
 			return Render(w, r, layouts.ErrorMessage(LoggedInUserType, err_msg))
 		}
 		if !same_email {
-			return Render(w, r, user.UserForm(LoggedInUserType, analyst, view_type, new_analyst, errs, false, "update", user_type))
+			return Render(w, r, user.UserForm(LoggedInUserType, analyst, view_type, new_analyst, errs, false, "update", user_type, false))
 		}
 	}
 
-	if errCounter > 0 {
-		return Render(w, r, user.UserForm(LoggedInUserType, analyst, view_type, new_analyst, errs, true, "update", user_type))
-	}
-
-	err = models.UpdateAnalyst(new_analyst)
+	err = models.UpdateAnalyst(new_analyst, user_type)
 	if err != nil {
 		err_msg := "Internal server error:\nerror updating user: " + err.Error()
 		return Render(w, r, layouts.ErrorMessage(LoggedInUserType, err_msg))
@@ -335,7 +370,6 @@ func CreateUser(w http.ResponseWriter, r *http.Request) error {
 	user_type := user_type_cookie.Value
 
 	var errs [5]bool = [5]bool{false, false, false, false, false}
-	errCounter := 0
 	var new_analyst models.Analyst = models.Analyst{
 		First_Name:   first_name,
 		Last_Name:    last_name,
@@ -347,28 +381,6 @@ func CreateUser(w http.ResponseWriter, r *http.Request) error {
 			Valid: true,
 		},
 	}
-
-	if first_name == "" {
-		errs[0] = true
-		errCounter += 1
-	}
-	if last_name == "" {
-		errs[1] = true
-		errCounter += 1
-	}
-	if email == "" {
-		errs[2] = true
-		errCounter += 1
-	}
-	if password == "" {
-		errs[3] = true
-		errCounter += 1
-	}
-	if phone_number == "" {
-		errs[4] = true
-		errCounter += 1
-	}
-
 	_, email_exists, err := models.CheckEmail(email)
 	if err != nil {
 		err_msg := "Internal server error:\nerror checking email validity when updating user: " + err.Error()
@@ -376,11 +388,7 @@ func CreateUser(w http.ResponseWriter, r *http.Request) error {
 	}
 
 	if email_exists {
-		return Render(w, r, user.UserForm(LoggedInUserType, models.Analyst{}, view_type, new_analyst, errs, false, "update", user_type))
-	}
-
-	if errCounter > 0 {
-		return Render(w, r, user.UserForm(LoggedInUserType, models.Analyst{}, view_type, new_analyst, errs, true, "update", user_type))
+		return Render(w, r, user.UserForm(LoggedInUserType, models.Analyst{}, view_type, new_analyst, errs, false, "update", user_type, false))
 	}
 
 	err = models.CreateAnalyst(new_analyst, user_type)

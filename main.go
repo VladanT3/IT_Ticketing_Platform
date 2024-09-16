@@ -65,8 +65,7 @@ func main() {
 	router.Get("/team/analysts", handlers.Make(handlers.GetTeamsAnalysts))
 	router.Get("/analyst/team", handlers.Make(handlers.GetAnalystsTeam))
 
-	//TODO: test everything below
-	//make the thing where manager requests data change
+	//TODO: make the thing where manager requests data change
 	router.Get("/users/view", handlers.Make(handlers.ShowUserView))
 	router.Get("/users/team/view", handlers.Make(handlers.ShowTeamView))
 	router.Post("/users/filter", handlers.Make(handlers.FilterUsers))
@@ -74,7 +73,6 @@ func main() {
 	router.Get("/user/{analyst_id}", handlers.Make(handlers.ShowUserForm))
 	router.Get("/user/new", handlers.Make(handlers.ShowNewUserForm))
 	router.Post("/user", handlers.Make(handlers.UserRedirect))
-	//TODO: when making or updating user make it so Admins cant be chosen as a team unless user type is previously chosen as admin
 	router.Get("/user/create", handlers.Make(handlers.CreateUser))
 	router.Get("/user/update/{analyst_id}", handlers.Make(handlers.UpdateUser))
 	router.Delete("/user/delete/{analyst_id}", handlers.Make(handlers.DeleteUser))

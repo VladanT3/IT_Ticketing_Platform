@@ -3,12 +3,6 @@ package user
 import "github.com/VladanT3/IT_Ticketing_Platform/models"
 
 templ Users(analysts []models.Analyst, view_type string) {
-	<form action="/user/new" method="get">
-		<input type="hidden" name="view_type" value={ view_type }/>
-		<button type="submit" class="flex flex-row text-xl font-bold border border-green-600 rounded-lg p-3 self-center text-green-600 hover:bg-green-600 hover:text-zinc-900" style="width: 100%; margin-bottom: 0.5rem;">
-			<span class="self-start">+ Add a new Analyst</span>
-		</button>
-	</form>
 	for _, analyst := range analysts {
 		<form method="get" action={ "/user/" + templ.SafeURL(analyst.Analyst_ID.String()) }>
 			<input type="hidden" name="view_type" value={ view_type }/>
