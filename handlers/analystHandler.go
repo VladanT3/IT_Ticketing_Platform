@@ -403,7 +403,7 @@ func CreateUser(w http.ResponseWriter, r *http.Request) error {
 	return nil
 }
 
-func RequestUserDetailChange(w http.ResponseWriter, r *http.Request) error {
+func RequestUserInfoChange(w http.ResponseWriter, r *http.Request) error {
 	view_type_cookie, err := r.Cookie("view_type")
 	if err != nil {
 		err_msg := "Internal server error:\ncookie with name 'view_type' doesn't exist!"
@@ -485,6 +485,13 @@ func RequestUserDetailChange(w http.ResponseWriter, r *http.Request) error {
 		}
 	}
 
+	ticket_id, err := models.RequestUserInfoChange(new_analyst, user_type, LoggedInUser)
+	if err != nil {
+		err_msg := "Internal server error:\nerror creating a user info change request: " + err.Error()
+		return Render(w, r, layouts.ErrorMessage(LoggedInUserType, err_msg))
+	}
+
+	http.Redirect(w, r, "/ticket/"+ticket_id, http.StatusSeeOther)
 	return nil
 }
 

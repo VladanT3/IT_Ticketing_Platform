@@ -118,3 +118,16 @@ func DoesCategoryNameExist(name string) (bool, error) {
 
 	return false, nil
 }
+
+func GetCategoryIDByName(name string) (uuid.UUID, error) {
+	var db *sql.DB = database.DB_Connection
+	query := `select category_id from category where category_name = $1;`
+	var category_id uuid.UUID
+
+	err := db.QueryRow(query, name).Scan(&category_id)
+	if err != nil {
+		return uuid.UUID{}, err
+	}
+
+	return category_id, nil
+}

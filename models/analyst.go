@@ -432,3 +432,65 @@ func UserExists(analyst_id string) (bool, error) {
 		return false, nil
 	}
 }
+
+func RequestUserInfoChange(new_analyst Analyst, user_type string, requester Analyst) (string, error) {
+	old_analyst := GetAnalyst(new_analyst.Analyst_ID.String())
+
+	category, err := GetCategoryIDByName("Account")
+	if err != nil {
+		return "", err
+	}
+	subcategory, err := GetSubcategoryIDByName("Info Change")
+	if err != nil {
+		return "", err
+	}
+
+	ticket := Ticket{
+		Type: "Request",
+		Category: uuid.NullUUID{
+			UUID:  category,
+			Valid: true,
+		},
+		Subcategory: uuid.NullUUID{
+			UUID:  subcategory,
+			Valid: true,
+		},
+		Title: "Analyst Account Info Change",
+		Description: `
+User info:
+	Analyst ID: ` + old_analyst.Analyst_ID.String() + `
+	First name: ` + old_analyst.First_Name + `
+	Last name: ` + old_analyst.Last_Name + `
+	Email: ` + old_analyst.Email + `
+	Phone number: ` + old_analyst.Phone_Number + `
+	Team: ` + GetTeam(old_analyst.Team_ID.UUID.String()).Team_Name + `
+
+Change to:
+	First name: ` + new_analyst.First_Name + `
+	Last name: ` + new_analyst.Last_Name + `
+	Email: ` + new_analyst.Email + `
+	Phone number: ` + new_analyst.Phone_Number + `
+	Team: ` + GetTeam(new_analyst.Team_ID.UUID.String()).Team_Name + `
+
+Requested by: ` + requester.First_Name + ` ` + requester.Last_Name + ` - ` + requester.Email + `		
+	`,
+		Customer_Contact: requester.Email,
+	}
+
+	info_change_ticket_id, err := CreateTicket(ticket, requester.Team_ID.UUID, requester.Analyst_ID)
+	if err != nil {
+		return "", err
+	}
+
+	team_to_assign_to, err := GetTeamIDByName("Administrators")
+	if err != nil {
+		return "", err
+	}
+
+	err = AssignTicket(info_change_ticket_id, requester.Analyst_ID.String(), "none", team_to_assign_to.String(), "User Info Change Request.")
+	if err != nil {
+		return "", err
+	}
+
+	return info_change_ticket_id, nil
+}

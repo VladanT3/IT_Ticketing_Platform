@@ -76,8 +76,7 @@ func main() {
 	router.Get("/user/create", handlers.Make(handlers.CreateUser))
 	router.Get("/user/update/{analyst_id}", handlers.Make(handlers.UpdateUser))
 	router.Delete("/user/delete/{analyst_id}", handlers.Make(handlers.DeleteUser))
-	//TODO: this, error checking written need to write request logic
-	router.Get("/user/request/update/{analyst_id}", handlers.Make(handlers.RequestUserDetailChange))
+	router.Get("/user/request/update/{analyst_id}", handlers.Make(handlers.RequestUserInfoChange))
 	//TODO: password change for analyst
 	router.Put("/user/password/change", handlers.Make(handlers.ChangePassword))
 

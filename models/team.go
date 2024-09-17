@@ -69,3 +69,16 @@ func GetAllTeams() []Team {
 
 	return teams
 }
+
+func GetTeamIDByName(name string) (uuid.UUID, error) {
+	var db *sql.DB = database.DB_Connection
+	query := `select team_id from team where team_name = $1;`
+	var team_id uuid.UUID
+
+	err := db.QueryRow(query, name).Scan(&team_id)
+	if err != nil {
+		return uuid.UUID{}, err
+	}
+
+	return team_id, nil
+}

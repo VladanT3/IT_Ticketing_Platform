@@ -120,3 +120,16 @@ func DoesSubcategoryNameExist(name string, category_id string) (bool, error) {
 
 	return false, nil
 }
+
+func GetSubcategoryIDByName(name string) (uuid.UUID, error) {
+	var db *sql.DB = database.DB_Connection
+	query := `select subcategory_id from subcategory where subcategory_name = $1;`
+	var subcategory_id uuid.UUID
+
+	err := db.QueryRow(query, name).Scan(&subcategory_id)
+	if err != nil {
+		return uuid.UUID{}, err
+	}
+
+	return subcategory_id, nil
+}
