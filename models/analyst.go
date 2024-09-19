@@ -494,3 +494,15 @@ Requested by: ` + requester.First_Name + ` ` + requester.Last_Name + ` - ` + req
 
 	return info_change_ticket_id, nil
 }
+
+func ChangePassword(analyst_id string, new_password string) error {
+	var db *sql.DB = database.DB_Connection
+	query := `update analyst set password = crypt($1, gen_salt('md5')) where analyst_id = $2;`
+
+	_, err := db.Exec(query, new_password, analyst_id)
+	if err != nil {
+		return err
+	}
+
+	return nil
+}

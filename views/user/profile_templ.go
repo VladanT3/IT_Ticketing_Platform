@@ -15,7 +15,7 @@ import (
 	"strconv"
 )
 
-func Profile(analyst models.Analyst, user_type string) templ.Component {
+func Profile(analyst models.Analyst, user_type string, successful_pass_change bool) templ.Component {
 	return templruntime.GeneratedTemplate(func(templ_7745c5c3_Input templruntime.GeneratedComponentInput) (templ_7745c5c3_Err error) {
 		templ_7745c5c3_W, ctx := templ_7745c5c3_Input.Writer, templ_7745c5c3_Input.Context
 		templ_7745c5c3_Buffer, templ_7745c5c3_IsBuffer := templruntime.GetBuffer(templ_7745c5c3_W)
@@ -136,7 +136,17 @@ func Profile(analyst models.Analyst, user_type string) templ.Component {
 			if templ_7745c5c3_Err != nil {
 				return templ_7745c5c3_Err
 			}
-			_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString("</span></div><div class=\"mt-3\"></div><div class=\"mt-3\"><a href=\"/ticket/new\" class=\"uk-button uk-width-1-1 bg-zinc-50 text-zinc-900 border border-zinc-50 hover:bg-zinc-900 hover:text-zinc-50\">Create new Ticket</a></div></div><div class=\"col-span-4 flex flex-col\" style=\"padding-left: 1rem\">")
+			_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString("</span></div><div class=\"mt-3\"></div><div class=\"mt-3\"><a href=\"/ticket/new\" class=\"uk-button uk-width-1-1 bg-zinc-50 text-zinc-900 border border-zinc-50 hover:bg-zinc-900 hover:text-zinc-50\">Create new Ticket</a></div><hr class=\"mt-3\"><div class=\"mt-3\"><a href=\"/user/password/change/form\" class=\"uk-button uk-width-1-1 bg-zinc-900 text-zinc-50 border border-zinc-50 hover:bg-zinc-50 hover:text-zinc-900\">Change Password</a></div>")
+			if templ_7745c5c3_Err != nil {
+				return templ_7745c5c3_Err
+			}
+			if successful_pass_change {
+				_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString("<div hidden hx-get=\"/user/password/change/success\" hx-target=\"body\" hx-swap=\"beforeend\" hx-trigger=\"load\"></div>")
+				if templ_7745c5c3_Err != nil {
+					return templ_7745c5c3_Err
+				}
+			}
+			_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString("</div><div class=\"col-span-4 flex flex-col\" style=\"padding-left: 1rem\">")
 			if templ_7745c5c3_Err != nil {
 				return templ_7745c5c3_Err
 			}

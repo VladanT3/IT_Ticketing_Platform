@@ -78,7 +78,9 @@ func main() {
 	router.Delete("/user/delete/{analyst_id}", handlers.Make(handlers.DeleteUser))
 	router.Get("/user/request/update/{analyst_id}", handlers.Make(handlers.RequestUserInfoChange))
 	//TODO: password change for analyst
-	router.Put("/user/password/change", handlers.Make(handlers.ChangePassword))
+	router.Get("/user/password/change/form", handlers.Make(handlers.ShowChangePasswordForm))
+	router.Post("/user/password/change", handlers.Make(handlers.ChangePassword))
+	router.Get("/user/password/change/success", handlers.Make(handlers.ShowPasswordChangeSuccess))
 
 	router.Get("/error", handlers.Make(handlers.ShowError))
 

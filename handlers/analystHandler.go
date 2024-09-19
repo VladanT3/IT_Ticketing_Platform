@@ -13,7 +13,7 @@ import (
 )
 
 func Profile(w http.ResponseWriter, r *http.Request) error {
-	return Render(w, r, user.Profile(LoggedInUser, LoggedInUserType))
+	return Render(w, r, user.Profile(LoggedInUser, LoggedInUserType, false))
 }
 
 func GetTeamsAnalysts(w http.ResponseWriter, r *http.Request) error {
@@ -495,6 +495,30 @@ func RequestUserInfoChange(w http.ResponseWriter, r *http.Request) error {
 	return nil
 }
 
+func ShowChangePasswordForm(w http.ResponseWriter, r *http.Request) error {
+	return Render(w, r, user.ChangePasswordForm(LoggedInUserType, "", "", false))
+}
+
 func ChangePassword(w http.ResponseWriter, r *http.Request) error {
-	return nil
+	password := r.FormValue("password")
+	repeat_password := r.FormValue("repeat_password")
+
+	if password != repeat_password {
+		return Render(w, r, user.ChangePasswordForm(LoggedInUserType, password, repeat_password, true))
+	}
+
+	err := models.ChangePassword(LoggedInUser.Analyst_ID.String(), password)
+	if err != nil {
+		err_msg := "Internal server error:\nerror changing password: " + err.Error()
+		w.Header().Add("ErrorMessage", err_msg)
+		w.Header().Add("HX-Redirect", "/error")
+		return Render(w, r, layouts.ErrorMessage(LoggedInUserType, err_msg))
+	}
+
+	w.Header().Add("HX-Redirect", "/profile")
+	return Render(w, r, user.Profile(LoggedInUser, LoggedInUserType, true))
+}
+
+func ShowPasswordChangeSuccess(w http.ResponseWriter, r *http.Request) error {
+	return Render(w, r, user.PasswordChangeSuccess())
 }
