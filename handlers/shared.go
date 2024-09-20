@@ -26,9 +26,5 @@ func Render(w http.ResponseWriter, r *http.Request, c templ.Component) error {
 func ShowError(w http.ResponseWriter, r *http.Request) error {
 	err_msg := w.Header().Get("ErrorMessage")
 
-	if LoggedInUserType != "" {
-		return Render(w, r, layouts.ErrorMessage(LoggedInUserType, err_msg))
-	} else {
-		return Render(w, r, layouts.ErrorMessage("", err_msg))
-	}
+	return Render(w, r, layouts.ErrorMessage(LoggedInUserType, err_msg))
 }

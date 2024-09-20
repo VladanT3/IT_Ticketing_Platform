@@ -2,7 +2,7 @@ package login
 
 import "github.com/VladanT3/IT_Ticketing_Platform/views/layouts"
 
-templ Login(email_err string, pass_err string, email string, pass string) {
+templ Login(email_err bool, pass_err bool, email string, pass string) {
 	@layouts.Base() {
 		<div class="container mx-auto">
 			<div class="grid grid-rows-3">
@@ -14,18 +14,18 @@ templ Login(email_err string, pass_err string, email string, pass string) {
 						<form method="POST" action="/login" class="flex flex-col border rounded-lg border-zinc-50 border-dashed p-5">
 							<legend class="uk-legend text-2xl self-center">Login</legend>
 							<label>Email</label>
-							if email_err == "" {
+							if !email_err {
 								<input class="uk-input text-zinc-50 text-base" type="email" name="email" value={ email }/>
-							} else if email_err != "" {
+							} else {
 								<input autofocus class="uk-input text-zinc-50 text-base border border-red-600" type="email" name="email" value={ email }/>
-								<label class="text-red-600">{ email_err }</label>
+								<label class="text-red-600">Incorrect email!</label>
 							}
 							<label class="mt-3">Password</label>
-							if pass_err == "" {
+							if !pass_err {
 								<input class="uk-input text-zinc-50 text-base" id="password" type="password" name="password" value={ pass }/>
-							} else if pass_err != "" {
+							} else {
 								<input autofocus class="uk-input text-zinc-50 text-base border border-red-600" id="password" type="password" name="password" value={ pass }/>
-								<label class="text-red-600">{ pass_err }</label>
+								<label class="text-red-600">Incorrect password!</label>
 							}
 							<label><input class="uk-checkbox border rounded-full border-zinc-50" type="checkbox" id="show_password"/> Show password</label>
 							<button class="uk-button bg-zinc-50 text-zinc-900 border border-zinc-50 self-center mt-5 hover:bg-zinc-900 hover:text-zinc-50">Log In</button>

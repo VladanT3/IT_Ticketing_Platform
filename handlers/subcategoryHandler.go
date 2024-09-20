@@ -6,11 +6,17 @@ import (
 	"github.com/VladanT3/IT_Ticketing_Platform/models"
 	"github.com/VladanT3/IT_Ticketing_Platform/views/categories"
 	"github.com/VladanT3/IT_Ticketing_Platform/views/layouts"
+	"github.com/VladanT3/IT_Ticketing_Platform/views/login"
 	"github.com/VladanT3/IT_Ticketing_Platform/views/subcategories"
 	"github.com/go-chi/chi/v5"
 )
 
 func SelectSubcategories(w http.ResponseWriter, r *http.Request) error {
+	if LoggedInUserType == "" {
+		w.Header().Add("HX-Redirect", "/")
+		return Render(w, r, login.Login(false, false, "", ""))
+	}
+
 	category := r.FormValue("category")
 	if category == "none" || category == "" {
 		return Render(w, r, subcategories.SelectSubcategories([]models.Subcategory{}))
@@ -21,6 +27,11 @@ func SelectSubcategories(w http.ResponseWriter, r *http.Request) error {
 }
 
 func SearchSubcategories(w http.ResponseWriter, r *http.Request) error {
+	if LoggedInUserType == "" {
+		w.Header().Add("HX-Redirect", "/")
+		return Render(w, r, login.Login(false, false, "", ""))
+	}
+
 	search := r.FormValue("subcategory_search")
 	category := r.FormValue("category")
 
@@ -36,6 +47,11 @@ func SearchSubcategories(w http.ResponseWriter, r *http.Request) error {
 }
 
 func ShowModifiableSubcategories(w http.ResponseWriter, r *http.Request) error {
+	if LoggedInUserType == "" {
+		w.Header().Add("HX-Redirect", "/")
+		return Render(w, r, login.Login(false, false, "", ""))
+	}
+
 	category_id := r.FormValue("category")
 
 	if category_id == "" {
@@ -52,6 +68,11 @@ func ShowModifiableSubcategories(w http.ResponseWriter, r *http.Request) error {
 }
 
 func ShowSubcategoryPopup(w http.ResponseWriter, r *http.Request) error {
+	if LoggedInUserType == "" {
+		w.Header().Add("HX-Redirect", "/")
+		return Render(w, r, login.Login(false, false, "", ""))
+	}
+
 	operation := r.FormValue("subcategory_operation")
 	category_id := r.FormValue("category_id")
 	var subcategory_id string
@@ -66,6 +87,11 @@ func ShowSubcategoryPopup(w http.ResponseWriter, r *http.Request) error {
 }
 
 func CreateSubcategory(w http.ResponseWriter, r *http.Request) error {
+	if LoggedInUserType == "" {
+		w.Header().Add("HX-Redirect", "/")
+		return Render(w, r, login.Login(false, false, "", ""))
+	}
+
 	subcategory_name := r.FormValue("subcategory_name")
 	category_id := r.FormValue("category_id")
 
@@ -94,6 +120,11 @@ func CreateSubcategory(w http.ResponseWriter, r *http.Request) error {
 }
 
 func UpdateSubcategory(w http.ResponseWriter, r *http.Request) error {
+	if LoggedInUserType == "" {
+		w.Header().Add("HX-Redirect", "/")
+		return Render(w, r, login.Login(false, false, "", ""))
+	}
+
 	subcategory_id := chi.URLParam(r, "subcategory_id")
 	subcategory_name := r.FormValue("subcategory_name")
 	category_id := r.FormValue("category_id")
@@ -124,6 +155,11 @@ func UpdateSubcategory(w http.ResponseWriter, r *http.Request) error {
 }
 
 func DeleteSubcategory(w http.ResponseWriter, r *http.Request) error {
+	if LoggedInUserType == "" {
+		w.Header().Add("HX-Redirect", "/")
+		return Render(w, r, login.Login(false, false, "", ""))
+	}
+
 	subcategory_id := chi.URLParam(r, "subcategory_id")
 	category_id := r.FormValue("category_id")
 
@@ -140,5 +176,10 @@ func DeleteSubcategory(w http.ResponseWriter, r *http.Request) error {
 }
 
 func ShowSubcategoryAlreadyExistsError(w http.ResponseWriter, r *http.Request) error {
+	if LoggedInUserType == "" {
+		w.Header().Add("HX-Redirect", "/")
+		return Render(w, r, login.Login(false, false, "", ""))
+	}
+
 	return Render(w, r, subcategories.SubcategoryExistsError())
 }

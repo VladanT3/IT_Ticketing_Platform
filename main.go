@@ -20,8 +20,7 @@ func main() {
 
 	router.Handle("/*", http.StripPrefix("/public/", http.FileServer(http.Dir("./public"))))
 	router.Get("/", handlers.Make(handlers.Index))
-	//TODO: at the end add authorization for all get methods so they cant be accessed through the url without logging in
-	//TODO: maybe invest into some better responses, eg: user makes a ticket and gets a message that it was created?
+	//TODO: check if manager/admin for things
 	router.Post("/login", handlers.Make(handlers.Login))
 	router.Post("/logout", handlers.Make(handlers.Logout))
 	router.Get("/profile", handlers.Make(handlers.Profile))
@@ -77,11 +76,11 @@ func main() {
 	router.Get("/user/update/{analyst_id}", handlers.Make(handlers.UpdateUser))
 	router.Delete("/user/delete/{analyst_id}", handlers.Make(handlers.DeleteUser))
 	router.Get("/user/request/update/{analyst_id}", handlers.Make(handlers.RequestUserInfoChange))
-	//TODO: password change for analyst
 	router.Get("/user/password/change/form", handlers.Make(handlers.ShowChangePasswordForm))
 	router.Post("/user/password/change", handlers.Make(handlers.ChangePassword))
 	router.Get("/user/password/change/success", handlers.Make(handlers.ShowPasswordChangeSuccess))
 
+	//TODO: somehow block access via url
 	router.Get("/error", handlers.Make(handlers.ShowError))
 
 	port := os.Getenv("PORT")

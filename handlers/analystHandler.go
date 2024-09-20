@@ -6,6 +6,7 @@ import (
 
 	"github.com/VladanT3/IT_Ticketing_Platform/models"
 	"github.com/VladanT3/IT_Ticketing_Platform/views/layouts"
+	"github.com/VladanT3/IT_Ticketing_Platform/views/login"
 	"github.com/VladanT3/IT_Ticketing_Platform/views/team"
 	"github.com/VladanT3/IT_Ticketing_Platform/views/user"
 	"github.com/go-chi/chi/v5"
@@ -13,10 +14,31 @@ import (
 )
 
 func Profile(w http.ResponseWriter, r *http.Request) error {
-	return Render(w, r, user.Profile(LoggedInUser, LoggedInUserType, false))
+	if LoggedInUserType == "" {
+		http.Redirect(w, r, "/", http.StatusSeeOther)
+		return nil
+	}
+
+	pass_change_check_cookie, err := r.Cookie("password_changed")
+	if err != nil {
+		return Render(w, r, user.Profile(LoggedInUser, LoggedInUserType, false))
+	}
+
+	pass_change_check := pass_change_check_cookie.Value
+
+	if pass_change_check == "yes" {
+		return Render(w, r, user.Profile(LoggedInUser, LoggedInUserType, true))
+	} else {
+		return Render(w, r, user.Profile(LoggedInUser, LoggedInUserType, false))
+	}
 }
 
 func GetTeamsAnalysts(w http.ResponseWriter, r *http.Request) error {
+	if LoggedInUserType == "" {
+		w.Header().Add("HX-Redirect", "/")
+		return Render(w, r, login.Login(false, false, "", ""))
+	}
+
 	team := r.FormValue("team")
 
 	if team == "none" {
@@ -28,6 +50,11 @@ func GetTeamsAnalysts(w http.ResponseWriter, r *http.Request) error {
 }
 
 func GetAnalystsTeam(w http.ResponseWriter, r *http.Request) error {
+	if LoggedInUserType == "" {
+		w.Header().Add("HX-Redirect", "/")
+		return Render(w, r, login.Login(false, false, "", ""))
+	}
+
 	analyst_id := r.FormValue("analyst")
 
 	analyst := models.GetAnalyst(analyst_id)
@@ -40,14 +67,29 @@ func GetAnalystsTeam(w http.ResponseWriter, r *http.Request) error {
 }
 
 func ShowUserView(w http.ResponseWriter, r *http.Request) error {
+	if LoggedInUserType == "" {
+		http.Redirect(w, r, "/", http.StatusSeeOther)
+		return nil
+	}
+
 	return Render(w, r, user.UserView(LoggedInUserType, LoggedInUser, "User View"))
 }
 
 func ShowTeamView(w http.ResponseWriter, r *http.Request) error {
+	if LoggedInUserType == "" {
+		http.Redirect(w, r, "/", http.StatusSeeOther)
+		return nil
+	}
+
 	return Render(w, r, user.UserView(LoggedInUserType, LoggedInUser, "Team View"))
 }
 
 func FilterUsers(w http.ResponseWriter, r *http.Request) error {
+	if LoggedInUserType == "" {
+		w.Header().Add("HX-Redirect", "/")
+		return Render(w, r, login.Login(false, false, "", ""))
+	}
+
 	search_term := r.FormValue("search")
 	view_type := r.FormValue("view_type")
 	user_type := r.FormValue("user_type")
@@ -58,6 +100,11 @@ func FilterUsers(w http.ResponseWriter, r *http.Request) error {
 }
 
 func ShowUserForm(w http.ResponseWriter, r *http.Request) error {
+	if LoggedInUserType == "" {
+		http.Redirect(w, r, "/", http.StatusSeeOther)
+		return nil
+	}
+
 	analyst_id := chi.URLParam(r, "analyst_id")
 	view_type := r.FormValue("view_type")
 
@@ -79,12 +126,22 @@ func ShowUserForm(w http.ResponseWriter, r *http.Request) error {
 }
 
 func ShowNewUserForm(w http.ResponseWriter, r *http.Request) error {
+	if LoggedInUserType == "" {
+		http.Redirect(w, r, "/", http.StatusSeeOther)
+		return nil
+	}
+
 	view_type := r.FormValue("view_type")
 
 	return Render(w, r, user.UserForm(LoggedInUserType, models.Analyst{}, view_type, models.Analyst{}, [5]bool{false, false, false, false, false}, true, "create", "", false))
 }
 
 func UserRedirect(w http.ResponseWriter, r *http.Request) error {
+	if LoggedInUserType == "" {
+		http.Redirect(w, r, "/", http.StatusSeeOther)
+		return nil
+	}
+
 	mode := r.FormValue("mode")
 	analyst_id := r.FormValue("analyst_id")
 	user_type := r.FormValue("user_type")
@@ -208,6 +265,11 @@ func UserRedirect(w http.ResponseWriter, r *http.Request) error {
 }
 
 func UpdateUser(w http.ResponseWriter, r *http.Request) error {
+	if LoggedInUserType == "" {
+		http.Redirect(w, r, "/", http.StatusSeeOther)
+		return nil
+	}
+
 	view_type_cookie, err := r.Cookie("view_type")
 	if err != nil {
 		err_msg := "Internal server error:\ncookie with name 'view_type' doesn't exist!"
@@ -307,6 +369,11 @@ func UpdateUser(w http.ResponseWriter, r *http.Request) error {
 }
 
 func DeleteUser(w http.ResponseWriter, r *http.Request) error {
+	if LoggedInUserType == "" {
+		w.Header().Add("HX-Redirect", "/")
+		return Render(w, r, login.Login(false, false, "", ""))
+	}
+
 	analyst_id := chi.URLParam(r, "analyst_id")
 
 	err := models.DeleteAnalyst(analyst_id)
@@ -321,6 +388,11 @@ func DeleteUser(w http.ResponseWriter, r *http.Request) error {
 }
 
 func CreateUser(w http.ResponseWriter, r *http.Request) error {
+	if LoggedInUserType == "" {
+		http.Redirect(w, r, "/", http.StatusSeeOther)
+		return nil
+	}
+
 	view_type_cookie, err := r.Cookie("view_type")
 	if err != nil {
 		err_msg := "Internal server error:\ncookie with name 'view_type' doesn't exist!"
@@ -404,6 +476,11 @@ func CreateUser(w http.ResponseWriter, r *http.Request) error {
 }
 
 func RequestUserInfoChange(w http.ResponseWriter, r *http.Request) error {
+	if LoggedInUserType == "" {
+		http.Redirect(w, r, "/", http.StatusSeeOther)
+		return nil
+	}
+
 	view_type_cookie, err := r.Cookie("view_type")
 	if err != nil {
 		err_msg := "Internal server error:\ncookie with name 'view_type' doesn't exist!"
@@ -496,10 +573,20 @@ func RequestUserInfoChange(w http.ResponseWriter, r *http.Request) error {
 }
 
 func ShowChangePasswordForm(w http.ResponseWriter, r *http.Request) error {
+	if LoggedInUserType == "" {
+		http.Redirect(w, r, "/", http.StatusSeeOther)
+		return nil
+	}
+
 	return Render(w, r, user.ChangePasswordForm(LoggedInUserType, "", "", false))
 }
 
 func ChangePassword(w http.ResponseWriter, r *http.Request) error {
+	if LoggedInUserType == "" {
+		http.Redirect(w, r, "/", http.StatusSeeOther)
+		return nil
+	}
+
 	password := r.FormValue("password")
 	repeat_password := r.FormValue("repeat_password")
 
@@ -510,15 +597,25 @@ func ChangePassword(w http.ResponseWriter, r *http.Request) error {
 	err := models.ChangePassword(LoggedInUser.Analyst_ID.String(), password)
 	if err != nil {
 		err_msg := "Internal server error:\nerror changing password: " + err.Error()
-		w.Header().Add("ErrorMessage", err_msg)
-		w.Header().Add("HX-Redirect", "/error")
 		return Render(w, r, layouts.ErrorMessage(LoggedInUserType, err_msg))
 	}
 
-	w.Header().Add("HX-Redirect", "/profile")
-	return Render(w, r, user.Profile(LoggedInUser, LoggedInUserType, true))
+	http.SetCookie(w, &http.Cookie{
+		Name:    "password_changed",
+		Value:   "yes",
+		Expires: time.Time.Add(time.Now(), time.Second*5),
+		Path:    "/",
+	})
+
+	http.Redirect(w, r, "/profile", http.StatusSeeOther)
+	return nil
 }
 
 func ShowPasswordChangeSuccess(w http.ResponseWriter, r *http.Request) error {
+	if LoggedInUserType == "" {
+		w.Header().Add("HX-Redirect", "/")
+		return Render(w, r, login.Login(false, false, "", ""))
+	}
+
 	return Render(w, r, user.PasswordChangeSuccess())
 }

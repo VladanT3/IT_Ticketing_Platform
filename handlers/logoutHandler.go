@@ -12,5 +12,5 @@ func Logout(w http.ResponseWriter, r *http.Request) error {
 	LoggedInUserType = ""
 
 	w.Header().Add("HX-Redirect", "/")
-	return Render(w, r, login.Login("", "", "", ""))
+	return Render(w, r, login.Login(false, false, "", ""))
 }

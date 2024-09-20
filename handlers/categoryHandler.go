@@ -6,14 +6,25 @@ import (
 	"github.com/VladanT3/IT_Ticketing_Platform/models"
 	"github.com/VladanT3/IT_Ticketing_Platform/views/categories"
 	"github.com/VladanT3/IT_Ticketing_Platform/views/layouts"
+	"github.com/VladanT3/IT_Ticketing_Platform/views/login"
 	"github.com/go-chi/chi/v5"
 )
 
 func ShowCategoriesPage(w http.ResponseWriter, r *http.Request) error {
+	if LoggedInUserType == "" {
+		http.Redirect(w, r, "/", http.StatusSeeOther)
+		return nil
+	}
+
 	return Render(w, r, categories.Categories(LoggedInUserType))
 }
 
 func SearchCategories(w http.ResponseWriter, r *http.Request) error {
+	if LoggedInUserType == "" {
+		w.Header().Add("HX-Redirect", "/")
+		return Render(w, r, login.Login(false, false, "", ""))
+	}
+
 	search := r.FormValue("category_search")
 
 	searchedCategories, err := models.CategorySearchByName(search)
@@ -28,6 +39,11 @@ func SearchCategories(w http.ResponseWriter, r *http.Request) error {
 }
 
 func ShowCategoryPopup(w http.ResponseWriter, r *http.Request) error {
+	if LoggedInUserType == "" {
+		w.Header().Add("HX-Redirect", "/")
+		return Render(w, r, login.Login(false, false, "", ""))
+	}
+
 	operation := r.FormValue("category_operation")
 	var category_id string
 	var category_name string
@@ -41,6 +57,11 @@ func ShowCategoryPopup(w http.ResponseWriter, r *http.Request) error {
 }
 
 func CreateCategory(w http.ResponseWriter, r *http.Request) error {
+	if LoggedInUserType == "" {
+		w.Header().Add("HX-Redirect", "/")
+		return Render(w, r, login.Login(false, false, "", ""))
+	}
+
 	category_name := r.FormValue("category_name")
 
 	category_name_exists, err := models.DoesCategoryNameExist(category_name)
@@ -67,6 +88,11 @@ func CreateCategory(w http.ResponseWriter, r *http.Request) error {
 }
 
 func UpdateCategory(w http.ResponseWriter, r *http.Request) error {
+	if LoggedInUserType == "" {
+		w.Header().Add("HX-Redirect", "/")
+		return Render(w, r, login.Login(false, false, "", ""))
+	}
+
 	category_id := chi.URLParam(r, "category_id")
 	category_name := r.FormValue("category_name")
 
@@ -94,6 +120,11 @@ func UpdateCategory(w http.ResponseWriter, r *http.Request) error {
 }
 
 func DeleteCategory(w http.ResponseWriter, r *http.Request) error {
+	if LoggedInUserType == "" {
+		w.Header().Add("HX-Redirect", "/")
+		return Render(w, r, login.Login(false, false, "", ""))
+	}
+
 	category_id := chi.URLParam(r, "category_id")
 
 	err := models.DeleteCategory(category_id)
@@ -108,5 +139,10 @@ func DeleteCategory(w http.ResponseWriter, r *http.Request) error {
 }
 
 func ShowCategoryAlreadyExistsError(w http.ResponseWriter, r *http.Request) error {
+	if LoggedInUserType == "" {
+		w.Header().Add("HX-Redirect", "/")
+		return Render(w, r, login.Login(false, false, "", ""))
+	}
+
 	return Render(w, r, categories.CategoryExistsError())
 }

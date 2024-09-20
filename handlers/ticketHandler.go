@@ -6,16 +6,27 @@ import (
 
 	"github.com/VladanT3/IT_Ticketing_Platform/models"
 	"github.com/VladanT3/IT_Ticketing_Platform/views/layouts"
+	"github.com/VladanT3/IT_Ticketing_Platform/views/login"
 	"github.com/VladanT3/IT_Ticketing_Platform/views/tickets"
 	"github.com/go-chi/chi/v5"
 	"github.com/google/uuid"
 )
 
 func ShowNewTicketForm(w http.ResponseWriter, r *http.Request) error {
+	if LoggedInUserType == "" {
+		http.Redirect(w, r, "/", http.StatusSeeOther)
+		return nil
+	}
+
 	return Render(w, r, tickets.TicketForm(models.Ticket{}, LoggedInUser, LoggedInUserType, "create", "", "", models.Ticket{}))
 }
 
 func ShowTicket(w http.ResponseWriter, r *http.Request) error {
+	if LoggedInUserType == "" {
+		http.Redirect(w, r, "/", http.StatusSeeOther)
+		return nil
+	}
+
 	ticket_id := chi.URLParam(r, "ticket_id")
 	exists, err := models.TicketExists(ticket_id)
 	if err != nil {
@@ -36,6 +47,11 @@ func ShowTicket(w http.ResponseWriter, r *http.Request) error {
 }
 
 func TicketRedirection(w http.ResponseWriter, r *http.Request) error {
+	if LoggedInUserType == "" {
+		http.Redirect(w, r, "/", http.StatusSeeOther)
+		return nil
+	}
+
 	http.SetCookie(w, &http.Cookie{
 		Name:    "ticket_type",
 		Value:   r.FormValue("ticket_type"),
@@ -90,6 +106,11 @@ func TicketRedirection(w http.ResponseWriter, r *http.Request) error {
 }
 
 func CreateTicket(w http.ResponseWriter, r *http.Request) error {
+	if LoggedInUserType == "" {
+		http.Redirect(w, r, "/", http.StatusSeeOther)
+		return nil
+	}
+
 	type_cookie, err := r.Cookie("ticket_type")
 	if err != nil {
 		err_msg := "Internal server error:\nno cookie with name 'ticket_type': " + err.Error()
@@ -199,6 +220,11 @@ func CreateTicket(w http.ResponseWriter, r *http.Request) error {
 }
 
 func UpdateTicket(w http.ResponseWriter, r *http.Request) error {
+	if LoggedInUserType == "" {
+		http.Redirect(w, r, "/", http.StatusSeeOther)
+		return nil
+	}
+
 	type_cookie, err := r.Cookie("ticket_type")
 	if err != nil {
 		err_msg := "Internal server errpr:\nno cookie with name 'ticket_type': " + err.Error()
@@ -313,6 +339,11 @@ func UpdateTicket(w http.ResponseWriter, r *http.Request) error {
 }
 
 func DeleteTicket(w http.ResponseWriter, r *http.Request) error {
+	if LoggedInUserType == "" {
+		w.Header().Add("HX-Redirect", "/")
+		return Render(w, r, login.Login(false, false, "", ""))
+	}
+
 	ticket_id := chi.URLParam(r, "ticket_id")
 
 	err := models.DeleteTicket(ticket_id)
@@ -335,10 +366,20 @@ func DeleteTicket(w http.ResponseWriter, r *http.Request) error {
 }
 
 func ShowAllTicketSearch(w http.ResponseWriter, r *http.Request) error {
+	if LoggedInUserType == "" {
+		http.Redirect(w, r, "/", http.StatusSeeOther)
+		return nil
+	}
+
 	return Render(w, r, tickets.TicketSearch(LoggedInUser, LoggedInUserType, "All Ticket Search"))
 }
 
 func ShowTeamTickets(w http.ResponseWriter, r *http.Request) error {
+	if LoggedInUserType == "" {
+		http.Redirect(w, r, "/", http.StatusSeeOther)
+		return nil
+	}
+
 	if LoggedInUserType != "manager" {
 		return Render(w, r, layouts.ErrorMessage(LoggedInUserType, "Access Denied: Lack of managerial credentials!"))
 	}
@@ -347,10 +388,20 @@ func ShowTeamTickets(w http.ResponseWriter, r *http.Request) error {
 }
 
 func ShowUnassignedTickets(w http.ResponseWriter, r *http.Request) error {
+	if LoggedInUserType == "" {
+		http.Redirect(w, r, "/", http.StatusSeeOther)
+		return nil
+	}
+
 	return Render(w, r, tickets.TicketSearch(LoggedInUser, LoggedInUserType, "Unassigned Tickets"))
 }
 
 func FilterTickets(w http.ResponseWriter, r *http.Request) error {
+	if LoggedInUserType == "" {
+		w.Header().Add("HX-Redirect", "/")
+		return Render(w, r, login.Login(false, false, "", ""))
+	}
+
 	search := r.FormValue("search")
 	customer := r.FormValue("customer")
 	ticket_type := r.FormValue("type")
@@ -371,6 +422,11 @@ func FilterTickets(w http.ResponseWriter, r *http.Request) error {
 }
 
 func CloseTicket(w http.ResponseWriter, r *http.Request) error {
+	if LoggedInUserType == "" {
+		w.Header().Add("HX-Redirect", "/")
+		return Render(w, r, login.Login(false, false, "", ""))
+	}
+
 	ticket_id := chi.URLParam(r, "ticket_id")
 
 	ticket_to_show, err := models.CloseTicket(ticket_id, LoggedInUser.Analyst_ID.String())
@@ -394,6 +450,11 @@ func CloseTicket(w http.ResponseWriter, r *http.Request) error {
 }
 
 func ShowTicketReopenForm(w http.ResponseWriter, r *http.Request) error {
+	if LoggedInUserType == "" {
+		http.Redirect(w, r, "/", http.StatusSeeOther)
+		return nil
+	}
+
 	ticket_id := chi.URLParam(r, "ticket_id")
 
 	ticket, err := models.GetTicket(ticket_id)
@@ -406,6 +467,11 @@ func ShowTicketReopenForm(w http.ResponseWriter, r *http.Request) error {
 }
 
 func ReopenTicket(w http.ResponseWriter, r *http.Request) error {
+	if LoggedInUserType == "" {
+		http.Redirect(w, r, "/", http.StatusSeeOther)
+		return nil
+	}
+
 	reason := r.FormValue("reason")
 	ticket_id := chi.URLParam(r, "ticket_id")
 
@@ -431,6 +497,11 @@ func ReopenTicket(w http.ResponseWriter, r *http.Request) error {
 }
 
 func ShowTicketReopenHistory(w http.ResponseWriter, r *http.Request) error {
+	if LoggedInUserType == "" {
+		http.Redirect(w, r, "/", http.StatusSeeOther)
+		return nil
+	}
+
 	ticket_id := chi.URLParam(r, "ticket_id")
 
 	reopens, err := models.GetTicketReopens(ticket_id)
@@ -443,6 +514,11 @@ func ShowTicketReopenHistory(w http.ResponseWriter, r *http.Request) error {
 }
 
 func ShowTicketAssignmentForm(w http.ResponseWriter, r *http.Request) error {
+	if LoggedInUserType == "" {
+		http.Redirect(w, r, "/", http.StatusSeeOther)
+		return nil
+	}
+
 	ticket_id := chi.URLParam(r, "ticket_id")
 
 	ticket, err := models.GetTicket(ticket_id)
@@ -455,6 +531,11 @@ func ShowTicketAssignmentForm(w http.ResponseWriter, r *http.Request) error {
 }
 
 func AssignTicket(w http.ResponseWriter, r *http.Request) error {
+	if LoggedInUserType == "" {
+		http.Redirect(w, r, "/", http.StatusSeeOther)
+		return nil
+	}
+
 	ticket_id := chi.URLParam(r, "ticket_id")
 	assign_to_analyst := r.FormValue("analyst")
 	assign_to_team := r.FormValue("team")
@@ -491,6 +572,11 @@ func AssignTicket(w http.ResponseWriter, r *http.Request) error {
 }
 
 func ShowTicketAssignmentHistory(w http.ResponseWriter, r *http.Request) error {
+	if LoggedInUserType == "" {
+		http.Redirect(w, r, "/", http.StatusSeeOther)
+		return nil
+	}
+
 	ticket_id := chi.URLParam(r, "ticket_id")
 
 	ticket_assignments, err := models.GetAllTicketsAssignments(ticket_id)
@@ -503,6 +589,11 @@ func ShowTicketAssignmentHistory(w http.ResponseWriter, r *http.Request) error {
 }
 
 func AssignTicketToMe(w http.ResponseWriter, r *http.Request) error {
+	if LoggedInUserType == "" {
+		w.Header().Add("HX-Redirect", "/")
+		return Render(w, r, login.Login(false, false, "", ""))
+	}
+
 	ticket_id := chi.URLParam(r, "ticket_id")
 
 	err := models.AssignTicket(ticket_id, LoggedInUser.Analyst_ID.String(), LoggedInUser.Analyst_ID.String(), LoggedInUser.Team_ID.UUID.String(), "Assigned to self.")

@@ -9,7 +9,7 @@ import (
 )
 
 var LoggedInUser models.Analyst = models.Analyst{}
-var LoggedInUserType string
+var LoggedInUserType string = ""
 
 func Login(w http.ResponseWriter, r *http.Request) error {
 	analyst := models.Analyst{}
@@ -22,7 +22,7 @@ func Login(w http.ResponseWriter, r *http.Request) error {
 		return Render(w, r, layouts.ErrorMessage("", err_msg))
 	}
 	if !valid_email {
-		return Render(w, r, login.Login("Incorrect email!", "", email, password))
+		return Render(w, r, login.Login(true, false, email, password))
 	}
 
 	valid_pass, err := models.CheckPassword(password, email)
@@ -31,7 +31,7 @@ func Login(w http.ResponseWriter, r *http.Request) error {
 		return Render(w, r, layouts.ErrorMessage("", err_msg))
 	}
 	if !valid_pass {
-		return Render(w, r, login.Login("", "Incorrect password!", email, password))
+		return Render(w, r, login.Login(false, true, email, password))
 	}
 
 	LoggedInUser = analyst
