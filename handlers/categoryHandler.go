@@ -11,6 +11,10 @@ import (
 )
 
 func ShowCategoriesPage(w http.ResponseWriter, r *http.Request) error {
+	if LoggedInUserType != "admin" {
+		return Render(w, r, layouts.ErrorMessage(LoggedInUserType, "Access Denied: Lack of administratorial credentials!"))
+	}
+
 	if LoggedInUserType == "" {
 		http.Redirect(w, r, "/", http.StatusSeeOther)
 		return nil
@@ -20,6 +24,11 @@ func ShowCategoriesPage(w http.ResponseWriter, r *http.Request) error {
 }
 
 func SearchCategories(w http.ResponseWriter, r *http.Request) error {
+	if LoggedInUserType != "admin" {
+		w.Header().Add("HX-Redirect", "/error")
+		return Render(w, r, layouts.ErrorMessage(LoggedInUserType, "Access Denied: Lack of administratorial credentials!"))
+	}
+
 	if LoggedInUserType == "" {
 		w.Header().Add("HX-Redirect", "/")
 		return Render(w, r, login.Login(false, false, "", ""))
@@ -30,7 +39,6 @@ func SearchCategories(w http.ResponseWriter, r *http.Request) error {
 	searchedCategories, err := models.CategorySearchByName(search)
 	if err != nil {
 		err_msg := "Internal server error:\nerror searching for categories: " + err.Error()
-		w.Header().Add("ErrorMessage", err_msg)
 		w.Header().Add("HX-Redirect", "/error")
 		return Render(w, r, layouts.ErrorMessage(LoggedInUserType, err_msg))
 	}
@@ -39,6 +47,11 @@ func SearchCategories(w http.ResponseWriter, r *http.Request) error {
 }
 
 func ShowCategoryPopup(w http.ResponseWriter, r *http.Request) error {
+	if LoggedInUserType != "admin" {
+		w.Header().Add("HX-Redirect", "/error")
+		return Render(w, r, layouts.ErrorMessage(LoggedInUserType, "Access Denied: Lack of administratorial credentials!"))
+	}
+
 	if LoggedInUserType == "" {
 		w.Header().Add("HX-Redirect", "/")
 		return Render(w, r, login.Login(false, false, "", ""))
@@ -57,6 +70,11 @@ func ShowCategoryPopup(w http.ResponseWriter, r *http.Request) error {
 }
 
 func CreateCategory(w http.ResponseWriter, r *http.Request) error {
+	if LoggedInUserType != "admin" {
+		w.Header().Add("HX-Redirect", "/error")
+		return Render(w, r, layouts.ErrorMessage(LoggedInUserType, "Access Denied: Lack of administratorial credentials!"))
+	}
+
 	if LoggedInUserType == "" {
 		w.Header().Add("HX-Redirect", "/")
 		return Render(w, r, login.Login(false, false, "", ""))
@@ -67,7 +85,6 @@ func CreateCategory(w http.ResponseWriter, r *http.Request) error {
 	category_name_exists, err := models.DoesCategoryNameExist(category_name)
 	if err != nil {
 		err_msg := "Internal server error:\nerror checking if category name exists: " + err.Error()
-		w.Header().Add("ErrorMessage", err_msg)
 		w.Header().Add("HX-Redirect", "/error")
 		return Render(w, r, layouts.ErrorMessage(LoggedInUserType, err_msg))
 	}
@@ -79,7 +96,6 @@ func CreateCategory(w http.ResponseWriter, r *http.Request) error {
 	err = models.CreateCategory(category_name)
 	if err != nil {
 		err_msg := "Internal server error:\nerror creating category: " + err.Error()
-		w.Header().Add("ErrorMessage", err_msg)
 		w.Header().Add("HX-Redirect", "/error")
 		return Render(w, r, layouts.ErrorMessage(LoggedInUserType, err_msg))
 	}
@@ -88,6 +104,11 @@ func CreateCategory(w http.ResponseWriter, r *http.Request) error {
 }
 
 func UpdateCategory(w http.ResponseWriter, r *http.Request) error {
+	if LoggedInUserType != "admin" {
+		w.Header().Add("HX-Redirect", "/error")
+		return Render(w, r, layouts.ErrorMessage(LoggedInUserType, "Access Denied: Lack of administratorial credentials!"))
+	}
+
 	if LoggedInUserType == "" {
 		w.Header().Add("HX-Redirect", "/")
 		return Render(w, r, login.Login(false, false, "", ""))
@@ -99,7 +120,6 @@ func UpdateCategory(w http.ResponseWriter, r *http.Request) error {
 	category_name_exists, err := models.DoesCategoryNameExist(category_name)
 	if err != nil {
 		err_msg := "Internal server error:\nerror checking if category name exists: " + err.Error()
-		w.Header().Add("ErrorMessage", err_msg)
 		w.Header().Add("HX-Redirect", "/error")
 		return Render(w, r, layouts.ErrorMessage(LoggedInUserType, err_msg))
 	}
@@ -110,7 +130,6 @@ func UpdateCategory(w http.ResponseWriter, r *http.Request) error {
 		err = models.UpdateCategory(category_id, category_name)
 		if err != nil {
 			err_msg := "Internal server error:\nerror updating category: " + err.Error()
-			w.Header().Add("ErrorMessage", err_msg)
 			w.Header().Add("HX-Redirect", "/error")
 			return Render(w, r, layouts.ErrorMessage(LoggedInUserType, err_msg))
 		}
@@ -120,6 +139,11 @@ func UpdateCategory(w http.ResponseWriter, r *http.Request) error {
 }
 
 func DeleteCategory(w http.ResponseWriter, r *http.Request) error {
+	if LoggedInUserType != "admin" {
+		w.Header().Add("HX-Redirect", "/error")
+		return Render(w, r, layouts.ErrorMessage(LoggedInUserType, "Access Denied: Lack of administratorial credentials!"))
+	}
+
 	if LoggedInUserType == "" {
 		w.Header().Add("HX-Redirect", "/")
 		return Render(w, r, login.Login(false, false, "", ""))
@@ -130,7 +154,6 @@ func DeleteCategory(w http.ResponseWriter, r *http.Request) error {
 	err := models.DeleteCategory(category_id)
 	if err != nil {
 		err_msg := "Internal server error:\nerror deleting category: " + err.Error()
-		w.Header().Add("ErrorMessage", err_msg)
 		w.Header().Add("HX-Redirect", "/error")
 		return Render(w, r, layouts.ErrorMessage(LoggedInUserType, err_msg))
 	}
@@ -139,6 +162,11 @@ func DeleteCategory(w http.ResponseWriter, r *http.Request) error {
 }
 
 func ShowCategoryAlreadyExistsError(w http.ResponseWriter, r *http.Request) error {
+	if LoggedInUserType != "admin" {
+		w.Header().Add("HX-Redirect", "/error")
+		return Render(w, r, layouts.ErrorMessage(LoggedInUserType, "Access Denied: Lack of administratorial credentials!"))
+	}
+
 	if LoggedInUserType == "" {
 		w.Header().Add("HX-Redirect", "/")
 		return Render(w, r, login.Login(false, false, "", ""))

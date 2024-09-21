@@ -339,6 +339,11 @@ func UpdateTicket(w http.ResponseWriter, r *http.Request) error {
 }
 
 func DeleteTicket(w http.ResponseWriter, r *http.Request) error {
+	if LoggedInUserType != "manager" {
+		w.Header().Add("HX-Redirect", "/error")
+		return Render(w, r, layouts.ErrorMessage(LoggedInUserType, "Access Denied: Lack of managerial credentials!"))
+	}
+
 	if LoggedInUserType == "" {
 		w.Header().Add("HX-Redirect", "/")
 		return Render(w, r, login.Login(false, false, "", ""))
@@ -349,7 +354,6 @@ func DeleteTicket(w http.ResponseWriter, r *http.Request) error {
 	err := models.DeleteTicket(ticket_id)
 	if err != nil {
 		err_msg := "Internal server error:\nerror deleting ticket: " + err.Error()
-		w.Header().Add("ErrorMessage", err_msg)
 		w.Header().Add("HX-Redirect", "/error")
 		return Render(w, r, layouts.ErrorMessage(LoggedInUserType, err_msg))
 	}
@@ -357,7 +361,6 @@ func DeleteTicket(w http.ResponseWriter, r *http.Request) error {
 	LoggedInUser, err = models.UpdateLoggedInUser(LoggedInUser)
 	if err != nil {
 		err_msg := "Internal server error:\nerror updating user statistics after deleting ticket: " + err.Error()
-		w.Header().Add("ErrorMessage", err_msg)
 		w.Header().Add("HX-Redirect", "/error")
 		return Render(w, r, layouts.ErrorMessage(LoggedInUserType, err_msg))
 	}
@@ -375,13 +378,13 @@ func ShowAllTicketSearch(w http.ResponseWriter, r *http.Request) error {
 }
 
 func ShowTeamTickets(w http.ResponseWriter, r *http.Request) error {
+	if LoggedInUserType != "manager" {
+		return Render(w, r, layouts.ErrorMessage(LoggedInUserType, "Access Denied: Lack of managerial credentials!"))
+	}
+
 	if LoggedInUserType == "" {
 		http.Redirect(w, r, "/", http.StatusSeeOther)
 		return nil
-	}
-
-	if LoggedInUserType != "manager" {
-		return Render(w, r, layouts.ErrorMessage(LoggedInUserType, "Access Denied: Lack of managerial credentials!"))
 	}
 
 	return Render(w, r, tickets.TicketSearch(LoggedInUser, LoggedInUserType, "Team Tickets"))
@@ -413,7 +416,6 @@ func FilterTickets(w http.ResponseWriter, r *http.Request) error {
 	filetered_tickets, err := models.FilterTickets(search, customer, ticket_type, status, category, subcategory, search_type, LoggedInUser.Team_ID.UUID.String())
 	if err != nil {
 		err_msg := "Internal server error:\nerror filtering tickets: " + err.Error()
-		w.Header().Add("ErrorMessage", err_msg)
 		w.Header().Add("HX-Redirect", "/error")
 		return Render(w, r, layouts.ErrorMessage(LoggedInUserType, err_msg))
 	}
@@ -432,7 +434,6 @@ func CloseTicket(w http.ResponseWriter, r *http.Request) error {
 	ticket_to_show, err := models.CloseTicket(ticket_id, LoggedInUser.Analyst_ID.String())
 	if err != nil {
 		err_msg := "Internal server error:\nerror closing ticket: " + err.Error()
-		w.Header().Add("ErrorMessage", err_msg)
 		w.Header().Add("HX-Redirect", "/error")
 		return Render(w, r, layouts.ErrorMessage(LoggedInUserType, err_msg))
 	}
@@ -440,7 +441,6 @@ func CloseTicket(w http.ResponseWriter, r *http.Request) error {
 	LoggedInUser, err = models.UpdateLoggedInUser(LoggedInUser)
 	if err != nil {
 		err_msg := "Internal server error:\nerror updating user statistics after closing ticket: " + err.Error()
-		w.Header().Add("ErrorMessage", err_msg)
 		w.Header().Add("HX-Redirect", "/error")
 		return Render(w, r, layouts.ErrorMessage(LoggedInUserType, err_msg))
 	}

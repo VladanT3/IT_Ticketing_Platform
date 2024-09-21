@@ -67,6 +67,10 @@ func GetAnalystsTeam(w http.ResponseWriter, r *http.Request) error {
 }
 
 func ShowUserView(w http.ResponseWriter, r *http.Request) error {
+	if LoggedInUserType != "admin" {
+		return Render(w, r, layouts.ErrorMessage(LoggedInUserType, "Access Denied: Lack of administratorial credentials!"))
+	}
+
 	if LoggedInUserType == "" {
 		http.Redirect(w, r, "/", http.StatusSeeOther)
 		return nil
@@ -76,6 +80,10 @@ func ShowUserView(w http.ResponseWriter, r *http.Request) error {
 }
 
 func ShowTeamView(w http.ResponseWriter, r *http.Request) error {
+	if LoggedInUserType != "manager" {
+		return Render(w, r, layouts.ErrorMessage(LoggedInUserType, "Access Denied: Lack of managerial credentials!"))
+	}
+
 	if LoggedInUserType == "" {
 		http.Redirect(w, r, "/", http.StatusSeeOther)
 		return nil
@@ -85,6 +93,11 @@ func ShowTeamView(w http.ResponseWriter, r *http.Request) error {
 }
 
 func FilterUsers(w http.ResponseWriter, r *http.Request) error {
+	if LoggedInUserType == "analyst" {
+		w.Header().Add("HX-Redirect", "/error")
+		return Render(w, r, layouts.ErrorMessage(LoggedInUserType, "Access Denied: Lack of higher credentials!"))
+	}
+
 	if LoggedInUserType == "" {
 		w.Header().Add("HX-Redirect", "/")
 		return Render(w, r, login.Login(false, false, "", ""))
@@ -100,6 +113,10 @@ func FilterUsers(w http.ResponseWriter, r *http.Request) error {
 }
 
 func ShowUserForm(w http.ResponseWriter, r *http.Request) error {
+	if LoggedInUserType == "analyst" {
+		return Render(w, r, layouts.ErrorMessage(LoggedInUserType, "Access Denied: Lack of higher credentials!"))
+	}
+
 	if LoggedInUserType == "" {
 		http.Redirect(w, r, "/", http.StatusSeeOther)
 		return nil
@@ -126,6 +143,10 @@ func ShowUserForm(w http.ResponseWriter, r *http.Request) error {
 }
 
 func ShowNewUserForm(w http.ResponseWriter, r *http.Request) error {
+	if LoggedInUserType != "admin" {
+		return Render(w, r, layouts.ErrorMessage(LoggedInUserType, "Access Denied: Lack of administratorial credentials!"))
+	}
+
 	if LoggedInUserType == "" {
 		http.Redirect(w, r, "/", http.StatusSeeOther)
 		return nil
@@ -137,6 +158,10 @@ func ShowNewUserForm(w http.ResponseWriter, r *http.Request) error {
 }
 
 func UserRedirect(w http.ResponseWriter, r *http.Request) error {
+	if LoggedInUserType == "analyst" {
+		return Render(w, r, layouts.ErrorMessage(LoggedInUserType, "Access Denied: Lack of higher credentials!"))
+	}
+
 	if LoggedInUserType == "" {
 		http.Redirect(w, r, "/", http.StatusSeeOther)
 		return nil
@@ -265,6 +290,10 @@ func UserRedirect(w http.ResponseWriter, r *http.Request) error {
 }
 
 func UpdateUser(w http.ResponseWriter, r *http.Request) error {
+	if LoggedInUserType != "admin" {
+		return Render(w, r, layouts.ErrorMessage(LoggedInUserType, "Access Denied: Lack of administratorial credentials!"))
+	}
+
 	if LoggedInUserType == "" {
 		http.Redirect(w, r, "/", http.StatusSeeOther)
 		return nil
@@ -369,6 +398,10 @@ func UpdateUser(w http.ResponseWriter, r *http.Request) error {
 }
 
 func DeleteUser(w http.ResponseWriter, r *http.Request) error {
+	if LoggedInUserType != "admin" {
+		return Render(w, r, layouts.ErrorMessage(LoggedInUserType, "Access Denied: Lack of administratorial credentials!"))
+	}
+
 	if LoggedInUserType == "" {
 		w.Header().Add("HX-Redirect", "/")
 		return Render(w, r, login.Login(false, false, "", ""))
@@ -379,7 +412,6 @@ func DeleteUser(w http.ResponseWriter, r *http.Request) error {
 	err := models.DeleteAnalyst(analyst_id)
 	if err != nil {
 		err_msg := "Internal server error:\nerror deleting user: " + err.Error()
-		w.Header().Add("ErrorMessage", err_msg)
 		w.Header().Add("HX-Redirect", "/error")
 		return Render(w, r, layouts.ErrorMessage(LoggedInUserType, err_msg))
 	}
@@ -388,6 +420,10 @@ func DeleteUser(w http.ResponseWriter, r *http.Request) error {
 }
 
 func CreateUser(w http.ResponseWriter, r *http.Request) error {
+	if LoggedInUserType != "admin" {
+		return Render(w, r, layouts.ErrorMessage(LoggedInUserType, "Access Denied: Lack of administratorial credentials!"))
+	}
+
 	if LoggedInUserType == "" {
 		http.Redirect(w, r, "/", http.StatusSeeOther)
 		return nil
@@ -476,6 +512,10 @@ func CreateUser(w http.ResponseWriter, r *http.Request) error {
 }
 
 func RequestUserInfoChange(w http.ResponseWriter, r *http.Request) error {
+	if LoggedInUserType != "manager" {
+		return Render(w, r, layouts.ErrorMessage(LoggedInUserType, "Access Denied: Lack of managerial credentials!"))
+	}
+
 	if LoggedInUserType == "" {
 		http.Redirect(w, r, "/", http.StatusSeeOther)
 		return nil

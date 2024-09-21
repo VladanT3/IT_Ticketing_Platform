@@ -20,7 +20,6 @@ func main() {
 
 	router.Handle("/*", http.StripPrefix("/public/", http.FileServer(http.Dir("./public"))))
 	router.Get("/", handlers.Make(handlers.Index))
-	//TODO: check if manager/admin for things
 	router.Post("/login", handlers.Make(handlers.Login))
 	router.Post("/logout", handlers.Make(handlers.Logout))
 	router.Get("/profile", handlers.Make(handlers.Profile))
@@ -80,7 +79,6 @@ func main() {
 	router.Post("/user/password/change", handlers.Make(handlers.ChangePassword))
 	router.Get("/user/password/change/success", handlers.Make(handlers.ShowPasswordChangeSuccess))
 
-	//TODO: somehow block access via url
 	router.Get("/error", handlers.Make(handlers.ShowError))
 
 	port := os.Getenv("PORT")
