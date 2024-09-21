@@ -43,7 +43,7 @@ func SearchCategories(w http.ResponseWriter, r *http.Request) error {
 		return Render(w, r, layouts.ErrorMessage(LoggedInUserType, err_msg))
 	}
 
-	return Render(w, r, categories.ShowCategories(searchedCategories, false))
+	return Render(w, r, categories.SearchCategories(searchedCategories))
 }
 
 func ShowCategoryPopup(w http.ResponseWriter, r *http.Request) error {
@@ -158,7 +158,8 @@ func DeleteCategory(w http.ResponseWriter, r *http.Request) error {
 		return Render(w, r, layouts.ErrorMessage(LoggedInUserType, err_msg))
 	}
 
-	return Render(w, r, categories.ShowCategories(models.GetAllCategories(), false))
+	w.Header().Add("HX-Redirect", "/categories")
+	return Render(w, r, categories.Categories(LoggedInUserType))
 }
 
 func ShowCategoryAlreadyExistsError(w http.ResponseWriter, r *http.Request) error {

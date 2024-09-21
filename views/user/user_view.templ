@@ -30,6 +30,7 @@ templ UserView(user_type string, current_user models.Analyst, view_type string) 
 							</div>
 							<label class="mt-3">Select user type:</label>
 							<label><input type="radio" name="user_type" id="user_type" value="all" class="uk-checkbox border rounded-full border-zinc-50" checked/> All</label>
+							<label><input type="radio" name="user_type" id="user_type" value="analysts" class="uk-checkbox border rounded-full border-zinc-50"/> Analysts</label>
 							<label><input type="radio" name="user_type" id="user_type" value="managers" class="uk-checkbox border rounded-full border-zinc-50"/> Managers</label>
 							<label><input type="radio" name="user_type" id="user_type" value="administrators" class="uk-checkbox border rounded-full border-zinc-50"/> Administrators</label>
 							<div class="mt-3"></div>
@@ -38,7 +39,7 @@ templ UserView(user_type string, current_user models.Analyst, view_type string) 
 					}
 					<div class="uk-divider-vertical min-h-full"></div>
 				</div>
-				<div class="col-span-4 flex flex-col" id="users">
+				<div class="col-span-4 flex flex-col">
 					if view_type == "User View" {
 						<form action="/user/new" method="get">
 							<input type="hidden" name="view_type" value={ view_type }/>
@@ -47,11 +48,13 @@ templ UserView(user_type string, current_user models.Analyst, view_type string) 
 							</button>
 						</form>
 					}
-					if view_type == "User View" {
-						@Users(models.GetAllAnalysts(), view_type)
-					} else if view_type == "Team View" {
-						@Users(models.GetTeamsAnalysts(current_user.Team_ID.UUID.String()), view_type)
-					}
+					<div class="flex flex-col" id="users">
+						if view_type == "User View" {
+							@Users(models.GetAllAnalysts(), view_type)
+						} else if view_type == "Team View" {
+							@Users(models.GetTeamsAnalysts(current_user.Team_ID.UUID.String()), view_type)
+						}
+					</div>
 				</div>
 			</div>
 		</div>

@@ -199,7 +199,16 @@ func FilterUsers(search_term string, view_type string, team_id string, user_type
 	var queryArgs []any
 	var query string
 
-	if user_type == "managers" {
+	if user_type == "analysts" {
+		query = `
+			select an.*
+			from analyst an
+			where (an.analyst_id not in (select manager_id from manager) and
+			an.analyst_id not in (select administrator_id from administrator)) and
+			(lower(an.first_name) like $1 or
+			lower(an.last_name) like $1)
+		`
+	} else if user_type == "managers" {
 		query = `
 			select an.*
 			from analyst an join manager m on an.analyst_id = m.manager_id
@@ -374,7 +383,7 @@ func DeleteAnalyst(analyst_id string) error {
 
 func CreateAnalyst(new_analyst Analyst, user_type string) error {
 	var db *sql.DB = database.DB_Connection
-	query := `insert into analyst values(gen_random_uuid(), $1, $2, $3, $4, $5, $6, default, default, default) returning analyst_id;`
+	query := `insert into analyst values(gen_random_uuid(), $1, $2, $3, crypt($4, gen_salt('md5')), $5, $6, default, default, default) returning analyst_id;`
 	var new_analyst_id uuid.UUID
 
 	err := db.QueryRow(query, new_analyst.First_Name, new_analyst.Last_Name, new_analyst.Email, new_analyst.Password, new_analyst.Phone_Number, new_analyst.Team_ID.UUID).Scan(&new_analyst_id)

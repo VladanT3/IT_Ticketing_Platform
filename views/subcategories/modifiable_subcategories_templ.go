@@ -154,23 +154,27 @@ func ModifiableSubcategories(subcategories []models.Subcategory, category_id str
 					return templ_7745c5c3_Err
 				}
 			}
-			_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString("</div><form hx-get=\"/subcategory/popup\" hx-target=\"body\" hx-swap=\"beforeend\" class=\"self-center\" style=\"width: 75%; margin-top: 1rem;\"><input type=\"hidden\" name=\"category_id\" value=\"")
+			_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString("</div>")
 			if templ_7745c5c3_Err != nil {
 				return templ_7745c5c3_Err
 			}
-			var templ_7745c5c3_Var10 string
-			templ_7745c5c3_Var10, templ_7745c5c3_Err = templ.JoinStringErrs(category_id)
-			if templ_7745c5c3_Err != nil {
-				return templ.Error{Err: templ_7745c5c3_Err, FileName: `views/subcategories/modifiable_subcategories.templ`, Line: 42, Col: 62}
-			}
-			_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString(templ.EscapeString(templ_7745c5c3_Var10))
-			if templ_7745c5c3_Err != nil {
-				return templ_7745c5c3_Err
-			}
-			_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString("\"> <button name=\"subcategory_operation\" value=\"create\" type=\"submit\" class=\"text-xl border border-green-600 rounded-lg p-3 text-green-600 hover:bg-green-600 hover:text-zinc-900\" style=\"width: 100%;\">+ Add a new Subcategory</button></form>")
-			if templ_7745c5c3_Err != nil {
-				return templ_7745c5c3_Err
-			}
+		}
+		_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString("<form hx-get=\"/subcategory/popup\" hx-target=\"body\" hx-swap=\"beforeend\" class=\"self-center\" style=\"width: 75%; margin-top: 1rem;\"><input type=\"hidden\" name=\"category_id\" value=\"")
+		if templ_7745c5c3_Err != nil {
+			return templ_7745c5c3_Err
+		}
+		var templ_7745c5c3_Var10 string
+		templ_7745c5c3_Var10, templ_7745c5c3_Err = templ.JoinStringErrs(category_id)
+		if templ_7745c5c3_Err != nil {
+			return templ.Error{Err: templ_7745c5c3_Err, FileName: `views/subcategories/modifiable_subcategories.templ`, Line: 43, Col: 61}
+		}
+		_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString(templ.EscapeString(templ_7745c5c3_Var10))
+		if templ_7745c5c3_Err != nil {
+			return templ_7745c5c3_Err
+		}
+		_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString("\"> <button name=\"subcategory_operation\" value=\"create\" type=\"submit\" class=\"text-xl border border-green-600 rounded-lg p-3 text-green-600 hover:bg-green-600 hover:text-zinc-900\" style=\"width: 100%;\">+ Add a new Subcategory</button></form>")
+		if templ_7745c5c3_Err != nil {
+			return templ_7745c5c3_Err
 		}
 		return templ_7745c5c3_Err
 	})

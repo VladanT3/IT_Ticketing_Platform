@@ -38,9 +38,9 @@ templ ModifiableSubcategories(subcategories []models.Subcategory, category_id st
 				<div hidden hx-get="subcategory/error/name" hx-swap="beforeend" hx-target="body" hx-trigger="load"></div>
 			}
 		</div>
-		<form hx-get="/subcategory/popup" hx-target="body" hx-swap="beforeend" class="self-center" style="width: 75%; margin-top: 1rem;">
-			<input type="hidden" name="category_id" value={ category_id }/>
-			<button name="subcategory_operation" value="create" type="submit" class="text-xl border border-green-600 rounded-lg p-3 text-green-600 hover:bg-green-600 hover:text-zinc-900" style="width: 100%;">+ Add a new Subcategory</button>
-		</form>
 	}
+	<form hx-get="/subcategory/popup" hx-target="body" hx-swap="beforeend" class="self-center" style="width: 75%; margin-top: 1rem;">
+		<input type="hidden" name="category_id" value={ category_id }/>
+		<button name="subcategory_operation" value="create" type="submit" class="text-xl border border-green-600 rounded-lg p-3 text-green-600 hover:bg-green-600 hover:text-zinc-900" style="width: 100%;">+ Add a new Subcategory</button>
+	</form>
 }

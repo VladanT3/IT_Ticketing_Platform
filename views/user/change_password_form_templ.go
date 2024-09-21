@@ -40,32 +40,37 @@ func ChangePasswordForm(user_type string, old_password string, old_repeat_passwo
 				}()
 			}
 			ctx = templ.InitializeContext(ctx)
-			_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString("<div class=\"container mx-auto mt-5 grid grid-cols-3\"><div></div><div><form class=\"flex flex-col border rounded-lg border-zinc-50 p-5\" action=\"/user/password/change\" method=\"post\"><legend class=\"uk-legend text-2xl self-center\">Change password</legend> <label>New password:</label> <input required type=\"password\" name=\"password\" id=\"password\" autofocus value=\"")
-			if templ_7745c5c3_Err != nil {
-				return templ_7745c5c3_Err
-			}
-			var templ_7745c5c3_Var3 string
-			templ_7745c5c3_Var3, templ_7745c5c3_Err = templ.JoinStringErrs(old_password)
-			if templ_7745c5c3_Err != nil {
-				return templ.Error{Err: templ_7745c5c3_Err, FileName: `views/user/change_password_form.templ`, Line: 13, Col: 97}
-			}
-			_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString(templ.EscapeString(templ_7745c5c3_Var3))
-			if templ_7745c5c3_Err != nil {
-				return templ_7745c5c3_Err
-			}
-			_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString("\" class=\"uk-input text-base text-zinc-50\"> <label><input class=\"uk-checkbox border rounded-full border-zinc-50\" type=\"checkbox\" id=\"show_password\"> Show password</label> <label class=\"mt-3\">Repeat password:</label> ")
+			_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString("<div class=\"container mx-auto mt-5 grid grid-cols-3\"><div></div><div><form class=\"flex flex-col border rounded-lg border-zinc-50 p-5\" action=\"/user/password/change\" method=\"post\"><legend class=\"uk-legend text-2xl self-center\">Change password</legend> <label>New password:</label> ")
 			if templ_7745c5c3_Err != nil {
 				return templ_7745c5c3_Err
 			}
 			if !diff_pass_err {
-				_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString("<input required type=\"password\" name=\"repeat_password\" id=\"repeat_password\" value=\"")
+				_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString("<input required type=\"password\" name=\"password\" id=\"password\" autofocus value=\"")
+				if templ_7745c5c3_Err != nil {
+					return templ_7745c5c3_Err
+				}
+				var templ_7745c5c3_Var3 string
+				templ_7745c5c3_Var3, templ_7745c5c3_Err = templ.JoinStringErrs(old_password)
+				if templ_7745c5c3_Err != nil {
+					return templ.Error{Err: templ_7745c5c3_Err, FileName: `views/user/change_password_form.templ`, Line: 14, Col: 98}
+				}
+				_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString(templ.EscapeString(templ_7745c5c3_Var3))
+				if templ_7745c5c3_Err != nil {
+					return templ_7745c5c3_Err
+				}
+				_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString("\" class=\"uk-input text-base text-zinc-50\"> ")
+				if templ_7745c5c3_Err != nil {
+					return templ_7745c5c3_Err
+				}
+			} else {
+				_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString("<input required type=\"password\" name=\"password\" id=\"password\" value=\"")
 				if templ_7745c5c3_Err != nil {
 					return templ_7745c5c3_Err
 				}
 				var templ_7745c5c3_Var4 string
-				templ_7745c5c3_Var4, templ_7745c5c3_Err = templ.JoinStringErrs(old_repeat_password)
+				templ_7745c5c3_Var4, templ_7745c5c3_Err = templ.JoinStringErrs(old_password)
 				if templ_7745c5c3_Err != nil {
-					return templ.Error{Err: templ_7745c5c3_Err, FileName: `views/user/change_password_form.templ`, Line: 17, Col: 109}
+					return templ.Error{Err: templ_7745c5c3_Err, FileName: `views/user/change_password_form.templ`, Line: 16, Col: 88}
 				}
 				_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString(templ.EscapeString(templ_7745c5c3_Var4))
 				if templ_7745c5c3_Err != nil {
@@ -75,7 +80,12 @@ func ChangePasswordForm(user_type string, old_password string, old_repeat_passwo
 				if templ_7745c5c3_Err != nil {
 					return templ_7745c5c3_Err
 				}
-			} else {
+			}
+			_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString("<label><input class=\"uk-checkbox border rounded-full border-zinc-50\" type=\"checkbox\" id=\"show_password\"> Show password</label> <label class=\"mt-3\">Repeat password:</label> ")
+			if templ_7745c5c3_Err != nil {
+				return templ_7745c5c3_Err
+			}
+			if !diff_pass_err {
 				_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString("<input required type=\"password\" name=\"repeat_password\" id=\"repeat_password\" value=\"")
 				if templ_7745c5c3_Err != nil {
 					return templ_7745c5c3_Err
@@ -83,9 +93,27 @@ func ChangePasswordForm(user_type string, old_password string, old_repeat_passwo
 				var templ_7745c5c3_Var5 string
 				templ_7745c5c3_Var5, templ_7745c5c3_Err = templ.JoinStringErrs(old_repeat_password)
 				if templ_7745c5c3_Err != nil {
-					return templ.Error{Err: templ_7745c5c3_Err, FileName: `views/user/change_password_form.templ`, Line: 19, Col: 109}
+					return templ.Error{Err: templ_7745c5c3_Err, FileName: `views/user/change_password_form.templ`, Line: 21, Col: 109}
 				}
 				_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString(templ.EscapeString(templ_7745c5c3_Var5))
+				if templ_7745c5c3_Err != nil {
+					return templ_7745c5c3_Err
+				}
+				_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString("\" class=\"uk-input text-base text-zinc-50\"> ")
+				if templ_7745c5c3_Err != nil {
+					return templ_7745c5c3_Err
+				}
+			} else {
+				_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString("<input autofocus required type=\"password\" name=\"repeat_password\" id=\"repeat_password\" value=\"")
+				if templ_7745c5c3_Err != nil {
+					return templ_7745c5c3_Err
+				}
+				var templ_7745c5c3_Var6 string
+				templ_7745c5c3_Var6, templ_7745c5c3_Err = templ.JoinStringErrs(old_repeat_password)
+				if templ_7745c5c3_Err != nil {
+					return templ.Error{Err: templ_7745c5c3_Err, FileName: `views/user/change_password_form.templ`, Line: 23, Col: 119}
+				}
+				_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString(templ.EscapeString(templ_7745c5c3_Var6))
 				if templ_7745c5c3_Err != nil {
 					return templ_7745c5c3_Err
 				}

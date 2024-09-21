@@ -6,7 +6,7 @@ templ CategoryPopup(operation string, category_id string, category_name string) 
 			<div class="modal-underlay" _="on click trigger closeModal"></div>
 			<div class="modal-content bg-zinc-900 border border-zinc-50 rounded-lg p-5 max-w-md w-4/5 mt-24">
 				<h1 class="text-xl">Add a new Category</h1>
-				<form class="flex flex-col" hx-post="/category/create" hx-swap="innerHTML" hx-target="#category_list">
+				<form class="flex flex-col" hx-post="/category/create" hx-swap="innerHTML" hx-target="#categories">
 					<label class="mt-3">Category name:</label>
 					<input required type="text" name="category_name" autofocus class="uk-input text-base text-zinc-50"/>
 					<button type="submit" class="uk-button bg-zinc-50 text-zinc-900 border border-zinc-50 self-center mt-3 hover:bg-zinc-900 hover:text-zinc-50" _="on click trigger closeModal">Add</button>
@@ -18,7 +18,7 @@ templ CategoryPopup(operation string, category_id string, category_name string) 
 			<div class="modal-underlay" _="on click trigger closeModal"></div>
 			<div class="modal-content bg-zinc-900 border border-zinc-50 rounded-lg p-5 max-w-md w-4/5 mt-24">
 				<h1 class="text-xl">Edit Category</h1>
-				<form class="flex flex-col" hx-put={ "/category/update/" + category_id } hx-swap="innerHTML" hx-target="#category_list">
+				<form class="flex flex-col" hx-put={ "/category/update/" + category_id } hx-swap="innerHTML" hx-target="#categories">
 					<label class="mt-3">Category name:</label>
 					<input required type="text" name="category_name" value={ category_name } autofocus class="uk-input text-base text-zinc-50" id="update_field" onfocus="document.getElementById('update_field').select()"/>
 					<button type="submit" class="uk-button bg-zinc-50 text-zinc-900 border border-zinc-50 self-center mt-3 hover:bg-zinc-900 hover:text-zinc-50" _="on click trigger closeModal">Edit</button>
@@ -30,7 +30,7 @@ templ CategoryPopup(operation string, category_id string, category_name string) 
 			<div class="modal-underlay" _="on click trigger closeModal"></div>
 			<div class="modal-content bg-zinc-900 border border-zinc-50 rounded-lg p-5 max-w-md w-4/5 mt-24">
 				<h1 class="text-xl">Delete Category</h1>
-				<form class="flex flex-col" hx-delete={ "/category/delete/" + category_id } hx-swap="innerHTML" hx-target="#category_list">
+				<form class="flex flex-col" hx-delete={ "/category/delete/" + category_id } hx-swap="innerHTML" hx-target="#categories">
 					<label>Are you sure you want to delete the following category?</label>
 					<label class="mt-3">Category name:</label>
 					<input type="text" value={ category_name } disabled class="uk-input text-base text-zinc-50"/>

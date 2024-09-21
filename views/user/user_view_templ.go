@@ -91,12 +91,12 @@ func UserView(user_type string, current_user models.Analyst, view_type string) t
 				if templ_7745c5c3_Err != nil {
 					return templ_7745c5c3_Err
 				}
-				_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString("\"><div class=\"flex flex-col mt-3\"><label>Search:</label> <input type=\"text\" name=\"search\" id=\"search\" class=\"uk-input text-zinc-50 text-base\"></div><label class=\"mt-3\">Select user type:</label> <label><input type=\"radio\" name=\"user_type\" id=\"user_type\" value=\"all\" class=\"uk-checkbox border rounded-full border-zinc-50\" checked> All</label> <label><input type=\"radio\" name=\"user_type\" id=\"user_type\" value=\"managers\" class=\"uk-checkbox border rounded-full border-zinc-50\"> Managers</label> <label><input type=\"radio\" name=\"user_type\" id=\"user_type\" value=\"administrators\" class=\"uk-checkbox border rounded-full border-zinc-50\"> Administrators</label><div class=\"mt-3\"></div><button type=\"submit\" class=\"uk-button uk-width-1-1 bg-zinc-50 text-zinc-900 border border-zinc-50 hover:bg-zinc-900 hover:text-zinc-50\">Apply Filters</button></form>")
+				_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString("\"><div class=\"flex flex-col mt-3\"><label>Search:</label> <input type=\"text\" name=\"search\" id=\"search\" class=\"uk-input text-zinc-50 text-base\"></div><label class=\"mt-3\">Select user type:</label> <label><input type=\"radio\" name=\"user_type\" id=\"user_type\" value=\"all\" class=\"uk-checkbox border rounded-full border-zinc-50\" checked> All</label> <label><input type=\"radio\" name=\"user_type\" id=\"user_type\" value=\"analysts\" class=\"uk-checkbox border rounded-full border-zinc-50\"> Analysts</label> <label><input type=\"radio\" name=\"user_type\" id=\"user_type\" value=\"managers\" class=\"uk-checkbox border rounded-full border-zinc-50\"> Managers</label> <label><input type=\"radio\" name=\"user_type\" id=\"user_type\" value=\"administrators\" class=\"uk-checkbox border rounded-full border-zinc-50\"> Administrators</label><div class=\"mt-3\"></div><button type=\"submit\" class=\"uk-button uk-width-1-1 bg-zinc-50 text-zinc-900 border border-zinc-50 hover:bg-zinc-900 hover:text-zinc-50\">Apply Filters</button></form>")
 				if templ_7745c5c3_Err != nil {
 					return templ_7745c5c3_Err
 				}
 			}
-			_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString("<div class=\"uk-divider-vertical min-h-full\"></div></div><div class=\"col-span-4 flex flex-col\" id=\"users\">")
+			_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString("<div class=\"uk-divider-vertical min-h-full\"></div></div><div class=\"col-span-4 flex flex-col\">")
 			if templ_7745c5c3_Err != nil {
 				return templ_7745c5c3_Err
 			}
@@ -108,7 +108,7 @@ func UserView(user_type string, current_user models.Analyst, view_type string) t
 				var templ_7745c5c3_Var6 string
 				templ_7745c5c3_Var6, templ_7745c5c3_Err = templ.JoinStringErrs(view_type)
 				if templ_7745c5c3_Err != nil {
-					return templ.Error{Err: templ_7745c5c3_Err, FileName: `views/user/user_view.templ`, Line: 44, Col: 62}
+					return templ.Error{Err: templ_7745c5c3_Err, FileName: `views/user/user_view.templ`, Line: 45, Col: 62}
 				}
 				_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString(templ.EscapeString(templ_7745c5c3_Var6))
 				if templ_7745c5c3_Err != nil {
@@ -118,6 +118,10 @@ func UserView(user_type string, current_user models.Analyst, view_type string) t
 				if templ_7745c5c3_Err != nil {
 					return templ_7745c5c3_Err
 				}
+			}
+			_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString("<div class=\"flex flex-col\" id=\"users\">")
+			if templ_7745c5c3_Err != nil {
+				return templ_7745c5c3_Err
 			}
 			if view_type == "User View" {
 				templ_7745c5c3_Err = Users(models.GetAllAnalysts(), view_type).Render(ctx, templ_7745c5c3_Buffer)
@@ -130,7 +134,7 @@ func UserView(user_type string, current_user models.Analyst, view_type string) t
 					return templ_7745c5c3_Err
 				}
 			}
-			_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString("</div></div></div>")
+			_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString("</div></div></div></div>")
 			if templ_7745c5c3_Err != nil {
 				return templ_7745c5c3_Err
 			}
