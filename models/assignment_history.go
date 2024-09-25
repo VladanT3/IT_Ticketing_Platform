@@ -60,7 +60,7 @@ func AssignTicket(ticket_id string, assigned_from string, assigned_to_analyst st
 			}
 		}
 
-		query = `update ticket set assigned_analyst = $1, assigned_team = $2 where ticket_id = $3;`
+		query = `update ticket set assigned_analyst = $1, assigned_team = $2, updated_at = current_timestamp where ticket_id = $3;`
 		_, err = db.Exec(query, assigned_to_analyst, assigned_to_team, ticket_id)
 		if err != nil {
 			return err
@@ -88,7 +88,7 @@ func AssignTicket(ticket_id string, assigned_from string, assigned_to_analyst st
 			}
 		}
 
-		query = `update ticket set assigned_analyst = null, assigned_team = $1 where ticket_id = $2;`
+		query = `update ticket set assigned_analyst = null, assigned_team = $1, updated_at = current_timestamp where ticket_id = $2;`
 		_, err = db.Exec(query, assigned_to_team, ticket_id)
 		if err != nil {
 			return err
