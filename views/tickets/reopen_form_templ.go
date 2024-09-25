@@ -64,7 +64,7 @@ func ReopenForm(user_type string, ticket models.Ticket) templ.Component {
 			if templ_7745c5c3_Err != nil {
 				return templ_7745c5c3_Err
 			}
-			_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString("</h1><label class=\"mt-3\">Reason for reopening the ticket:</label> <textarea name=\"reason\" class=\"uk-textarea font-mono text-zinc-50 text-base\" rows=\"8\"></textarea> <button type=\"submit\" class=\"uk-button border border-zinc-50 text-zinc-50 mt-3 self-center hover:bg-zinc-50 hover:text-zinc-900\">Reopen</button></form></div>")
+			_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString("</h1><label class=\"mt-3\">Reason for reopening the ticket:</label> <textarea name=\"reason\" class=\"uk-textarea font-mono text-zinc-50 text-base\" rows=\"8\"></textarea> <button type=\"submit\" class=\"uk-button border border-zinc-50 bg-zinc-50 text-zinc-900 mt-5 self-center hover:bg-zinc-900 hover:text-zinc-50\" style=\"width: 50%;\">Reopen</button></form></div>")
 			if templ_7745c5c3_Err != nil {
 				return templ_7745c5c3_Err
 			}
