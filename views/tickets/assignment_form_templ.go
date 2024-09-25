@@ -253,7 +253,7 @@ func AssignmentForm(user_type string, ticket models.Ticket, team_error bool, pic
 					}
 				}
 			}
-			_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString("</select></div></div><label class=\"mt-3\">Assignment Message:</label> <textarea name=\"message\" class=\"uk-textarea font-mono text-zinc-50 text-base\" rows=\"8\"></textarea> <button type=\"submit\" class=\"uk-button border border-zinc-50 text-zinc-50 mt-3 self-center hover:bg-zinc-50 hover:text-zinc-900\">Assign</button></form></div>")
+			_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString("</select></div></div><label class=\"mt-3\">Assignment Message:</label> <textarea name=\"message\" class=\"uk-textarea font-mono text-zinc-50 text-base\" rows=\"8\"></textarea> <button type=\"submit\" class=\"uk-button border border-zinc-50 bg-zinc-50 text-zinc-900 mt-5 self-center hover:bg-zinc-900 hover:text-zinc-50\" style=\"width: 50%;\">Assign</button></form></div>")
 			if templ_7745c5c3_Err != nil {
 				return templ_7745c5c3_Err
 			}
