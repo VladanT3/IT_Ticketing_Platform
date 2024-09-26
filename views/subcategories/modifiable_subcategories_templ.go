@@ -29,7 +29,20 @@ func ModifiableSubcategories(subcategories []models.Subcategory, category_id str
 		}
 		ctx = templ.ClearChildren(ctx)
 		if len(subcategories) == 0 {
-			_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString("<h1 class=\"self-center text-2xl\">Subcategories</h1><div class=\"flex flex-col mt-3\" style=\"margin-bottom: 1rem;\"><input type=\"text\" class=\"uk-input text-zinc-50 text-base self-center\" style=\"width: 65%;\" placeholder=\"Search...\" disabled></div>")
+			_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString("<h1 class=\"self-center text-2xl\">Subcategories</h1><div class=\"flex flex-col mt-3\" style=\"margin-bottom: 1rem;\"><input type=\"text\" class=\"uk-input text-zinc-50 text-base self-center\" style=\"width: 65%;\" placeholder=\"Search...\" disabled></div><form hx-get=\"/subcategory/popup\" hx-target=\"body\" hx-swap=\"beforeend\" class=\"self-center\" style=\"width: 75%; margin-top: 1rem;\"><input type=\"hidden\" name=\"category_id\" value=\"")
+			if templ_7745c5c3_Err != nil {
+				return templ_7745c5c3_Err
+			}
+			var templ_7745c5c3_Var2 string
+			templ_7745c5c3_Var2, templ_7745c5c3_Err = templ.JoinStringErrs(category_id)
+			if templ_7745c5c3_Err != nil {
+				return templ.Error{Err: templ_7745c5c3_Err, FileName: `views/subcategories/modifiable_subcategories.templ`, Line: 12, Col: 62}
+			}
+			_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString(templ.EscapeString(templ_7745c5c3_Var2))
+			if templ_7745c5c3_Err != nil {
+				return templ_7745c5c3_Err
+			}
+			_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString("\"> <button name=\"subcategory_operation\" value=\"create\" type=\"submit\" class=\"text-xl border border-green-600 rounded-lg p-3 text-green-600 hover:bg-green-600 hover:text-zinc-900\" style=\"width: 100%;\">+ Add a new Subcategory</button></form>")
 			if templ_7745c5c3_Err != nil {
 				return templ_7745c5c3_Err
 			}
@@ -38,16 +51,29 @@ func ModifiableSubcategories(subcategories []models.Subcategory, category_id str
 			if templ_7745c5c3_Err != nil {
 				return templ_7745c5c3_Err
 			}
-			var templ_7745c5c3_Var2 string
-			templ_7745c5c3_Var2, templ_7745c5c3_Err = templ.JoinStringErrs(category_id)
+			var templ_7745c5c3_Var3 string
+			templ_7745c5c3_Var3, templ_7745c5c3_Err = templ.JoinStringErrs(category_id)
 			if templ_7745c5c3_Err != nil {
-				return templ.Error{Err: templ_7745c5c3_Err, FileName: `views/subcategories/modifiable_subcategories.templ`, Line: 14, Col: 59}
+				return templ.Error{Err: templ_7745c5c3_Err, FileName: `views/subcategories/modifiable_subcategories.templ`, Line: 18, Col: 59}
 			}
-			_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString(templ.EscapeString(templ_7745c5c3_Var2))
+			_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString(templ.EscapeString(templ_7745c5c3_Var3))
 			if templ_7745c5c3_Err != nil {
 				return templ_7745c5c3_Err
 			}
-			_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString("\"> <input type=\"text\" id=\"subcategory_search\" name=\"subcategory_search\" class=\"uk-input text-zinc-50 text-base self-center\" style=\"width: 65%;\" placeholder=\"Search...\"></form><div class=\"flex flex-col self-center\" id=\"subcategory_list\" style=\"width: 75%;\">")
+			_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString("\"> <input type=\"text\" id=\"subcategory_search\" name=\"subcategory_search\" class=\"uk-input text-zinc-50 text-base self-center\" style=\"width: 65%;\" placeholder=\"Search...\"></form><form hx-get=\"/subcategory/popup\" hx-target=\"body\" hx-swap=\"beforeend\" class=\"self-center\" style=\"width: 75%; margin-top: 1rem;\"><input type=\"hidden\" name=\"category_id\" value=\"")
+			if templ_7745c5c3_Err != nil {
+				return templ_7745c5c3_Err
+			}
+			var templ_7745c5c3_Var4 string
+			templ_7745c5c3_Var4, templ_7745c5c3_Err = templ.JoinStringErrs(category_id)
+			if templ_7745c5c3_Err != nil {
+				return templ.Error{Err: templ_7745c5c3_Err, FileName: `views/subcategories/modifiable_subcategories.templ`, Line: 22, Col: 62}
+			}
+			_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString(templ.EscapeString(templ_7745c5c3_Var4))
+			if templ_7745c5c3_Err != nil {
+				return templ_7745c5c3_Err
+			}
+			_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString("\"> <button name=\"subcategory_operation\" value=\"create\" type=\"submit\" class=\"text-xl border border-green-600 rounded-lg p-3 text-green-600 hover:bg-green-600 hover:text-zinc-900\" style=\"width: 100%;\">+ Add a new Subcategory</button></form><div class=\"flex flex-col self-center\" id=\"subcategory_list\" style=\"width: 75%;\">")
 			if templ_7745c5c3_Err != nil {
 				return templ_7745c5c3_Err
 			}
@@ -56,12 +82,12 @@ func ModifiableSubcategories(subcategories []models.Subcategory, category_id str
 				if templ_7745c5c3_Err != nil {
 					return templ_7745c5c3_Err
 				}
-				var templ_7745c5c3_Var3 string
-				templ_7745c5c3_Var3, templ_7745c5c3_Err = templ.JoinStringErrs(subcategory.Subcategory_Name)
+				var templ_7745c5c3_Var5 string
+				templ_7745c5c3_Var5, templ_7745c5c3_Err = templ.JoinStringErrs(subcategory.Subcategory_Name)
 				if templ_7745c5c3_Err != nil {
-					return templ.Error{Err: templ_7745c5c3_Err, FileName: `views/subcategories/modifiable_subcategories.templ`, Line: 21, Col: 89}
+					return templ.Error{Err: templ_7745c5c3_Err, FileName: `views/subcategories/modifiable_subcategories.templ`, Line: 29, Col: 89}
 				}
-				_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString(templ.EscapeString(templ_7745c5c3_Var3))
+				_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString(templ.EscapeString(templ_7745c5c3_Var5))
 				if templ_7745c5c3_Err != nil {
 					return templ_7745c5c3_Err
 				}
@@ -69,12 +95,12 @@ func ModifiableSubcategories(subcategories []models.Subcategory, category_id str
 				if templ_7745c5c3_Err != nil {
 					return templ_7745c5c3_Err
 				}
-				var templ_7745c5c3_Var4 string
-				templ_7745c5c3_Var4, templ_7745c5c3_Err = templ.JoinStringErrs(subcategory.Subcategory_ID.String())
+				var templ_7745c5c3_Var6 string
+				templ_7745c5c3_Var6, templ_7745c5c3_Err = templ.JoinStringErrs(subcategory.Subcategory_ID.String())
 				if templ_7745c5c3_Err != nil {
-					return templ.Error{Err: templ_7745c5c3_Err, FileName: `views/subcategories/modifiable_subcategories.templ`, Line: 24, Col: 92}
+					return templ.Error{Err: templ_7745c5c3_Err, FileName: `views/subcategories/modifiable_subcategories.templ`, Line: 32, Col: 92}
 				}
-				_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString(templ.EscapeString(templ_7745c5c3_Var4))
+				_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString(templ.EscapeString(templ_7745c5c3_Var6))
 				if templ_7745c5c3_Err != nil {
 					return templ_7745c5c3_Err
 				}
@@ -82,12 +108,12 @@ func ModifiableSubcategories(subcategories []models.Subcategory, category_id str
 				if templ_7745c5c3_Err != nil {
 					return templ_7745c5c3_Err
 				}
-				var templ_7745c5c3_Var5 string
-				templ_7745c5c3_Var5, templ_7745c5c3_Err = templ.JoinStringErrs(subcategory.Category_ID.String())
+				var templ_7745c5c3_Var7 string
+				templ_7745c5c3_Var7, templ_7745c5c3_Err = templ.JoinStringErrs(subcategory.Category_ID.String())
 				if templ_7745c5c3_Err != nil {
-					return templ.Error{Err: templ_7745c5c3_Err, FileName: `views/subcategories/modifiable_subcategories.templ`, Line: 25, Col: 86}
+					return templ.Error{Err: templ_7745c5c3_Err, FileName: `views/subcategories/modifiable_subcategories.templ`, Line: 33, Col: 86}
 				}
-				_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString(templ.EscapeString(templ_7745c5c3_Var5))
+				_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString(templ.EscapeString(templ_7745c5c3_Var7))
 				if templ_7745c5c3_Err != nil {
 					return templ_7745c5c3_Err
 				}
@@ -95,12 +121,12 @@ func ModifiableSubcategories(subcategories []models.Subcategory, category_id str
 				if templ_7745c5c3_Err != nil {
 					return templ_7745c5c3_Err
 				}
-				var templ_7745c5c3_Var6 string
-				templ_7745c5c3_Var6, templ_7745c5c3_Err = templ.JoinStringErrs(subcategory.Subcategory_Name)
+				var templ_7745c5c3_Var8 string
+				templ_7745c5c3_Var8, templ_7745c5c3_Err = templ.JoinStringErrs(subcategory.Subcategory_Name)
 				if templ_7745c5c3_Err != nil {
-					return templ.Error{Err: templ_7745c5c3_Err, FileName: `views/subcategories/modifiable_subcategories.templ`, Line: 26, Col: 75}
+					return templ.Error{Err: templ_7745c5c3_Err, FileName: `views/subcategories/modifiable_subcategories.templ`, Line: 34, Col: 75}
 				}
-				_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString(templ.EscapeString(templ_7745c5c3_Var6))
+				_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString(templ.EscapeString(templ_7745c5c3_Var8))
 				if templ_7745c5c3_Err != nil {
 					return templ_7745c5c3_Err
 				}
@@ -108,12 +134,12 @@ func ModifiableSubcategories(subcategories []models.Subcategory, category_id str
 				if templ_7745c5c3_Err != nil {
 					return templ_7745c5c3_Err
 				}
-				var templ_7745c5c3_Var7 string
-				templ_7745c5c3_Var7, templ_7745c5c3_Err = templ.JoinStringErrs(subcategory.Subcategory_ID.String())
+				var templ_7745c5c3_Var9 string
+				templ_7745c5c3_Var9, templ_7745c5c3_Err = templ.JoinStringErrs(subcategory.Subcategory_ID.String())
 				if templ_7745c5c3_Err != nil {
-					return templ.Error{Err: templ_7745c5c3_Err, FileName: `views/subcategories/modifiable_subcategories.templ`, Line: 30, Col: 92}
+					return templ.Error{Err: templ_7745c5c3_Err, FileName: `views/subcategories/modifiable_subcategories.templ`, Line: 38, Col: 92}
 				}
-				_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString(templ.EscapeString(templ_7745c5c3_Var7))
+				_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString(templ.EscapeString(templ_7745c5c3_Var9))
 				if templ_7745c5c3_Err != nil {
 					return templ_7745c5c3_Err
 				}
@@ -121,12 +147,12 @@ func ModifiableSubcategories(subcategories []models.Subcategory, category_id str
 				if templ_7745c5c3_Err != nil {
 					return templ_7745c5c3_Err
 				}
-				var templ_7745c5c3_Var8 string
-				templ_7745c5c3_Var8, templ_7745c5c3_Err = templ.JoinStringErrs(subcategory.Category_ID.String())
+				var templ_7745c5c3_Var10 string
+				templ_7745c5c3_Var10, templ_7745c5c3_Err = templ.JoinStringErrs(subcategory.Category_ID.String())
 				if templ_7745c5c3_Err != nil {
-					return templ.Error{Err: templ_7745c5c3_Err, FileName: `views/subcategories/modifiable_subcategories.templ`, Line: 31, Col: 86}
+					return templ.Error{Err: templ_7745c5c3_Err, FileName: `views/subcategories/modifiable_subcategories.templ`, Line: 39, Col: 86}
 				}
-				_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString(templ.EscapeString(templ_7745c5c3_Var8))
+				_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString(templ.EscapeString(templ_7745c5c3_Var10))
 				if templ_7745c5c3_Err != nil {
 					return templ_7745c5c3_Err
 				}
@@ -134,12 +160,12 @@ func ModifiableSubcategories(subcategories []models.Subcategory, category_id str
 				if templ_7745c5c3_Err != nil {
 					return templ_7745c5c3_Err
 				}
-				var templ_7745c5c3_Var9 string
-				templ_7745c5c3_Var9, templ_7745c5c3_Err = templ.JoinStringErrs(subcategory.Subcategory_Name)
+				var templ_7745c5c3_Var11 string
+				templ_7745c5c3_Var11, templ_7745c5c3_Err = templ.JoinStringErrs(subcategory.Subcategory_Name)
 				if templ_7745c5c3_Err != nil {
-					return templ.Error{Err: templ_7745c5c3_Err, FileName: `views/subcategories/modifiable_subcategories.templ`, Line: 32, Col: 75}
+					return templ.Error{Err: templ_7745c5c3_Err, FileName: `views/subcategories/modifiable_subcategories.templ`, Line: 40, Col: 75}
 				}
-				_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString(templ.EscapeString(templ_7745c5c3_Var9))
+				_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString(templ.EscapeString(templ_7745c5c3_Var11))
 				if templ_7745c5c3_Err != nil {
 					return templ_7745c5c3_Err
 				}
@@ -158,23 +184,6 @@ func ModifiableSubcategories(subcategories []models.Subcategory, category_id str
 			if templ_7745c5c3_Err != nil {
 				return templ_7745c5c3_Err
 			}
-		}
-		_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString("<form hx-get=\"/subcategory/popup\" hx-target=\"body\" hx-swap=\"beforeend\" class=\"self-center\" style=\"width: 75%; margin-top: 1rem;\"><input type=\"hidden\" name=\"category_id\" value=\"")
-		if templ_7745c5c3_Err != nil {
-			return templ_7745c5c3_Err
-		}
-		var templ_7745c5c3_Var10 string
-		templ_7745c5c3_Var10, templ_7745c5c3_Err = templ.JoinStringErrs(category_id)
-		if templ_7745c5c3_Err != nil {
-			return templ.Error{Err: templ_7745c5c3_Err, FileName: `views/subcategories/modifiable_subcategories.templ`, Line: 43, Col: 61}
-		}
-		_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString(templ.EscapeString(templ_7745c5c3_Var10))
-		if templ_7745c5c3_Err != nil {
-			return templ_7745c5c3_Err
-		}
-		_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString("\"> <button name=\"subcategory_operation\" value=\"create\" type=\"submit\" class=\"text-xl border border-green-600 rounded-lg p-3 text-green-600 hover:bg-green-600 hover:text-zinc-900\" style=\"width: 100%;\">+ Add a new Subcategory</button></form>")
-		if templ_7745c5c3_Err != nil {
-			return templ_7745c5c3_Err
 		}
 		return templ_7745c5c3_Err
 	})

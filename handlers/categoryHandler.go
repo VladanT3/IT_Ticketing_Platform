@@ -125,17 +125,26 @@ func UpdateCategory(w http.ResponseWriter, r *http.Request) error {
 	}
 
 	if category_name_exists {
-		return Render(w, r, categories.ShowCategories(models.GetAllCategories(), true))
-	} else {
-		err = models.UpdateCategory(category_id, category_name)
+		old_name, err := models.IsOldCategoryName(category_id, category_name)
 		if err != nil {
-			err_msg := "Internal server error:\nerror updating category: " + err.Error()
+			err_msg := "Internal server error:\nerror checking if category name is the old name: " + err.Error()
 			w.Header().Add("HX-Redirect", "/error")
 			return Render(w, r, layouts.ErrorMessage(LoggedInUserType, err_msg))
 		}
 
-		return Render(w, r, categories.ShowCategories(models.GetAllCategories(), false))
+		if !old_name {
+			return Render(w, r, categories.ShowCategories(models.GetAllCategories(), true))
+		}
 	}
+
+	err = models.UpdateCategory(category_id, category_name)
+	if err != nil {
+		err_msg := "Internal server error:\nerror updating category: " + err.Error()
+		w.Header().Add("HX-Redirect", "/error")
+		return Render(w, r, layouts.ErrorMessage(LoggedInUserType, err_msg))
+	}
+
+	return Render(w, r, categories.ShowCategories(models.GetAllCategories(), false))
 }
 
 func DeleteCategory(w http.ResponseWriter, r *http.Request) error {

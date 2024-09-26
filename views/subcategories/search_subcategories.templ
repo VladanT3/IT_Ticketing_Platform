@@ -5,7 +5,7 @@ import "github.com/VladanT3/IT_Ticketing_Platform/models"
 templ SearchSubcategories(subcategories []models.Subcategory) {
 	for _, subcategory := range subcategories {
 		<div class="flex flex-row" style="gap: 0.5rem; width: 100%; margin-top: 1rem;">
-			<div class="border border-zinc-50 rounded-lg p-3 hover:bg-zinc-50 hover:text-zinc-900" style="width: 70%;">
+			<div class="flex flex-col border border-zinc-50 rounded-lg p-3 hover:bg-zinc-50 hover:text-zinc-900" style="width: 70%;">
 				<span class="self-center" style="user-select: none;">{ subcategory.Subcategory_Name }</span>
 			</div>
 			<form hx-get="/subcategory/popup" hx-target="body" hx-swap="beforeend" style="width: 15%;">

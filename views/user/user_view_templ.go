@@ -114,7 +114,7 @@ func UserView(user_type string, current_user models.Analyst, view_type string) t
 				if templ_7745c5c3_Err != nil {
 					return templ_7745c5c3_Err
 				}
-				_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString("\"> <button type=\"submit\" class=\"flex flex-row text-xl font-bold border border-green-600 rounded-lg p-3 self-center text-green-600 hover:bg-green-600 hover:text-zinc-900\" style=\"width: 100%; margin-bottom: 0.5rem;\"><span class=\"self-start\">+ Add a new Analyst</span></button></form>")
+				_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString("\"> <button type=\"submit\" class=\"flex flex-row text-xl font-bold border border-green-600 rounded-lg p-3 self-center text-green-600 hover:bg-green-600 hover:text-zinc-900\" style=\"width: 100%; margin-bottom: 0.5rem;\"><span class=\"self-start\">+ Add a new User</span></button></form>")
 				if templ_7745c5c3_Err != nil {
 					return templ_7745c5c3_Err
 				}

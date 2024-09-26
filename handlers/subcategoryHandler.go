@@ -159,19 +159,28 @@ func UpdateSubcategory(w http.ResponseWriter, r *http.Request) error {
 	}
 
 	if subcategory_name_exists {
-		subcategoryOutput := models.GetSubcategories(category_id)
-		return Render(w, r, subcategories.ModifiableSubcategories(subcategoryOutput, category_id, true))
-	} else {
-		err = models.UpdateSubcategory(subcategory_id, subcategory_name, category_id)
+		old_name, err := models.IsOldSubcategoryName(subcategory_id, category_id, subcategory_name)
 		if err != nil {
-			err_msg := "Internal server error:\nerror updating subcategory: " + err.Error()
+			err_msg := "Internal server error:\nerror checking whether subcategory name is the old name: " + err.Error()
 			w.Header().Add("HX-Redirect", "/error")
 			return Render(w, r, layouts.ErrorMessage(LoggedInUserType, err_msg))
 		}
 
-		subcategoryOutput := models.GetSubcategories(category_id)
-		return Render(w, r, subcategories.ModifiableSubcategories(subcategoryOutput, category_id, false))
+		if !old_name {
+			subcategoryOutput := models.GetSubcategories(category_id)
+			return Render(w, r, subcategories.ModifiableSubcategories(subcategoryOutput, category_id, true))
+		}
 	}
+
+	err = models.UpdateSubcategory(subcategory_id, subcategory_name, category_id)
+	if err != nil {
+		err_msg := "Internal server error:\nerror updating subcategory: " + err.Error()
+		w.Header().Add("HX-Redirect", "/error")
+		return Render(w, r, layouts.ErrorMessage(LoggedInUserType, err_msg))
+	}
+
+	subcategoryOutput := models.GetSubcategories(category_id)
+	return Render(w, r, subcategories.ModifiableSubcategories(subcategoryOutput, category_id, false))
 }
 
 func DeleteSubcategory(w http.ResponseWriter, r *http.Request) error {

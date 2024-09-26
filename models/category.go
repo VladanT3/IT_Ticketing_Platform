@@ -131,3 +131,20 @@ func GetCategoryIDByName(name string) (uuid.UUID, error) {
 
 	return category_id, nil
 }
+
+func IsOldCategoryName(category_id string, name string) (bool, error) {
+	var db *sql.DB = database.DB_Connection
+	query := `select count(*) from category where category_id = $1 and category_name = $2;`
+	var count int = 0
+
+	err := db.QueryRow(query, category_id, name).Scan(&count)
+	if err != nil {
+		return false, err
+	}
+
+	if count > 0 {
+		return true, nil
+	} else {
+		return false, nil
+	}
+}

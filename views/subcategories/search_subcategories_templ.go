@@ -29,7 +29,7 @@ func SearchSubcategories(subcategories []models.Subcategory) templ.Component {
 		}
 		ctx = templ.ClearChildren(ctx)
 		for _, subcategory := range subcategories {
-			_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString("<div class=\"flex flex-row\" style=\"gap: 0.5rem; width: 100%; margin-top: 1rem;\"><div class=\"border border-zinc-50 rounded-lg p-3 hover:bg-zinc-50 hover:text-zinc-900\" style=\"width: 70%;\"><span class=\"self-center\" style=\"user-select: none;\">")
+			_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString("<div class=\"flex flex-row\" style=\"gap: 0.5rem; width: 100%; margin-top: 1rem;\"><div class=\"flex flex-col border border-zinc-50 rounded-lg p-3 hover:bg-zinc-50 hover:text-zinc-900\" style=\"width: 70%;\"><span class=\"self-center\" style=\"user-select: none;\">")
 			if templ_7745c5c3_Err != nil {
 				return templ_7745c5c3_Err
 			}

@@ -49,7 +49,7 @@ func SubcategorySearchByName(search_term string, categoryID string) ([]Subcatego
 	search_term = strings.ToLower(search_term)
 	search_term = "%" + search_term + "%"
 
-	query := `select * from subcategory where category_id = $1 and lower(subcategory_name) like $2;`
+	query := `select * from subcategory where category_id = $1 and lower(subcategory_name) like $2 order by lower(subcategory_name);`
 	rows, err := db.Query(query, categoryID, search_term)
 	if err != nil {
 		return nil, err
@@ -132,4 +132,21 @@ func GetSubcategoryIDByName(name string) (uuid.UUID, error) {
 	}
 
 	return subcategory_id, nil
+}
+
+func IsOldSubcategoryName(subcategory_id string, category_id string, name string) (bool, error) {
+	var db *sql.DB = database.DB_Connection
+	query := `select count(*) from subcategory where subcategory_id = $1 and category_id = $2 and subcategory_name = $3;`
+	var count int = 0
+
+	err := db.QueryRow(query, subcategory_id, category_id, name).Scan(&count)
+	if err != nil {
+		return false, err
+	}
+
+	if count > 0 {
+		return true, nil
+	} else {
+		return false, nil
+	}
 }

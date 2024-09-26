@@ -8,11 +8,19 @@ templ ModifiableSubcategories(subcategories []models.Subcategory, category_id st
 		<div class="flex flex-col mt-3" style="margin-bottom: 1rem;">
 			<input type="text" class="uk-input text-zinc-50 text-base self-center" style="width: 65%;" placeholder="Search..." disabled/>
 		</div>
+		<form hx-get="/subcategory/popup" hx-target="body" hx-swap="beforeend" class="self-center" style="width: 75%; margin-top: 1rem;">
+			<input type="hidden" name="category_id" value={ category_id }/>
+			<button name="subcategory_operation" value="create" type="submit" class="text-xl border border-green-600 rounded-lg p-3 text-green-600 hover:bg-green-600 hover:text-zinc-900" style="width: 100%;">+ Add a new Subcategory</button>
+		</form>
 	} else {
 		<h1 class="self-center text-2xl">Subcategories</h1>
 		<form hx-get="/subcategories/search" hx-trigger="keyup changed delay:500ms from:#subcategory_search" hx-swap="innerHTML" hx-target="#subcategory_list" class="flex flex-col mt-3" style="margin-bottom: 1rem;">
 			<input type="hidden" name="category" value={ category_id }/>
 			<input type="text" id="subcategory_search" name="subcategory_search" class="uk-input text-zinc-50 text-base self-center" style="width: 65%;" placeholder="Search..."/>
+		</form>
+		<form hx-get="/subcategory/popup" hx-target="body" hx-swap="beforeend" class="self-center" style="width: 75%; margin-top: 1rem;">
+			<input type="hidden" name="category_id" value={ category_id }/>
+			<button name="subcategory_operation" value="create" type="submit" class="text-xl border border-green-600 rounded-lg p-3 text-green-600 hover:bg-green-600 hover:text-zinc-900" style="width: 100%;">+ Add a new Subcategory</button>
 		</form>
 		<div class="flex flex-col self-center" id="subcategory_list" style="width: 75%;">
 			for _, subcategory := range subcategories {
@@ -39,8 +47,4 @@ templ ModifiableSubcategories(subcategories []models.Subcategory, category_id st
 			}
 		</div>
 	}
-	<form hx-get="/subcategory/popup" hx-target="body" hx-swap="beforeend" class="self-center" style="width: 75%; margin-top: 1rem;">
-		<input type="hidden" name="category_id" value={ category_id }/>
-		<button name="subcategory_operation" value="create" type="submit" class="text-xl border border-green-600 rounded-lg p-3 text-green-600 hover:bg-green-600 hover:text-zinc-900" style="width: 100%;">+ Add a new Subcategory</button>
-	</form>
 }

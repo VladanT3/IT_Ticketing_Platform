@@ -7,6 +7,9 @@ templ ShowCategories(categories []models.Category, already_exists_error bool) {
 	<div class="flex flex-col mt-3" style="margin-bottom: 1rem;">
 		<input type="text" name="category_search" hx-get="/categories/search" hx-trigger="keyup changed delay:500ms" hx-target="#category_list" hx-swap="innerHTML" class="uk-input text-zinc-50 text-base self-center" style="width: 65%;" placeholder="Search..."/>
 	</div>
+	<button type="button" name="category_operation" value="create" hx-get="/category/popup" hx-target="body" hx-swap="beforeend" hx-trigger="click" class="border border-green-600 rounded-lg p-3 self-center text-green-600 hover:bg-green-600 hover:text-zinc-900 hover:cursor-pointer" style="width: 75%; margin-top: 1rem;">
+		<span class="text-xl">+ Add a new Category</span>
+	</button>
 	<div id="category_list" style="width: 75%;" class="self-center flex flex-col">
 		for _, category := range categories {
 			<div class="flex flex-row" style="gap: 0.5rem; width: 100%; margin-top: 1rem;">
@@ -26,9 +29,6 @@ templ ShowCategories(categories []models.Category, already_exists_error bool) {
 			</div>
 		}
 	</div>
-	<button type="button" name="category_operation" value="create" hx-get="/category/popup" hx-target="body" hx-swap="beforeend" hx-trigger="click" class="border border-green-600 rounded-lg p-3 self-center text-green-600 hover:bg-green-600 hover:text-zinc-900 hover:cursor-pointer" style="width: 75%; margin-top: 1rem;">
-		<span class="text-xl">+ Add a new Category</span>
-	</button>
 	if already_exists_error {
 		<div hidden hx-get="category/error/name" hx-swap="beforeend" hx-target="body" hx-trigger="load"></div>
 	}
