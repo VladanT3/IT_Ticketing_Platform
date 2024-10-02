@@ -55,40 +55,40 @@ func ReopenHistory(user_type string, ticket_reopens []models.TicketReopen, ticke
 				return templ_7745c5c3_Err
 			}
 			for _, reopen := range ticket_reopens {
-				_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString("<div class=\"flex flex-col\"><div class=\"flex flex-row justify-between\"><label>Reopened by: <label class=\"font-bold\">")
+				_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString("<div class=\"flex flex-col\"><div class=\"grid grid-cols-5\"><div class=\"col-span-1 flex flex-col\"><label>Reopened by: </label> <label>Date: </label></div><div class=\"col-span-4 flex flex-col\"><label class=\"font-bold\">")
 				if templ_7745c5c3_Err != nil {
 					return templ_7745c5c3_Err
 				}
 				var templ_7745c5c3_Var4 string
-				templ_7745c5c3_Var4, templ_7745c5c3_Err = templ.JoinStringErrs(models.GetAnalyst(reopen.Reopened_by.String()).First_Name + " " + models.GetAnalyst(reopen.Reopened_by.String()).Last_Name)
+				templ_7745c5c3_Var4, templ_7745c5c3_Err = templ.JoinStringErrs(models.GetAnalystsTeam(reopen.Reopened_by.String()).Team_Name + " / " + models.GetAnalyst(reopen.Reopened_by.String()).First_Name + " " + models.GetAnalyst(reopen.Reopened_by.String()).Last_Name)
 				if templ_7745c5c3_Err != nil {
-					return templ.Error{Err: templ_7745c5c3_Err, FileName: `views/tickets/ticket_reopen_history.templ`, Line: 21, Col: 177}
+					return templ.Error{Err: templ_7745c5c3_Err, FileName: `views/tickets/ticket_reopen_history.templ`, Line: 26, Col: 230}
 				}
 				_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString(templ.EscapeString(templ_7745c5c3_Var4))
 				if templ_7745c5c3_Err != nil {
 					return templ_7745c5c3_Err
 				}
-				_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString("</label></label> <label>")
+				_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString("</label> <label class=\"font-bold\">")
 				if templ_7745c5c3_Err != nil {
 					return templ_7745c5c3_Err
 				}
 				var templ_7745c5c3_Var5 string
 				templ_7745c5c3_Var5, templ_7745c5c3_Err = templ.JoinStringErrs(reopen.Reopened_Date.Format("Mon 02/01 15:04 2006."))
 				if templ_7745c5c3_Err != nil {
-					return templ.Error{Err: templ_7745c5c3_Err, FileName: `views/tickets/ticket_reopen_history.templ`, Line: 22, Col: 69}
+					return templ.Error{Err: templ_7745c5c3_Err, FileName: `views/tickets/ticket_reopen_history.templ`, Line: 27, Col: 88}
 				}
 				_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString(templ.EscapeString(templ_7745c5c3_Var5))
 				if templ_7745c5c3_Err != nil {
 					return templ_7745c5c3_Err
 				}
-				_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString("</label></div><textarea readonly rows=\"10\" class=\"uk-textarea font-mono text-zinc-50 text-base\">")
+				_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString("</label></div></div><textarea readonly rows=\"10\" class=\"uk-textarea font-mono text-zinc-50 text-base mt-3\">")
 				if templ_7745c5c3_Err != nil {
 					return templ_7745c5c3_Err
 				}
 				var templ_7745c5c3_Var6 string
 				templ_7745c5c3_Var6, templ_7745c5c3_Err = templ.JoinStringErrs(reopen.Reopen_Reason)
 				if templ_7745c5c3_Err != nil {
-					return templ.Error{Err: templ_7745c5c3_Err, FileName: `views/tickets/ticket_reopen_history.templ`, Line: 24, Col: 111}
+					return templ.Error{Err: templ_7745c5c3_Err, FileName: `views/tickets/ticket_reopen_history.templ`, Line: 30, Col: 116}
 				}
 				_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString(templ.EscapeString(templ_7745c5c3_Var6))
 				if templ_7745c5c3_Err != nil {
