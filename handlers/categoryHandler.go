@@ -134,6 +134,8 @@ func UpdateCategory(w http.ResponseWriter, r *http.Request) error {
 
 		if !old_name {
 			return Render(w, r, categories.ShowCategories(models.GetAllCategories(), true))
+		} else {
+			return Render(w, r, categories.ShowCategories(models.GetAllCategories(), false))
 		}
 	}
 

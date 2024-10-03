@@ -169,6 +169,9 @@ func UpdateSubcategory(w http.ResponseWriter, r *http.Request) error {
 		if !old_name {
 			subcategoryOutput := models.GetSubcategories(category_id)
 			return Render(w, r, subcategories.ModifiableSubcategories(subcategoryOutput, category_id, true))
+		} else {
+			subcategoryOutput := models.GetSubcategories(category_id)
+			return Render(w, r, subcategories.ModifiableSubcategories(subcategoryOutput, category_id, false))
 		}
 	}
 

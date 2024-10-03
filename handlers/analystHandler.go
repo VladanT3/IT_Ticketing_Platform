@@ -497,7 +497,7 @@ func CreateUser(w http.ResponseWriter, r *http.Request) error {
 	}
 
 	if email_exists {
-		return Render(w, r, user.UserForm(LoggedInUserType, models.Analyst{}, view_type, new_analyst, errs, false, "update", user_type, false))
+		return Render(w, r, user.UserForm(LoggedInUserType, models.Analyst{}, view_type, new_analyst, errs, false, "create", user_type, false))
 	}
 
 	err = models.CreateAnalyst(new_analyst, user_type)
