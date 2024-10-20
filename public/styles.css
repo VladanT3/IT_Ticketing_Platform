@@ -8892,10 +8892,6 @@ th.uk-text-break, td.uk-text-break {
   align-items: center;
 }
 
-.justify-between {
-  justify-content: space-between;
-}
-
 .self-start {
   align-self: flex-start;
 }
